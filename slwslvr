@@ -1,0 +1,25 @@
+#!/usr/bin/env ruby
+
+filename = "tmp"
+
+assembly_file = filename + ".asm"
+linking_file = filename + ".o"
+
+File.open(assembly_file, "w") do |f|
+  program = <<~END
+    SECTION .text
+    global _start
+
+    _start:
+        mov     ebx, 2
+        mov     eax, 1
+        int     80h
+  END
+
+  f.write(program)
+end
+assembly_compiler = "nasm -f elf64"
+
+if system("#{assembly_compiler} #{assembly_file}")
+  system(`ld #{linking_file}`)
+end
