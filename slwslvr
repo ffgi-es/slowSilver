@@ -1,5 +1,7 @@
 #!/usr/bin/env ruby
 
+in_file = ARGV.first
+
 filename = "tmp"
 
 assembly_file = filename + ".asm"
