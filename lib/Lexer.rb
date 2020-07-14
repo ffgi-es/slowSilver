@@ -1,4 +1,4 @@
-require 'Token'
+require_relative 'Token'
 
 class Lexer
   def self.lex(filename)

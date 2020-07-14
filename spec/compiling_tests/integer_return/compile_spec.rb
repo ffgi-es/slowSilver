@@ -22,7 +22,6 @@ describe "compiling and running program" do
   end
 
   it "should return 3" do
-    pending "need to implement lexing, parsing and generation"
     `#{slwslvr} #{sample2}`
     expect($?.exitstatus).to eq 0
     `./#{out_file}`

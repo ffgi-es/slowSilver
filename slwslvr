@@ -1,21 +1,18 @@
 #!/usr/bin/env ruby
+require_relative 'lib/Lexer'
+require_relative 'lib/Parser'
+require_relative 'lib/Generator'
 
 in_file = ARGV.first
+
+tokens = Lexer.lex in_file
+ast = Parser.parse tokens
+program = Generator.generate_asm ast
 
 filename = "tmp"
 
 assembly_file = filename + ".asm"
 linking_file = filename + ".o"
-
-program = <<~END
-  SECTION .text
-  global _start
-
-  _start:
-      mov     ebx, 2
-      mov     eax, 1
-      int     80h
-END
 
 File.open(assembly_file, "w") { |f| f.write(program) }
 
