@@ -9,9 +9,9 @@ class Parser
   end
 
   def self.parse_function(tokens)
-    tokens.shift
+    raise ParseError.new("Unexpected token: 'main'") unless tokens.shift.type == :type
     name = tokens.shift.value
-    tokens.shift
+    raise ParseError.new("Unexpected token: '6'") unless tokens.shift.type == :return
     return_exp = parse_exp(tokens)
     Function.new(name, return_exp)
   end
@@ -21,9 +21,9 @@ class Parser
   end
 
   def self.parse_int(tokens)
-    raise ParseError.new if tokens.first.type != :integer_constant
+    raise ParseError.new("Unexpected token: '.'") if tokens.first.type != :integer_constant
     int = IntegerConstant.new(tokens.shift.value)
-    raise ParseError unless tokens.shift&.type == :end
+    raise ParseError.new("Expected token: '.'") unless tokens.shift&.type == :end
     int
   end
 end

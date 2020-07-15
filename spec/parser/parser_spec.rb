@@ -52,7 +52,9 @@ describe 'Parser' do
         Token.new(:end)
       ]
 
-      expect { Parser.parse tokens_list } .to raise_exception ParseError
+      expect { Parser.parse tokens_list } .to raise_exception(
+        ParseError,
+        "Unexpected token: '.'")
     end
 
     it 'should throw an error for a missing full stop' do
@@ -63,7 +65,9 @@ describe 'Parser' do
         Token.new(:integer_constant, 6),
       ]
 
-      expect { Parser.parse tokens_list } .to raise_exception ParseError
+      expect { Parser.parse tokens_list } .to raise_exception(
+        ParseError,
+        "Expected token: '.'")
     end
 
     it 'should throw an error for a missing =>' do
@@ -74,7 +78,9 @@ describe 'Parser' do
         Token.new(:end)
       ]
 
-      expect { Parser.parse tokens_list } .to raise_exception ParseError
+      expect { Parser.parse tokens_list } .to raise_exception(
+        ParseError,
+        "Unexpected token: '6'")
     end
 
     it 'should throw an error for a missing funtion type' do
@@ -85,7 +91,9 @@ describe 'Parser' do
         Token.new(:end)
       ]
 
-      expect { Parser.parse tokens_list } .to raise_exception ParseError
+      expect { Parser.parse tokens_list } .to raise_exception(
+        ParseError,
+        "Unexpected token: 'main'")
     end
   end
 end
