@@ -54,5 +54,38 @@ describe 'Parser' do
 
       expect { Parser.parse tokens_list } .to raise_exception ParseError
     end
+
+    it 'should throw an error for a missing full stop' do
+      tokens_list = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:integer_constant, 6),
+      ]
+
+      expect { Parser.parse tokens_list } .to raise_exception ParseError
+    end
+
+    it 'should throw an error for a missing =>' do
+      tokens_list = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:integer_constant, 6),
+        Token.new(:end)
+      ]
+
+      expect { Parser.parse tokens_list } .to raise_exception ParseError
+    end
+
+    it 'should throw an error for a missing funtion type' do
+      tokens_list = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:integer_constant, 6),
+        Token.new(:end)
+      ]
+
+      expect { Parser.parse tokens_list } .to raise_exception ParseError
+    end
   end
 end

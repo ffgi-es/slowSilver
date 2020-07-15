@@ -22,7 +22,9 @@ class Parser
 
   def self.parse_int(tokens)
     raise ParseError.new if tokens.first.type != :integer_constant
-    IntegerConstant.new(tokens.shift.value)
+    int = IntegerConstant.new(tokens.shift.value)
+    raise ParseError unless tokens.shift&.type == :end
+    int
   end
 end
 
