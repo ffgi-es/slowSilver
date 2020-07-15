@@ -1,0 +1,13 @@
+AllCops:
+    Exclude:
+        - 'spec/spec_helper.rb'
+
+Layout/MultilineMethodCallBraceLayout:
+    EnforcedStyle: same_line
+
+Metric/BlockLength:
+    Exclude:
+        - '**/*_spec.rb'
+
+Style/FrozenStringLiteralComment:
+    Enabled: false
