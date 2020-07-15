@@ -1,27 +1,27 @@
 # Generates assembly code from a given AST
 class Generator
-  def self.generate_asm(ast)
-    output = "SECTION .text\n"
-    traverse(ast.program, output)
-  end
+  attr_reader :code
 
-  def self.traverse(ast, output)
-    return traverse(ast.function, output) if ast.is_a? Program
+  def initialize(ast)
+    @code = "SECTION .text\n"
+    traverse ast.program
+  end
+  
+  def traverse(ast)
+    return traverse ast.function if ast.is_a? Program
 
     if ast.is_a? Function
-      output << "global _#{ast.name}\n\n"
-      output << "_#{ast.name}:\n"
-      return traverse(ast.return, output)
+      @code << "global _#{ast.name}\n\n"
+      @code << "_#{ast.name}:\n"
+      return traverse ast.return
     end
 
     if ast.is_a? Return
-      output = traverse(ast.expression, output)
-      output << "    mov     eax, 1\n"
-      return output << "    int     80h\n"
+      @code = traverse ast.expression
+      @code << "    mov     eax, 1\n"
+      return @code << "    int     80h\n"
     end
 
-    return output << "    mov     ebx, #{ast.value}\n" if ast.is_a? IntegerConstant
-
-    output
+    @code << "    mov     ebx, #{ast.value}\n" if ast.is_a? IntegerConstant
   end
 end

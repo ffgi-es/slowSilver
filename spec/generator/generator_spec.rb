@@ -1,15 +1,20 @@
 require 'generator'
+require 'parser'
 
 describe 'Generator' do
-  describe '#generate_asm' do
-    it 'should generate simple ASM from an AST' do
-      ast = ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            Return.new(
-              IntegerConstant.new(6)))))
+  let("ast") do
+    ASTree.new(
+      Program.new(
+        Function.new(
+          'main',
+          Return.new(
+            IntegerConstant.new(6)))))
+  end
 
+  subject { Generator.new(ast) }
+
+  describe '#code' do
+    it 'should return the expected code' do
       expected_asm = <<~ASM
         SECTION .text
         global _main
@@ -20,7 +25,7 @@ describe 'Generator' do
             int     80h
       ASM
 
-      expect(Generator.generate_asm(ast)).to eq expected_asm
+      expect(subject.code).to eq expected_asm
     end
   end
 end

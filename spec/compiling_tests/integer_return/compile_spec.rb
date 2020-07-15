@@ -23,6 +23,12 @@ describe 'compiling and running program' do
     expect(Dir['*.o']).to be_empty
   end
 
+  it 'should not output any errors for correct examples' do
+    output = `#{slwslvr} #{sample} 2>&1`
+    expect($CHILD_STATUS.exitstatus).to eq 0
+    expect(output).to be_empty
+  end
+
   it 'should return 3' do
     `#{slwslvr} #{sample2}`
     expect($CHILD_STATUS.exitstatus).to eq 0
