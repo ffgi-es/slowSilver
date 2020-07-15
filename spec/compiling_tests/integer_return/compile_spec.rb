@@ -1,9 +1,11 @@
 require 'English'
+require 'open3'
 
 describe 'compiling and running program' do
   let('slwslvr') { './slwslvr' }
   let('sample') { File.expand_path('sample.sag', File.dirname(__FILE__)) }
   let('sample2') { File.expand_path('sample2.sag', File.dirname(__FILE__)) }
+  let('fail1') { File.expand_path('fail1.sag', File.dirname(__FILE__)) }
   let('out_file') { 'a.out' }
 
   after(:example) do
@@ -23,10 +25,23 @@ describe 'compiling and running program' do
     expect(Dir['*.o']).to be_empty
   end
 
+  it 'should not output any errors for correct examples' do
+    output = `#{slwslvr} #{sample} 2>&1`
+    expect($CHILD_STATUS.exitstatus).to eq 0
+    expect(output).to be_empty
+  end
+
   it 'should return 3' do
     `#{slwslvr} #{sample2}`
     expect($CHILD_STATUS.exitstatus).to eq 0
     `./#{out_file}`
     expect($CHILD_STATUS.exitstatus).to eq 3
+  end
+
+  it 'should output an error to stderr' do
+    o, e, s = Open3.capture3("#{slwslvr} #{fail1}")
+    expect(s.exitstatus).to eq 1
+    expect(e).to eq "parsing error\n"
+    expect(o).to be_empty
   end
 end

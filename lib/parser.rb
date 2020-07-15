@@ -9,11 +9,12 @@ class Parser
   end
 
   def self.parse_function(tokens)
-    tokens.shift
+    raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
+
     name = tokens.shift.value
-    tokens.shift
-    return_exp = parse_exp(tokens)
-    Function.new(name, return_exp)
+    raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
+
+    Function.new(name, parse_exp(tokens))
   end
 
   def self.parse_exp(tokens)
@@ -21,8 +22,16 @@ class Parser
   end
 
   def self.parse_int(tokens)
-    IntegerConstant.new(tokens.shift.value)
+    raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
+
+    int = IntegerConstant.new(tokens.shift.value)
+    raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+
+    int
   end
+end
+
+class ParseError < StandardError
 end
 
 # root of the AST
