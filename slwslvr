@@ -3,9 +3,9 @@ require_relative 'lib/lexer'
 require_relative 'lib/parser'
 require_relative 'lib/generator'
 
-in_file = ARGV.first
+lexer = Lexer.new(ARGV.first)
 
-tokens = Lexer.lex in_file
+tokens = lexer.lex
 ast = Parser.parse tokens
 program = Generator.generate_asm ast
 

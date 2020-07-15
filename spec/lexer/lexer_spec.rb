@@ -12,7 +12,8 @@ describe 'Lexer' do
         Token.new(:integer_constant, 4),
         Token.new(:end)
       ]
-      expect(Lexer.lex(in_file)).to eq out_tokens
+      lexer = Lexer.new(in_file)
+      expect(lexer.lex).to eq out_tokens
     end
 
     it 'should return a list of tokens for sample2.sag' do
@@ -24,7 +25,8 @@ describe 'Lexer' do
         Token.new(:integer_constant, 6),
         Token.new(:end)
       ]
-      expect(Lexer.lex(in_file)).to eq out_tokens
+      lexer = Lexer.new(in_file)
+      expect(lexer.lex).to eq out_tokens
     end
   end
 end
