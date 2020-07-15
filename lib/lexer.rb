@@ -1,5 +1,6 @@
 require_relative 'token'
 
+# opens a file and returns tokenised contents
 class Lexer
   def self.lex(filename)
     File.open filename, 'r' do |file|

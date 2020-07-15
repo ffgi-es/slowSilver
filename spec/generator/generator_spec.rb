@@ -1,8 +1,8 @@
-require "generator"
+require 'generator'
 
-describe "Generator" do
-  describe "#generate_asm" do
-    it "should generate simple ASM from an AST" do
+describe 'Generator' do
+  describe '#generate_asm' do
+    it 'should generate simple ASM from an AST' do
       ast = ASTree.new(
         Program.new(
           Function.new(
@@ -10,7 +10,7 @@ describe "Generator" do
             Return.new(
               IntegerConstant.new(6)))))
 
-      expected_asm = <<~END
+      expected_asm = <<~ASM
         SECTION .text
         global _main
 
@@ -18,9 +18,9 @@ describe "Generator" do
             mov     ebx, 6
             mov     eax, 1
             int     80h
-      END
+      ASM
 
-      expect(Generator.generate_asm ast).to eq expected_asm
+      expect(Generator.generate_asm(ast)).to eq expected_asm
     end
   end
 end

@@ -1,3 +1,4 @@
+# a representation a single unit of code syntax
 class Token
   attr_reader :type, :value
 
@@ -7,7 +8,7 @@ class Token
   end
 
   def ==(other)
-    @type == other.type and
+    @type == other.type &&
       @value == other.value
   end
 end

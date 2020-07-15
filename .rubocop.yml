@@ -9,12 +9,12 @@ Layout/MultilineMethodCallBraceLayout:
 Layout/MultilineMethodCallIndentation:
     EnforcedStyle: indented
 
-Metric/AbcSize:
+Metrics/AbcSize:
     Max: 20
-Metric/BlockLength:
+Metrics/BlockLength:
     Exclude:
         - '**/*_spec.rb'
-Metric/MethodLength:
+Metrics/MethodLength:
     Max: 20
 
 Style/FrozenStringLiteralComment:
