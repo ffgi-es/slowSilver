@@ -1,3 +1,4 @@
+# Creates an AST from a list of tokens
 class Parser
   def self.parse(tokens)
     ASTree.new(parse_program(tokens))
@@ -6,7 +7,7 @@ class Parser
   def self.parse_program(tokens)
     Program.new(parse_function(tokens))
   end
-  
+
   def self.parse_function(tokens)
     tokens.shift
     name = tokens.shift.value
@@ -24,6 +25,7 @@ class Parser
   end
 end
 
+# root of the AST
 class ASTree
   attr_reader :program
 
@@ -36,6 +38,7 @@ class ASTree
   end
 end
 
+# The program of the AST
 class Program
   attr_reader :function
 
@@ -48,6 +51,7 @@ class Program
   end
 end
 
+# A function in the program
 class Function
   attr_reader :name, :return
 
@@ -57,11 +61,12 @@ class Function
   end
 
   def ==(other)
-    @name == other.name and
+    @name == other.name &&
       @return == other.return
   end
 end
 
+# what a function returns
 class Return
   attr_reader :expression
 
@@ -74,6 +79,7 @@ class Return
   end
 end
 
+# a constant integer value
 class IntegerConstant
   attr_reader :value
 

@@ -1,0 +1,21 @@
+AllCops:
+    Exclude:
+        - 'spec/spec_helper.rb'
+
+Layout/LineLength:
+    Max: 100
+Layout/MultilineMethodCallBraceLayout:
+    EnforcedStyle: same_line
+Layout/MultilineMethodCallIndentation:
+    EnforcedStyle: indented
+
+Metrics/AbcSize:
+    Max: 20
+Metrics/BlockLength:
+    Exclude:
+        - '**/*_spec.rb'
+Metrics/MethodLength:
+    Max: 20
+
+Style/FrozenStringLiteralComment:
+    Enabled: false

@@ -1,8 +1,8 @@
-require "Parser"
+require 'parser'
 
-describe "Parser" do
-  describe "#parse" do
-    it "should return AST for returning 4" do
+describe 'Parser' do
+  describe '#parse' do
+    it 'should return AST for returning 4' do
       tokens_list = [
         Token.new(:type, :INT),
         Token.new(:identifier, 'main'),
@@ -23,7 +23,7 @@ describe "Parser" do
       expect(actual_ast).to eq expected_ast
     end
 
-    it "should return AST for returning 3" do
+    it 'should return AST for returning 3' do
       tokens_list = [
         Token.new(:type, :INT),
         Token.new(:identifier, 'main'),
