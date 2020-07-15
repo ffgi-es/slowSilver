@@ -1,3 +1,4 @@
+# Generates assembly code from a given AST
 class Generator
   def self.generate_asm(ast)
     output = "SECTION .text\n"
@@ -6,7 +7,7 @@ class Generator
 
   def self.traverse(ast, output)
     return traverse(ast.function, output) if ast.is_a? Program
-    
+
     if ast.is_a? Function
       output << "global _#{ast.name}\n\n"
       output << "_#{ast.name}:\n"

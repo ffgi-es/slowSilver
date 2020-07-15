@@ -1,8 +1,8 @@
-require_relative 'Token'
+require_relative 'token'
 
 class Lexer
   def self.lex(filename)
-    File.open filename, "r" do |file|
+    File.open filename, 'r' do |file|
       file.gets
         .split(/(\s|\.)/)
         .reject { |s| s =~ /^\s*$/ }
@@ -32,7 +32,7 @@ class Lexer
   def self.lex_int(string)
     Token.new(:integer_constant, string.to_i) if string =~ /^[0-9]+$/
   end
-  
+
   def self.lex_end(string)
     Token.new(:end) if string =~ /^\.$/
   end

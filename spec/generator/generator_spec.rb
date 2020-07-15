@@ -1,4 +1,4 @@
-require "Generator"
+require "generator"
 
 describe "Generator" do
   describe "#generate_asm" do

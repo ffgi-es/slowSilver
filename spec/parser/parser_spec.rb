@@ -1,4 +1,4 @@
-require 'Parser'
+require 'parser'
 
 describe 'Parser' do
   describe '#parse' do

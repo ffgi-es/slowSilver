@@ -1,7 +1,7 @@
 #!/usr/bin/env ruby
-require_relative 'lib/Lexer'
-require_relative 'lib/Parser'
-require_relative 'lib/Generator'
+require_relative 'lib/lexer'
+require_relative 'lib/parser'
+require_relative 'lib/generator'
 
 in_file = ARGV.first
 

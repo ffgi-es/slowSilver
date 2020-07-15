@@ -1,5 +1,5 @@
-require 'Lexer'
-require 'Token'
+require 'lexer'
+require 'token'
 
 describe 'Lexer' do
   describe '#lex' do
