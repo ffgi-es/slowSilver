@@ -3,23 +3,23 @@ require_relative 'lib/lexer'
 require_relative 'lib/parser'
 require_relative 'lib/generator'
 
-lexer = Lexer.new(ARGV.first)
+lexer = Lexer.new ARGV.first
 
 tokens = lexer.lex
 ast = Parser.parse tokens
-program = Generator.generate_asm ast
+generator = Generator.new ast
 
 filename = 'tmp'
 
 assembly_file = filename + '.asm'
 linking_file = filename + '.o'
 
-File.open(assembly_file, 'w') { |f| f.write(program) }
+File.open(assembly_file, 'w') { |f| f.write(generator.code) }
 
 assembly_compiler = 'nasm -f elf64'
 
 if system("#{assembly_compiler} #{assembly_file}")
-  system(`ld #{linking_file}`)
+  system(`ld -e #{generator.entry_point} #{linking_file}`)
   File.delete linking_file if File.exist? linking_file
 end
 

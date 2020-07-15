@@ -28,4 +28,11 @@ describe 'Generator' do
       expect(subject.code).to eq expected_asm
     end
   end
+
+  describe '#entry_point' do
+    it 'should return the entry function' do
+      expected_entry = '_main'
+      expect(subject.entry_point).to eq expected_entry
+    end
+  end
 end

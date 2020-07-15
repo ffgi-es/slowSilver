@@ -1,6 +1,6 @@
 # Generates assembly code from a given AST
 class Generator
-  attr_reader :code
+  attr_reader :code, :entry_point
 
   def initialize(ast)
     @code = "SECTION .text\n"
@@ -13,6 +13,7 @@ class Generator
     if ast.is_a? Function
       @code << "global _#{ast.name}\n\n"
       @code << "_#{ast.name}:\n"
+      @entry_point = "_#{ast.name}"
       return traverse ast.return
     end
 
