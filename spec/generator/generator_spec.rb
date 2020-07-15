@@ -2,7 +2,7 @@ require 'generator'
 require 'parser'
 
 describe 'Generator' do
-  let("ast") do
+  let('ast') do
     ASTree.new(
       Program.new(
         Function.new(

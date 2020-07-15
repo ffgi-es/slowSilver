@@ -6,7 +6,7 @@ class Generator
     @code = "SECTION .text\n"
     traverse ast.program
   end
-  
+
   def traverse(ast)
     return traverse ast.function if ast.is_a? Program
 
