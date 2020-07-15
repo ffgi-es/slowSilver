@@ -6,7 +6,14 @@ require_relative 'lib/generator'
 lexer = Lexer.new ARGV.first
 
 tokens = lexer.lex
-ast = Parser.parse tokens
+
+begin
+  ast = Parser.parse tokens
+rescue ParseError
+  STDERR.puts "parsing error"
+  exit 1
+end
+
 generator = Generator.new ast
 
 filename = 'tmp'
