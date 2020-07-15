@@ -9,11 +9,12 @@ class Parser
   end
 
   def self.parse_function(tokens)
-    raise ParseError.new("Unexpected token: 'main'") unless tokens.shift.type == :type
+    raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
+
     name = tokens.shift.value
-    raise ParseError.new("Unexpected token: '6'") unless tokens.shift.type == :return
-    return_exp = parse_exp(tokens)
-    Function.new(name, return_exp)
+    raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
+
+    Function.new(name, parse_exp(tokens))
   end
 
   def self.parse_exp(tokens)
@@ -21,9 +22,11 @@ class Parser
   end
 
   def self.parse_int(tokens)
-    raise ParseError.new("Unexpected token: '.'") if tokens.first.type != :integer_constant
+    raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
+
     int = IntegerConstant.new(tokens.shift.value)
-    raise ParseError.new("Expected token: '.'") unless tokens.shift&.type == :end
+    raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+
     int
   end
 end

@@ -62,7 +62,7 @@ describe 'Parser' do
         Token.new(:type, :INT),
         Token.new(:identifier, 'main'),
         Token.new(:return),
-        Token.new(:integer_constant, 6),
+        Token.new(:integer_constant, 6)
       ]
 
       expect { Parser.parse tokens_list } .to raise_exception(

@@ -10,7 +10,7 @@ tokens = lexer.lex
 begin
   ast = Parser.parse tokens
 rescue ParseError
-  STDERR.puts "parsing error"
+  warn 'parsing error'
   exit 1
 end
 
