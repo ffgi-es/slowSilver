@@ -4,44 +4,46 @@ class Parser
     ASTree.new(parse_program(tokens))
   end
 
-  def self.parse_program(tokens)
-    Program.new(parse_function(tokens))
-  end
+  class << self
+    private
 
-  def self.parse_function(tokens)
-    raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
-
-    name = tokens.shift.value
-    raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
-
-    Function.new(name, parse_ret(tokens))
-  end
-
-  def self.parse_ret(tokens)
-    raise ParseError, "Expected token: '.'" unless tokens.pop&.type == :end
-
-    Return.new(parse_exp(tokens))
-  end
-
-  def self.parse_exp(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
-    return parse_int(tokens) if tokens.length == 1
-
-    function_call = nil
-    arguments = []
-
-    until tokens.first.nil?
-      case tokens.first.type
-      when :function_call then function_call = tokens.shift.value
-      when :integer_constant then arguments.push(tokens.shift.value)
-      end
+    def parse_program(tokens)
+      Program.new(parse_function(tokens))
     end
 
-    Expression.new(function_call.to_sym, *arguments)
-  end
+    def parse_function(tokens)
+      raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
 
-  def self.parse_int(tokens)
-    IntegerConstant.new(tokens.shift.value)
+      Function.new(tokens.shift.value, parse_ret(tokens))
+    end
+
+    def parse_ret(tokens)
+      raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
+      raise ParseError, "Expected token: '.'" unless tokens.pop&.type == :end
+
+      Return.new(parse_exp(tokens))
+    end
+
+    def parse_exp(tokens)
+      raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
+      return parse_int(tokens) if tokens.length == 1
+
+      function_call = nil
+      arguments = []
+
+      until tokens.first.nil?
+        case tokens.first.type
+        when :function_call then function_call = tokens.shift.value
+        when :integer_constant then arguments.push(tokens.shift.value)
+        end
+      end
+
+      Expression.new(function_call.to_sym, *arguments)
+    end
+
+    def parse_int(tokens)
+      IntegerConstant.new(tokens.shift.value)
+    end
   end
 end
 
@@ -55,10 +57,6 @@ class ASTree
   def initialize(program)
     @program = program
   end
-
-  def ==(other)
-    @program == other.program
-  end
 end
 
 # The program of the AST
@@ -67,10 +65,6 @@ class Program
 
   def initialize(function)
     @function = function
-  end
-
-  def ==(other)
-    @function == other.function
   end
 end
 
@@ -82,11 +76,6 @@ class Function
     @name = name
     @return = return_exp
   end
-
-  def ==(other)
-    @name == other.name &&
-      @return == other.return
-  end
 end
 
 # what a function returns
@@ -96,10 +85,6 @@ class Return
   def initialize(expression)
     @expression = expression
   end
-
-  def ==(other)
-    @expression == other.expression
-  end
 end
 
 class Expression
@@ -107,11 +92,6 @@ class Expression
 
   def initialize(function, param1, param2)
     @function = function
-  end
-
-  def ==(other)
-    @name == other.function &&
-      @parameters == other.parameters
   end
 end
 
@@ -121,9 +101,5 @@ class IntegerConstant
 
   def initialize(value)
     @value = value
-  end
-
-  def ==(other)
-    @value == other.value
   end
 end
