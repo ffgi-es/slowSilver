@@ -14,20 +14,34 @@ class Parser
     name = tokens.shift.value
     raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
 
-    Function.new(name, parse_exp(tokens))
+    Function.new(name, parse_ret(tokens))
+  end
+
+  def self.parse_ret(tokens)
+    raise ParseError, "Expected token: '.'" unless tokens.pop&.type == :end
+
+    Return.new(parse_exp(tokens))
   end
 
   def self.parse_exp(tokens)
-    Return.new(parse_int(tokens))
+    raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
+    return parse_int(tokens) if tokens.length == 1
+
+    function_call = nil
+    arguments = []
+
+    until tokens.first.nil?
+      case tokens.first.type
+      when :function_call then function_call = tokens.shift.value
+      when :integer_constant then arguments.push(tokens.shift.value)
+      end
+    end
+
+    Expression.new(function_call.to_sym, *arguments)
   end
 
   def self.parse_int(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
-
-    int = IntegerConstant.new(tokens.shift.value)
-    raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
-
-    int
+    IntegerConstant.new(tokens.shift.value)
   end
 end
 
@@ -85,6 +99,19 @@ class Return
 
   def ==(other)
     @expression == other.expression
+  end
+end
+
+class Expression
+  attr_reader :function, :parameters
+
+  def initialize(function, param1, param2)
+    @function = function
+  end
+
+  def ==(other)
+    @name == other.function &&
+      @parameters == other.parameters
   end
 end
 
