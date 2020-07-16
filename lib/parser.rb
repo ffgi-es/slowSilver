@@ -4,30 +4,34 @@ class Parser
     ASTree.new(parse_program(tokens))
   end
 
-  def self.parse_program(tokens)
-    Program.new(parse_function(tokens))
-  end
+  class << self
+    private
 
-  def self.parse_function(tokens)
-    raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
+    def parse_program(tokens)
+      Program.new(parse_function(tokens))
+    end
 
-    name = tokens.shift.value
-    raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
+    def parse_function(tokens)
+      raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
 
-    Function.new(name, parse_exp(tokens))
-  end
+      name = tokens.shift.value
+      raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
 
-  def self.parse_exp(tokens)
-    Return.new(parse_int(tokens))
-  end
+      Function.new(name, parse_exp(tokens))
+    end
 
-  def self.parse_int(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
+    def parse_exp(tokens)
+      Return.new(parse_int(tokens))
+    end
 
-    int = IntegerConstant.new(tokens.shift.value)
-    raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+    def parse_int(tokens)
+      raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
 
-    int
+      int = IntegerConstant.new(tokens.shift.value)
+      raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+
+      int
+    end
   end
 end
 
@@ -41,10 +45,6 @@ class ASTree
   def initialize(program)
     @program = program
   end
-
-  def ==(other)
-    @program == other.program
-  end
 end
 
 # The program of the AST
@@ -53,10 +53,6 @@ class Program
 
   def initialize(function)
     @function = function
-  end
-
-  def ==(other)
-    @function == other.function
   end
 end
 
@@ -68,11 +64,6 @@ class Function
     @name = name
     @return = return_exp
   end
-
-  def ==(other)
-    @name == other.name &&
-      @return == other.return
-  end
 end
 
 # what a function returns
@@ -82,10 +73,6 @@ class Return
   def initialize(expression)
     @expression = expression
   end
-
-  def ==(other)
-    @expression == other.expression
-  end
 end
 
 # a constant integer value
@@ -94,9 +81,5 @@ class IntegerConstant
 
   def initialize(value)
     @value = value
-  end
-
-  def ==(other)
-    @value == other.value
   end
 end
