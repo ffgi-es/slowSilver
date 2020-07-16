@@ -1,4 +1,5 @@
 require 'parser'
+require 'pprint'
 
 describe 'Parser' do
   describe '#parse' do
@@ -20,7 +21,8 @@ describe 'Parser' do
 
       actual_ast = Parser.parse(tokens_list)
 
-      expect(actual_ast).to eq expected_ast
+      expect(PPrinter.format(actual_ast))
+        .to eq PPrinter.format(expected_ast)
     end
 
     it 'should return AST for returning 3' do
@@ -41,7 +43,8 @@ describe 'Parser' do
 
       actual_ast = Parser.parse(tokens_list)
 
-      expect(actual_ast).to eq expected_ast
+      expect(PPrinter.format(actual_ast))
+        .to eq PPrinter.format(expected_ast)
     end
 
     it 'should throw an error for missing return value' do

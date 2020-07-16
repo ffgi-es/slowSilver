@@ -41,10 +41,6 @@ class ASTree
   def initialize(program)
     @program = program
   end
-
-  def ==(other)
-    @program == other.program
-  end
 end
 
 # The program of the AST
@@ -53,10 +49,6 @@ class Program
 
   def initialize(function)
     @function = function
-  end
-
-  def ==(other)
-    @function == other.function
   end
 end
 
@@ -68,11 +60,6 @@ class Function
     @name = name
     @return = return_exp
   end
-
-  def ==(other)
-    @name == other.name &&
-      @return == other.return
-  end
 end
 
 # what a function returns
@@ -82,10 +69,6 @@ class Return
   def initialize(expression)
     @expression = expression
   end
-
-  def ==(other)
-    @expression == other.expression
-  end
 end
 
 # a constant integer value
@@ -94,9 +77,5 @@ class IntegerConstant
 
   def initialize(value)
     @value = value
-  end
-
-  def ==(other)
-    @value == other.value
   end
 end
