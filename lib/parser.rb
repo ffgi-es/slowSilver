@@ -4,30 +4,34 @@ class Parser
     ASTree.new(parse_program(tokens))
   end
 
-  def self.parse_program(tokens)
-    Program.new(parse_function(tokens))
-  end
+  class << self
+    private
 
-  def self.parse_function(tokens)
-    raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
+    def parse_program(tokens)
+      Program.new(parse_function(tokens))
+    end
 
-    name = tokens.shift.value
-    raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
+    def parse_function(tokens)
+      raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
 
-    Function.new(name, parse_exp(tokens))
-  end
+      name = tokens.shift.value
+      raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
 
-  def self.parse_exp(tokens)
-    Return.new(parse_int(tokens))
-  end
+      Function.new(name, parse_exp(tokens))
+    end
 
-  def self.parse_int(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
+    def parse_exp(tokens)
+      Return.new(parse_int(tokens))
+    end
 
-    int = IntegerConstant.new(tokens.shift.value)
-    raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+    def parse_int(tokens)
+      raise ParseError, "Unexpected token: '.'" if tokens.first.type != :integer_constant
 
-    int
+      int = IntegerConstant.new(tokens.shift.value)
+      raise ParseError, "Expected token: '.'" unless tokens.shift&.type == :end
+
+      int
+    end
   end
 end
 
