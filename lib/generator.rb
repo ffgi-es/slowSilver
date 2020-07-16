@@ -18,11 +18,20 @@ class Generator
     end
 
     if ast.is_a? Return
-      @code = traverse ast.expression
-      @code << "    mov     eax, 1\n"
+      traverse ast.expression
+      @code << "    mov     rax, 1\n"
       return @code << "    int     80h\n"
     end
 
-    @code << "    mov     ebx, #{ast.value}\n" if ast.is_a? IntegerConstant
+    if ast.is_a? Expression
+      traverse ast.parameters[0]
+      @code << "    push    rbx\n"
+      traverse ast.parameters[1]
+      @code << "    pop     rcx\n"
+      @code << "    add     rbx, rcx\n"
+      return
+    end
+
+    @code << "    mov     rbx, #{ast.value}\n" if ast.is_a? IntegerConstant
   end
 end

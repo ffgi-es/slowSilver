@@ -20,9 +20,7 @@ class PPrinter
     end
 
     def format_return(output, ret)
-      if ret.expression.is_a? IntegerConstant
-        return format_integer(output, ret.expression)
-      end
+      return format_integer(output, ret.expression) if ret.expression.is_a? IntegerConstant
 
       format_expression(output, ret.expression)
     end
@@ -40,7 +38,7 @@ class PPrinter
     end
 
     def indent(string, count)
-      " " * count << string
+      ' ' * count << string
     end
   end
 end

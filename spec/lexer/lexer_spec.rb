@@ -44,7 +44,6 @@ describe 'Lexer' do
       expect(lexer.lex).to eq out_tokens
     end
 
-    
     it 'should return a list of tokens for sample4.sag' do
       in_file = File.expand_path 'sample4.sag', File.dirname(__FILE__)
       out_tokens = [

@@ -87,6 +87,7 @@ class Return
   end
 end
 
+# an expression with a function call
 class Expression
   attr_reader :function, :parameters
 
