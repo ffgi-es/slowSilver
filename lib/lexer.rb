@@ -9,6 +9,7 @@ class Lexer
       method(:lex_id),
       method(:lex_return),
       method(:lex_int),
+      method(:lex_function_call),
       method(:lex_end)
     ]
   end
@@ -27,6 +28,7 @@ class Lexer
       result = lexing.call(string)
       return result unless result.nil?
     end
+    raise LexError, "Unknown token '+'"
   end
 
   def lex_type(string)
@@ -48,4 +50,11 @@ class Lexer
   def lex_end(string)
     Token.new(:end) if string =~ /^\.$/
   end
+
+  def lex_function_call(string)
+    Token.new(:function_call, string[1..-1]) if string =~ /:[+a-z]+/
+  end
+end
+
+class LexError < StandardError
 end
