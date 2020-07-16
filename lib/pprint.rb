@@ -1,6 +1,7 @@
+# a class for formatting an AST into an more human readable string
 class PPrinter
   def self.format(ast)
-    format_program("", ast.program) if ast.is_a? ASTree
+    format_program('', ast.program) if ast.is_a? ASTree
   end
 
   class << self
