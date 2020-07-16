@@ -92,6 +92,7 @@ class Expression
 
   def initialize(function, param1, param2)
     @function = function
+    @parameters = [param1, param2]
   end
 end
 

@@ -3,7 +3,7 @@ require 'parser'
 
 describe PPrinter do
   describe '.format' do
-    it 'should format an AST to a readable form' do
+    it 'should format return AST to readable form' do
       ast = ASTree.new(
         Program.new(
           Function.new(
@@ -19,6 +19,34 @@ describe PPrinter do
             - name: 'main'
             - return:
               - int: 4
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format expression AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :+,
+                IntegerConstant.new(3),
+                IntegerConstant.new(4))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: +
+                - params:
+                  - int: 3
+                  - int: 4
       OUTPUT
 
       expect(output).to eq expected_output
