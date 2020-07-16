@@ -34,7 +34,7 @@ class Parser
       until tokens.first.nil?
         case tokens.first.type
         when :function_call then function_call = tokens.shift.value
-        when :integer_constant then arguments.push(tokens.shift.value)
+        when :integer_constant then arguments.push(parse_int(tokens))
         end
       end
 

@@ -48,6 +48,33 @@ describe 'Parser' do
         .to eq PPrinter.format(expected_ast)
     end
 
+    it 'should return a tree for addition' do
+      tokens_list = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:integer_constant, 6),
+        Token.new(:function_call, '+'),
+        Token.new(:integer_constant, 3),
+        Token.new(:end)
+      ]
+
+      expected_ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :+,
+                IntegerConstant.new(6),
+                IntegerConstant.new(3))))))
+
+      actual_ast = Parser.parse(tokens_list)
+
+      expect(PPrinter.format(actual_ast))
+        .to eq PPrinter.format(expected_ast)
+    end
+
     it 'should throw an error for missing return value' do
       tokens_list = [
         Token.new(:type, :INT),
@@ -98,32 +125,6 @@ describe 'Parser' do
       expect { Parser.parse tokens_list } .to raise_exception(
         ParseError,
         "Unexpected token: 'main'")
-    end
-
-    it 'should return a tree for addition' do
-      tokens_list = [
-        Token.new(:type, :INT),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:integer_constant, 6),
-        Token.new(:function_call, '+'),
-        Token.new(:integer_constant, 3),
-        Token.new(:end)
-      ]
-
-      expected_ast = ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(6),
-                IntegerConstant.new(3))))))
-
-      actual_ast = p Parser.parse(tokens_list)
-
-      expect(actual_ast).to eq expected_ast
     end
   end
 end
