@@ -1,3 +1,5 @@
+require_relative 'ast'
+
 # Creates an AST from a list of tokens
 class Parser
   def self.parse(tokens)
@@ -48,60 +50,4 @@ class Parser
 end
 
 class ParseError < StandardError
-end
-
-# root of the AST
-class ASTree
-  attr_reader :program
-
-  def initialize(program)
-    @program = program
-  end
-end
-
-# The program of the AST
-class Program
-  attr_reader :function
-
-  def initialize(function)
-    @function = function
-  end
-end
-
-# A function in the program
-class Function
-  attr_reader :name, :return
-
-  def initialize(name, return_exp)
-    @name = name
-    @return = return_exp
-  end
-end
-
-# what a function returns
-class Return
-  attr_reader :expression
-
-  def initialize(expression)
-    @expression = expression
-  end
-end
-
-# an expression with a function call
-class Expression
-  attr_reader :function, :parameters
-
-  def initialize(function, param1, param2)
-    @function = function
-    @parameters = [param1, param2]
-  end
-end
-
-# a constant integer value
-class IntegerConstant
-  attr_reader :value
-
-  def initialize(value)
-    @value = value
-  end
 end
