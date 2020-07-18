@@ -6,13 +6,12 @@ require_relative 'lib/pprint'
 
 print_ast = false
 
-lexer = nil
-
-ARGV.each do |arg|
-  unless arg.start_with? '-'
-    lexer = Lexer.new arg
-  else
+lexer = ARGV.reduce(nil) do |lxr, arg|
+  if arg.start_with? '-'
     print_ast = true
+    lxr
+  else
+    Lexer.new arg
   end
 end
 
