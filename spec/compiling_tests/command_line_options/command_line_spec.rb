@@ -29,4 +29,28 @@ describe 'compiling and running program' do
     OUTPUT
     expect(o).to eq expected_output
   end
+
+  it "should leave the assembly file with '-nd' option" do
+    o, e, s = Open3.capture3("#{slwslvr} -nd #{sample1}")
+
+    expect(s.exitstatus).to eq 0
+    expect(e).to be_empty
+    expect(o).to be_empty
+
+    expect(Dir['sample1.asm']).not_to be_empty
+
+    File.delete 'sample1.asm' if File.exist? 'sample1.asm'
+  end
+
+  it "should leave the assembly file with '-nd' option at the end" do
+    o, e, s = Open3.capture3("#{slwslvr} #{sample1} -nd")
+
+    expect(s.exitstatus).to eq 0
+    expect(e).to be_empty
+    expect(o).to be_empty
+
+    expect(Dir['sample1.asm']).not_to be_empty
+
+    File.delete 'sample1.asm' if File.exist? 'sample1.asm'
+  end
 end
