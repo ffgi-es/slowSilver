@@ -2,8 +2,22 @@
 require_relative 'lib/lexer'
 require_relative 'lib/parser'
 require_relative 'lib/generator'
+require_relative 'lib/pprint'
 
-lexer = Lexer.new ARGV.first
+print_ast = false
+delete_assembly = true
+
+file = ARGV.reduce('') do |f, arg|
+  case arg
+  when '-ast' then print_ast = true
+  when '-nd' then delete_assembly = false
+  else
+    f = arg
+  end
+  f
+end
+
+lexer = Lexer.new file
 
 tokens = lexer.lex
 
@@ -14,9 +28,11 @@ rescue ParseError
   exit 1
 end
 
+puts PPrinter.format ast if print_ast
+
 generator = Generator.new ast
 
-filename = 'tmp'
+filename = file.split('/').last.gsub(/.sag$/, '')
 
 assembly_file = filename + '.asm'
 linking_file = filename + '.o'
@@ -30,4 +46,6 @@ if system("#{assembly_compiler} #{assembly_file}")
   File.delete linking_file if File.exist? linking_file
 end
 
-File.delete assembly_file if File.exist? assembly_file
+if delete_assembly
+  File.delete assembly_file if File.exist? assembly_file
+end
