@@ -2,8 +2,19 @@
 require_relative 'lib/lexer'
 require_relative 'lib/parser'
 require_relative 'lib/generator'
+require_relative 'lib/pprint'
 
-lexer = Lexer.new ARGV.first
+print_ast = false
+
+lexer = nil
+
+ARGV.each do |arg|
+  unless arg.start_with? '-'
+    lexer = Lexer.new arg
+  else
+    print_ast = true
+  end
+end
 
 tokens = lexer.lex
 
@@ -13,6 +24,8 @@ rescue ParseError
   warn 'parsing error'
   exit 1
 end
+
+puts PPrinter.format ast if print_ast
 
 generator = Generator.new ast
 
