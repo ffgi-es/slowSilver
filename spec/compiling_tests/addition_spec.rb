@@ -12,7 +12,7 @@ describe 'compiling and running program' do
     File.delete out_file if File.exist? out_file
   end
 
-  it 'should return 4 for sample1' do
+  it 'should return 4 for addition1.sag' do
     o, e, s = Open3.capture3("#{slwslvr} #{sample1}")
 
     puts e if s.exitstatus != 0
@@ -24,7 +24,7 @@ describe 'compiling and running program' do
     expect($CHILD_STATUS.exitstatus).to eq 4
   end
 
-  it 'should return 5 for sample2' do
+  it 'should return 5 for addition2.sag' do
     o, e, s = Open3.capture3("#{slwslvr} #{sample2}")
 
     puts e if s.exitstatus != 0
@@ -36,7 +36,7 @@ describe 'compiling and running program' do
     expect($CHILD_STATUS.exitstatus).to eq 5
   end
 
-  it 'should return 1 for sample3' do
+  it 'should return 1 for addition3' do
     o, e, s = Open3.capture3("#{slwslvr} #{sample3}")
 
     puts e if s.exitstatus != 0
