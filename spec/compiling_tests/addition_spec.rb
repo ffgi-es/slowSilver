@@ -3,9 +3,9 @@ require 'open3'
 
 describe 'compiling and running program' do
   let('slwslvr') { './slwslvr' }
-  let('sample1') { File.expand_path('sample1.sag', File.dirname(__FILE__)) }
-  let('sample2') { File.expand_path('sample2.sag', File.dirname(__FILE__)) }
-  let('sample3') { File.expand_path('sample3.sag', File.dirname(__FILE__)) }
+  let('sample1') { File.expand_path('../fixtures/addition1.sag', File.dirname(__FILE__)) }
+  let('sample2') { File.expand_path('../fixtures/addition2.sag', File.dirname(__FILE__)) }
+  let('sample3') { File.expand_path('../fixtures/addition3.sag', File.dirname(__FILE__)) }
   let('out_file') { 'a.out' }
 
   after(:example) do
