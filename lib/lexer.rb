@@ -52,7 +52,7 @@ class Lexer
   end
 
   def lex_function_call(string)
-    Token.new(:function_call, string[1..-1]) if string =~ /:[+a-z]+/
+    Token.new(:function_call, string[1..-1]) if string =~ /:[+-]+/
   end
 end
 
