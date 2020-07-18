@@ -65,11 +65,16 @@ class Expression
   end
 
   def code
-    @parameters[0].code \
+    res = @parameters[0].code \
       << "    push    rbx\n" \
       << @parameters[1].code \
-      << "    pop     rcx\n" \
-      << "    add     rbx, rcx\n"
+      << "    pop     rcx\n"
+    if @function == :+
+      res << "    add     rbx, rcx\n"
+    else
+      res << "    sub     rcx, rbx\n" \
+        << "    mov     rbx, rcx\n"
+    end
   end
 end
 

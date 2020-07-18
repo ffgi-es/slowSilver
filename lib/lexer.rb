@@ -44,7 +44,7 @@ class Lexer
   end
 
   def lex_int(string)
-    Token.new(:integer_constant, string.to_i) if string =~ /^[0-9]+$/
+    Token.new(:integer_constant, string.to_i) if string =~ /^-?[0-9]+$/
   end
 
   def lex_end(string)
@@ -52,7 +52,7 @@ class Lexer
   end
 
   def lex_function_call(string)
-    Token.new(:function_call, string[1..-1]) if string =~ /:[+a-z]+/
+    Token.new(:function_call, string[1..-1]) if string =~ /:[+-]+/
   end
 end
 
