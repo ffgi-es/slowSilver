@@ -34,7 +34,7 @@ describe 'compiling and running program' do
 
     `./#{out_file}`
     expect($CHILD_STATUS.exitstatus).to eq 5
-  end 
+  end
 
   it 'should return 1 for sample3' do
     o, e, s = Open3.capture3("#{slwslvr} #{sample3}")
@@ -46,5 +46,5 @@ describe 'compiling and running program' do
 
     `./#{out_file}`
     expect($CHILD_STATUS.exitstatus).to eq 1
-  end 
+  end
 end
