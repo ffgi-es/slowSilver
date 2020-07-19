@@ -8,6 +8,8 @@ class Lexer
       method(:lex_type),
       method(:lex_id),
       method(:lex_return),
+      method(:lex_open_expression),
+      method(:lex_close_expression),
       method(:lex_int),
       method(:lex_function_call),
       method(:lex_end)
@@ -17,7 +19,7 @@ class Lexer
   def lex
     File.open @filename, 'r' do |file|
       file.gets
-        .split(/(\s|\.)/)
+        .split(/(\s|\.|\(|\))/)
         .reject { |s| s =~ /^\s*$/ }
         .map { |part| lex_part(part) }
     end
@@ -53,6 +55,14 @@ class Lexer
 
   def lex_function_call(string)
     Token.new(:function_call, string[1..-1]) if string =~ /:[+-]+/
+  end
+
+  def lex_open_expression(string)
+    Token.new(:open_expression) if string =~ /^\($/
+  end
+
+  def lex_close_expression(string)
+    Token.new(:close_expression) if string =~ /^\)$/
   end
 end
 
