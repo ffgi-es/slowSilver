@@ -28,7 +28,7 @@ class Lexer
       result = lexing.call(string)
       return result unless result.nil?
     end
-    raise LexError, "Unknown token '+'"
+    raise LexError, "Unknown token '#{string}'"
   end
 
   def lex_type(string)
