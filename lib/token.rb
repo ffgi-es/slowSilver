@@ -11,4 +11,19 @@ class Token
     @type == other.type &&
       @value == other.value
   end
+
+  @token_patterns = {
+    type: /^[A-Z]+$/,
+    identifier: /^[a-z]+$/,
+    return: /^=>$/,
+    end: /^\.$/,
+    integer_constant: /^-?[0-9]+$/,
+    function_call: /^:[+-]$/,
+    open_expression: /^\($/,
+    close_expression: /^\)$/
+  }
+
+  def self.[](type)
+    @token_patterns[type]
+  end
 end
