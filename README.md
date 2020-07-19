@@ -1,5 +1,7 @@
 # slowSilver
 
+![](https://github.com/ffgi-es/slowSilver/workflows/main.yml/badge.svg)
+
 The start of an attempt to make a simple compiled language.
 
 ## Prerequisites
