@@ -6,6 +6,13 @@ class Parser
     ASTree.new(parse_program(tokens))
   end
 
+  @detail_handler = {
+    close_expression: proc { |_, _, _| nil },
+    open_expression: proc { |details, _, tokens| details.push(parse_exp(tokens)) },
+    function_call: proc { |details, token, _| details.unshift(token.value) },
+    integer_constant: proc { |details, token, _| details.push(parse_int([token])) }
+  }
+
   class << self
     private
 
@@ -30,17 +37,21 @@ class Parser
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
       return parse_int(tokens) if tokens.length == 1
 
-      function_call = nil
-      arguments = []
-
-      until tokens.first.nil?
-        case tokens.first.type
-        when :function_call then function_call = tokens.shift.value
-        when :integer_constant then arguments.push(parse_int(tokens))
-        end
-      end
+      function_call, *arguments = parse_details([], tokens)
 
       Expression.new(function_call.to_sym, *arguments)
+    end
+
+    def parse_details(details, tokens)
+      return details if tokens.empty?
+
+      parse_details(details, tokens) if detail_handler(details, tokens.shift, tokens)
+
+      details
+    end
+
+    def detail_handler(details, token, tokens)
+      @detail_handler[token.type].call(details, token, tokens)
     end
 
     def parse_int(tokens)

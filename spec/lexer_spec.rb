@@ -59,7 +59,7 @@ describe 'Lexer' do
       expect(lexer.lex).to eq out_tokens
     end
 
-    it 'should raise an error for an unrecogniseable token' do
+    it 'should raise an error for an unrecogniseable token "+" for lexer_fail1.sag' do
       in_file = File.expand_path 'fixtures/lexer_fail1.sag', File.dirname(__FILE__)
       lexer = Lexer.new(in_file)
       expect { lexer.lex } .to raise_exception(
@@ -87,6 +87,33 @@ describe 'Lexer' do
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, 8),
+        Token.new(:function_call, '-'),
+        Token.new(:integer_constant, 5),
+        Token.new(:end)
+      ]
+      lexer = Lexer.new(in_file)
+      expect(lexer.lex).to eq out_tokens
+    end
+
+    it 'should raise an error for an unrecogniseable token "<>" lexer_fail2.sag' do
+      in_file = File.expand_path 'fixtures/lexer_fail2.sag', File.dirname(__FILE__)
+      lexer = Lexer.new(in_file)
+      expect { lexer.lex } .to raise_exception(
+        LexError,
+        "Unknown token '<>'")
+    end
+
+    it 'should return a list of tokens for subtraction1.sag' do
+      in_file = File.expand_path 'fixtures/nested_expression1.sag', File.dirname(__FILE__)
+      out_tokens = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:open_expression),
+        Token.new(:integer_constant, 13),
+        Token.new(:function_call, '+'),
+        Token.new(:integer_constant, 2),
+        Token.new(:close_expression),
         Token.new(:function_call, '-'),
         Token.new(:integer_constant, 5),
         Token.new(:end)
