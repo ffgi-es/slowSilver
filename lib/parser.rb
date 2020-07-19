@@ -6,6 +6,13 @@ class Parser
     ASTree.new(parse_program(tokens))
   end
 
+  @detail_handler = {
+    close_expression: proc { |_, _, _| nil },
+    open_expression: proc { |details, _, tokens| details.push(parse_exp(tokens)) },
+    function_call: proc { |details, token, _| details.unshift(token.value) },
+    integer_constant: proc { |details, token, _| details.push(parse_int([token])) }
+  }
+
   class << self
     private
 
@@ -38,14 +45,13 @@ class Parser
     def parse_details(details, tokens)
       return details if tokens.empty?
 
-      token = tokens.shift
-      case token.type
-      when :close_expression then return details
-      when :open_expression then details.push(parse_exp(tokens))
-      when :function_call then details.unshift(token.value)
-      when :integer_constant then details.push(parse_int([token]))
-      end
-      parse_details(details, tokens)
+      parse_details(details, tokens) if detail_handler(details, tokens.shift, tokens)
+
+      details
+    end
+
+    def detail_handler(details, token, tokens)
+      @detail_handler[token.type].call(details, token, tokens)
     end
 
     def parse_int(tokens)
