@@ -30,17 +30,22 @@ class Parser
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
       return parse_int(tokens) if tokens.length == 1
 
-      function_call = nil
-      arguments = []
-
-      until tokens.first.nil?
-        case tokens.first.type
-        when :function_call then function_call = tokens.shift.value
-        when :integer_constant then arguments.push(parse_int(tokens))
-        end
-      end
+      function_call, *arguments = parse_details([], tokens)
 
       Expression.new(function_call.to_sym, *arguments)
+    end
+
+    def parse_details(details, tokens)
+      return details if tokens.empty?
+
+      token = tokens.shift
+      case token.type
+      when :close_expression then return details
+      when :open_expression then details.push(parse_exp(tokens))
+      when :function_call then details.unshift(token.value)
+      when :integer_constant then details.push(parse_int([token]))
+      end
+      parse_details(details, tokens)
     end
 
     def parse_int(tokens)

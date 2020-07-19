@@ -25,12 +25,24 @@ class PPrinter
       format_expression(output, ret.expression)
     end
 
-    def format_expression(output, expression)
-      output << "      - call:\n"
-      output << "        - name: #{expression.function}\n"
-      output << "        - params:\n"
-      output = format_integer(output, expression.parameters.first, 10)
-      format_integer(output, expression.parameters[1], 10)
+    def format_expression(output, expression, indent = 6)
+      expression_header(output, expression.function, indent)
+
+      expression.parameters.each do |param|
+        if param.is_a? IntegerConstant
+          format_integer(output, param, indent + 4)
+        else
+          format_expression(output, param, indent + 4)
+        end
+      end
+
+      output
+    end
+
+    def expression_header(output, name, indent)
+      output << indent("- call:\n", indent)
+      output << indent("  - name: #{name}\n", indent)
+      output << indent("  - params:\n", indent)
     end
 
     def format_integer(output, integer, indent = 6)
