@@ -7,8 +7,8 @@ class Lexer
   end
 
   def lex
-    File.open @filename, 'r' do |file|
-      file.gets
+    File.foreach(@filename).reduce([]) do |tokens, line|
+      tokens + line
         .split(/(\s|\.|\(|\))/)
         .reject { |s| s =~ /^\s*$/ }
         .map { |part| self.class.lex_part(part) }
