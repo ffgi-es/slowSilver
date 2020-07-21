@@ -69,10 +69,17 @@ class Expression
       << "    push    rbx\n" \
       << @parameters[1].code \
       << "    pop     rcx\n"
-    if @function == :+
+    case @function
+    when :+
       res << "    add     rbx, rcx\n"
+    when :"="
+      res \
+        << "    cmp     rbx, rcx\n" \
+        << "    xor     rbx, rbx\n" \
+        << "    sete    bl\n"
     else
-      res << "    sub     rcx, rbx\n" \
+      res \
+        << "    sub     rcx, rbx\n" \
         << "    mov     rbx, rcx\n"
     end
   end

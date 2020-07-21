@@ -124,4 +124,49 @@ describe 'Generator' do
       end
     end
   end
+
+  describe 'equal comparison' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :"=",
+                IntegerConstant.new(3),
+                IntegerConstant.new(3))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rbx, 3
+              push    rbx
+              mov     rbx, 3
+              pop     rcx
+              cmp     rbx, rcx
+              xor     rbx, rbx
+              sete    bl
+              mov     rax, 1
+              int     80h
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
 end
