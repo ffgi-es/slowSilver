@@ -49,7 +49,7 @@ class Return
   end
 
   def code
-    @expression.code \
+    @expression.code('rbx') \
       << "    mov     rax, 1\n" \
       << "    int     80h\n"
   end
@@ -64,23 +64,27 @@ class Expression
     @parameters = [param1, param2]
   end
 
-  def code
-    res = @parameters[0].code \
-      << "    push    rbx\n" \
-      << @parameters[1].code \
-      << "    pop     rcx\n"
+  def code(reg)
+    oreg = reg == 'rdx' ? 'rcx' : 'rdx'
+
+    res = @parameters[0].code(oreg) \
+      << "    push    #{oreg}\n" \
+      << @parameters[1].code(oreg) \
+
     case @function
     when :+
-      res << "    add     rbx, rcx\n"
+      res \
+        << "    pop     #{reg}\n" \
+        << "    add     #{reg}, #{oreg}\n"
     when :"="
       res \
-        << "    cmp     rbx, rcx\n" \
-        << "    xor     rbx, rbx\n" \
+        << "    pop     rcx\n" \
+        << "    cmp     rcx, rdx\n" \
         << "    sete    bl\n"
     else
       res \
-        << "    sub     rcx, rbx\n" \
-        << "    mov     rbx, rcx\n"
+        << "    pop     #{reg}\n" \
+        << "    sub     #{reg}, #{oreg}\n"
     end
   end
 end
@@ -93,7 +97,7 @@ class IntegerConstant
     @value = value
   end
 
-  def code
-    "    mov     rbx, #{value}\n"
+  def code(reg)
+    "    mov     #{reg}, #{value}\n"
   end
 end

@@ -60,11 +60,11 @@ describe 'Generator' do
           global _blam
 
           _blam:
-              mov     rbx, 4
-              push    rbx
-              mov     rbx, 8
-              pop     rcx
-              add     rbx, rcx
+              mov     rdx, 4
+              push    rdx
+              mov     rdx, 8
+              pop     rbx
+              add     rbx, rdx
               mov     rax, 1
               int     80h
         ASM
@@ -103,12 +103,11 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rbx, 8
-              push    rbx
-              mov     rbx, 5
-              pop     rcx
-              sub     rcx, rbx
-              mov     rbx, rcx
+              mov     rdx, 8
+              push    rdx
+              mov     rdx, 5
+              pop     rbx
+              sub     rbx, rdx
               mov     rax, 1
               int     80h
         ASM
@@ -147,12 +146,11 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rbx, 3
-              push    rbx
-              mov     rbx, 3
+              mov     rdx, 3
+              push    rdx
+              mov     rdx, 3
               pop     rcx
-              cmp     rbx, rcx
-              xor     rbx, rbx
+              cmp     rcx, rdx
               sete    bl
               mov     rax, 1
               int     80h
