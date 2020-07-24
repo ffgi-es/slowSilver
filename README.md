@@ -1,6 +1,7 @@
 # slowSilver
 
 ![](https://github.com/ffgi-es/slowSilver/workflows/Tests/badge.svg)
+[![codecov](https://codecov.io/gh/ffgi-es/slowSilver/branch/master/graph/badge.svg)](https://codecov.io/gh/ffgi-es/slowSilver)
 
 The start of an attempt to make a simple compiled language.
 
