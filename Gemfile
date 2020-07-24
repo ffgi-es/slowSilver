@@ -8,5 +8,5 @@ gem 'open3', group: :test
 gem 'rspec', group: :test
 gem 'rubocop', group: :test
 gem 'simplecov', group: :test
-gem 'simplecov-console', group: :test
 gem 'simplecov-cobertura', group: :test
+gem 'simplecov-console', group: :test
