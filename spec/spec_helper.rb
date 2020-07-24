@@ -1,7 +1,9 @@
 require 'simplecov'
 require 'simplecov-console'
 require 'simplecov-cobertura'
-SimpleCov.start
+SimpleCov.start do
+  add_filter "/spec/"
+end
 SimpleCov.minimum_coverage 90
 SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::Console,
