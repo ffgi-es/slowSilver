@@ -1,2 +1,5 @@
 **/*.out
+*.asm
 test.*
+
+clean.sh

@@ -1,3 +1,5 @@
+require_relative 'register'
+
 # root of the AST
 class ASTree
   attr_reader :program
@@ -49,7 +51,7 @@ class Return
   end
 
   def code
-    @expression.code \
+    @expression.code(Register[:bx]) \
       << "    mov     rax, 1\n" \
       << "    int     80h\n"
   end
@@ -59,22 +61,59 @@ end
 class Expression
   attr_reader :function, :parameters
 
+  @registers = [
+    Register[:dx],
+    Register[:cx],
+    Register[:bx]
+  ]
+
+  @actions = {
+    :+ => proc do |res, reg, regs|
+      res \
+        << "    pop     #{reg.r64}\n" \
+        << "    add     #{reg.r64}, #{regs[0].r64}\n"
+    end,
+
+    :- => proc do |res, reg, regs|
+      res \
+        << "    pop     #{reg.r64}\n" \
+        << "    sub     #{reg.r64}, #{regs[0].r64}\n"
+    end,
+
+    :"=" => proc do |res, reg, regs|
+      res \
+        << "    pop     #{regs[1].r64}\n" \
+        << "    cmp     #{regs[1].r64}, #{regs[0].r64}\n" \
+        << "    sete    #{reg.r8}\n"
+    end
+  }
+
+  class << self
+    attr_reader :registers, :actions
+
+    def registers_except(reg)
+      @registers.filter { |r| r != reg }
+    end
+  end
+
   def initialize(function, param1, param2)
     @function = function
     @parameters = [param1, param2]
+    @action = self.class.actions[function]
   end
 
-  def code
-    res = @parameters[0].code \
-      << "    push    rbx\n" \
-      << @parameters[1].code \
-      << "    pop     rcx\n"
-    if @function == :+
-      res << "    add     rbx, rcx\n"
-    else
-      res << "    sub     rcx, rbx\n" \
-        << "    mov     rbx, rcx\n"
-    end
+  def code(reg)
+    regs = self.class.registers_except reg
+
+    res = get_parameters regs
+
+    @action.call(res, reg, regs)
+  end
+
+  def get_parameters(regs)
+    @parameters[0].code(regs[0]) \
+      << "    push    #{regs[0].r64}\n" \
+      << @parameters[1].code(regs[0]) \
   end
 end
 
@@ -86,7 +125,7 @@ class IntegerConstant
     @value = value
   end
 
-  def code
-    "    mov     rbx, #{value}\n"
+  def code(reg)
+    "    mov     #{reg.r64}, #{value}\n"
   end
 end
