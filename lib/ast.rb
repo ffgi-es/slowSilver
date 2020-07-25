@@ -85,6 +85,11 @@ class Expression
         << "    pop     #{regs[1].r64}\n" \
         << "    cmp     #{regs[1].r64}, #{regs[0].r64}\n" \
         << "    sete    #{reg.r8}\n"
+    end,
+
+    :! => proc do |res, _, _|
+      res \
+        << "    mov     rbx, 1\n"
     end
   }
 
@@ -96,9 +101,9 @@ class Expression
     end
   end
 
-  def initialize(function, param1, param2)
+  def initialize(function, *params)
     @function = function
-    @parameters = [param1, param2]
+    @parameters = params
     @action = self.class.actions[function]
   end
 
@@ -111,9 +116,11 @@ class Expression
   end
 
   def get_parameters(regs)
+    return @parameters.first.code(regs[0]) if @parameters.count == 1
+
     @parameters[0].code(regs[0]) \
       << "    push    #{regs[0].r64}\n" \
-      << @parameters[1].code(regs[0]) \
+      << @parameters[1].code(regs[0])
   end
 end
 
