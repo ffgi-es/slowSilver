@@ -52,8 +52,8 @@ class Return
 
   def code
     @expression.code(Register[:bx]) \
-      << "    mov     rax, 1\n" \
-      << "    int     80h\n"
+      << 'mov rax, 1'.asm \
+      << 'int 80h'.asm
   end
 end
 
@@ -70,21 +70,27 @@ class Expression
   @actions = {
     :+ => proc do |res, reg, regs|
       res \
-        << "    pop     #{reg.r64}\n" \
-        << "    add     #{reg.r64}, #{regs[0].r64}\n"
+        << "pop #{reg.r64}".asm \
+        << "add #{reg.r64}, #{regs[0].r64}".asm
     end,
 
     :- => proc do |res, reg, regs|
       res \
-        << "    pop     #{reg.r64}\n" \
-        << "    sub     #{reg.r64}, #{regs[0].r64}\n"
+        << "pop #{reg.r64}".asm \
+        << "sub #{reg.r64}, #{regs[0].r64}".asm
     end,
 
     :"=" => proc do |res, reg, regs|
       res \
-        << "    pop     #{regs[1].r64}\n" \
-        << "    cmp     #{regs[1].r64}, #{regs[0].r64}\n" \
-        << "    sete    #{reg.r8}\n"
+        << "pop #{regs[1].r64}".asm \
+        << "cmp #{regs[1].r64}, #{regs[0].r64}".asm \
+        << "sete #{reg.r8}".asm
+    end,
+
+    :! => proc do |res, reg, regs|
+      res \
+        << "cmp #{regs[0].r64}, 0".asm \
+        << "sete #{reg.r8}".asm
     end
   }
 
@@ -96,9 +102,9 @@ class Expression
     end
   end
 
-  def initialize(function, param1, param2)
+  def initialize(function, *params)
     @function = function
-    @parameters = [param1, param2]
+    @parameters = params
     @action = self.class.actions[function]
   end
 
@@ -111,9 +117,11 @@ class Expression
   end
 
   def get_parameters(regs)
+    return @parameters.first.code(regs[0]) if @parameters.count == 1
+
     @parameters[0].code(regs[0]) \
-      << "    push    #{regs[0].r64}\n" \
-      << @parameters[1].code(regs[0]) \
+      << "push #{regs[0].r64}".asm \
+      << @parameters[1].code(regs[0])
   end
 end
 
@@ -126,6 +134,13 @@ class IntegerConstant
   end
 
   def code(reg)
-    "    mov     #{reg.r64}, #{value}\n"
+    "mov #{reg.r64}, #{value}".asm
+  end
+end
+
+# add helper formatting function to String class
+class String
+  def asm
+    gsub(/^(\w+) /) { |cmd| "    #{cmd.ljust 8}" } << "\n"
   end
 end
