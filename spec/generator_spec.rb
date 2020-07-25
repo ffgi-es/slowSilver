@@ -258,7 +258,8 @@ describe 'Generator' do
               pop     rbx
               cmp     rbx, rcx
               sete    dl
-              mov     rbx, 1
+              cmp     rdx, 0
+              sete    bl
               mov     rax, 1
               int     80h
         ASM

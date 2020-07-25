@@ -87,9 +87,10 @@ class Expression
         << "    sete    #{reg.r8}\n"
     end,
 
-    :! => proc do |res, _, _|
+    :! => proc do |res, reg, regs|
       res \
-        << "    mov     rbx, 1\n"
+        << "    cmp     #{regs[0].r64}, 0\n" \
+        << "    sete    #{reg.r8}\n"
     end
   }
 
