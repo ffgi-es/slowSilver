@@ -31,16 +31,34 @@ end
 
 # A function in the program
 class Function
-  attr_reader :name, :return
+  attr_reader :name, :parameters, :return
 
-  def initialize(name, return_exp)
+  def initialize(name, *params, return_exp)
     @name = name
+    @parameters = params
     @return = return_exp
   end
 
   def code(entry = false)
     "\n_#{name}:\n" \
       << @return.code(entry)
+  end
+end
+
+# a parameter for a function
+class Parameter
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+class Variable
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
   end
 end
 

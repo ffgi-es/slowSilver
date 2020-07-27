@@ -15,7 +15,7 @@ class Token
   @token_patterns = {
     type: /^[A-Z]{2,}$/,
     identifier: /^[a-z]+:?$/,
-    parameter: /^[A-Z]$/,
+    variable: /^[A-Z]$/,
     return: /^=>$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,

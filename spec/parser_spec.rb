@@ -228,5 +228,47 @@ describe 'Parser' do
       expect(PPrinter.format(actual_ast))
         .to eq PPrinter.format(expected_ast)
     end
+
+    it 'should return a tree for function call with a parameter' do 
+      tokens_list = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:function_call, 'double'),
+        Token.new(:integer_constant, 4),
+        Token.new(:end),
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'double'),
+        Token.new(:type, :INT),
+        Token.new(:parameter, 'X'),
+        Token.new(:return),
+        Token.new(:parameter, 'X'),
+        Token.new(:function_call, '+'),
+        Token.new(:parameter, 'X'),
+        Token.new(:end)
+      ]
+
+      expected_ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :double,
+                IntegerConstant.new(4)))),
+          Function.new(
+            'add',
+            Parameter.new(:X),
+            Return.new(
+              Expression.new(
+                :+,
+                Variable.new(:X),
+                Variable.new(:X))))))
+
+      actual_ast = Parser.parse(tokens_list)
+
+      expect(PPrinter.format(actual_ast))
+        .to eq PPrinter.format(expected_ast)
+    end
   end
 end

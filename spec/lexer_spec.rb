@@ -210,11 +210,11 @@ describe 'Lexer' do
         Token.new(:type, :INT),
         Token.new(:identifier, 'double'),
         Token.new(:type, :INT),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:return),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:function_call, '+'),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:end)
       ]
       lexer = Lexer.new(in_file)
