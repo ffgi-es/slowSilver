@@ -10,6 +10,8 @@ class PPrinter
     def format_program(output, program)
       output << "program:\n"
       format_function(output, program.function)
+      format_function(output, program.functions) unless program.functions.nil?
+      return output
     end
 
     def format_function(output, function)

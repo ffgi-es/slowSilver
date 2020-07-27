@@ -86,5 +86,43 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format function definition AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(:add))),
+          Function.new(
+            'add',
+            Return.new(
+              Expression.new(
+                :+,
+                IntegerConstant.new(3),
+                IntegerConstant.new(4))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: add
+                - params:
+          - func:
+            - name: 'add'
+            - return:
+              - call:
+                - name: +
+                - params:
+                  - int: 3
+                  - int: 4
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end

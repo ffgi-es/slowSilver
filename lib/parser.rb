@@ -17,7 +17,10 @@ class Parser
     private
 
     def parse_program(tokens)
-      Program.new(parse_function(tokens))
+      funcs = tokens.slice_after(Token.new(:end))
+      Program.new(
+        parse_function(funcs.first),
+        *funcs.drop(1).map { |func| parse_function(func) })
     end
 
     def parse_function(tokens)
@@ -35,7 +38,7 @@ class Parser
 
     def parse_exp(tokens)
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
-      return parse_int(tokens) if tokens.length == 1
+      return parse_int(tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
 
       function_call, *arguments = parse_details([], tokens)
 

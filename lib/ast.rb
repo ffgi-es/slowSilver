@@ -15,10 +15,11 @@ end
 
 # The program of the AST
 class Program
-  attr_reader :function
+  attr_reader :function, :functions
 
-  def initialize(function)
-    @function = function
+  def initialize(entry_function, functions = nil)
+    @function = entry_function
+    @functions = functions
   end
 
   def code

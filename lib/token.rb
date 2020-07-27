@@ -18,7 +18,7 @@ class Token
     return: /^=>$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,
-    function_call: /^:[+-=!]$/,
+    function_call: /^:([+-=!]|[a-z]+)$/,
     open_expression: /^\($/,
     close_expression: /^\)$/
   }

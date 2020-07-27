@@ -1,0 +1,3 @@
+INT main => :add.
+
+INT add => 3 :+ 4.
