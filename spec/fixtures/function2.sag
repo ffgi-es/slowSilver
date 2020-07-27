@@ -1,0 +1,3 @@
+INT main => :double 4.
+
+INT double: INT X => X :+ X.

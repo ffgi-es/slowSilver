@@ -29,7 +29,8 @@ class Lexer
 
   @lexers = {
     type: proc { |str| str.to_sym },
-    identifier: proc { |str| str },
+    identifier: proc { |str| str.gsub(':', '') },
+    parameter: proc { |str| str },
     return: nil,
     integer_constant: proc { |str| str.to_i },
     end: nil,
