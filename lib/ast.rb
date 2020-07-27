@@ -17,13 +17,15 @@ end
 class Program
   attr_reader :function, :functions
 
-  def initialize(entry_function, functions = nil)
+  def initialize(entry_function, *functions)
     @function = entry_function
     @functions = functions
   end
 
   def code
-    @function.code
+    "global _#{@function.name}\n" \
+      << @function.code(true) \
+      << @functions.map(&:code).join
   end
 end
 
@@ -36,10 +38,9 @@ class Function
     @return = return_exp
   end
 
-  def code
-    "global _#{name}\n\n" \
-      << "_#{name}:\n" \
-      << @return.code
+  def code(entry = false)
+    "\n_#{name}:\n" \
+      << @return.code(entry)
   end
 end
 
@@ -51,10 +52,13 @@ class Return
     @expression = expression
   end
 
-  def code
-    @expression.code(Register[:bx]) \
-      << 'mov rax, 1'.asm \
-      << 'int 80h'.asm
+  def code(entry)
+    result = @expression.code(Register[:bx])
+    if entry
+      result << 'mov rax, 1'.asm << 'int 80h'.asm
+    else
+      result << "    ret\n"
+    end
   end
 end
 
@@ -114,10 +118,15 @@ class Expression
 
     res = get_parameters regs
 
-    @action.call(res, reg, regs)
+    if @action
+      @action.call(res, reg, regs)
+    else
+      res << "call _#{function}".asm
+    end
   end
 
   def get_parameters(regs)
+    return '' if @parameters.empty?
     return @parameters.first.code(regs[0]) if @parameters.count == 1
 
     @parameters[0].code(regs[0]) \
