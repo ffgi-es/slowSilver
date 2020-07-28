@@ -10,7 +10,8 @@ class Parser
     close_expression: proc { |_, _, _| nil },
     open_expression: proc { |details, _, tokens| details.push(parse_exp(tokens)) },
     function_call: proc { |details, token, _| details.unshift(token.value) },
-    integer_constant: proc { |details, token, _| details.push(parse_int([token])) }
+    integer_constant: proc { |details, token, _| details.push(parse_int([token])) },
+    variable: proc { |details, token, _| details.push(parse_var(token)) }
   }
 
   class << self
@@ -26,7 +27,15 @@ class Parser
     def parse_function(tokens)
       raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
 
-      Function.new(tokens.shift.value, parse_ret(tokens))
+      name = tokens.shift.value
+
+      params = []
+      while tokens.first.type == :type
+        tokens.shift
+        params.push Parameter.new(tokens.shift.value)
+      end
+
+      Function.new(name, *params, parse_ret(tokens))
     end
 
     def parse_ret(tokens)
@@ -59,6 +68,10 @@ class Parser
 
     def parse_int(tokens)
       IntegerConstant.new(tokens.shift.value)
+    end
+
+    def parse_var(token)
+      Variable.new(token.value)
     end
   end
 end

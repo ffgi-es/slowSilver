@@ -240,11 +240,11 @@ describe 'Parser' do
         Token.new(:type, :INT),
         Token.new(:identifier, 'double'),
         Token.new(:type, :INT),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:return),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:function_call, '+'),
-        Token.new(:parameter, 'X'),
+        Token.new(:variable, 'X'),
         Token.new(:end)
       ]
 
@@ -257,7 +257,7 @@ describe 'Parser' do
                 :double,
                 IntegerConstant.new(4)))),
           Function.new(
-            'add',
+            'double',
             Parameter.new(:X),
             Return.new(
               Expression.new(
