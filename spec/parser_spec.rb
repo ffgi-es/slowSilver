@@ -229,7 +229,7 @@ describe 'Parser' do
         .to eq PPrinter.format(expected_ast)
     end
 
-    it 'should return a tree for function call with a parameter' do 
+    it 'should return a tree for function call with a parameter' do
       tokens_list = [
         Token.new(:type, :INT),
         Token.new(:identifier, 'main'),

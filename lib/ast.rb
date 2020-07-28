@@ -40,8 +40,9 @@ class Function
   end
 
   def code(entry = false)
-    "\n_#{name}:\n" \
-      << @return.code(entry)
+    output = "\n_#{name}:\n"
+    output << 'push rbp'.asm << 'mov rbp, rsp'.asm unless entry || @parameters.empty?
+    output << @return.code(entry, !@parameters.empty?)
   end
 end
 
@@ -54,11 +55,16 @@ class Parameter
   end
 end
 
+# a variable in a function
 class Variable
   attr_reader :name
 
   def initialize(name)
     @name = name
+  end
+
+  def code(reg)
+    "mov #{reg.r64}, [rbp+16]".asm
   end
 end
 
@@ -70,11 +76,12 @@ class Return
     @expression = expression
   end
 
-  def code(entry)
+  def code(entry, parameters = false)
     result = @expression.code(Register[:bx])
     if entry
       result << 'mov rax, 1'.asm << 'int 80h'.asm
     else
+      result << 'mov rsp, rbp'.asm << 'pop rbp'.asm if parameters
       result << "    ret\n"
     end
   end
@@ -139,6 +146,7 @@ class Expression
     if @action
       @action.call(res, reg, regs)
     else
+      res << 'push rdx'.asm unless @parameters.empty?
       res << "call _#{function}".asm
     end
   end
