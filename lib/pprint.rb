@@ -10,11 +10,17 @@ class PPrinter
     def format_program(output, program)
       output << "program:\n"
       format_function(output, program.function)
+      format_function(output, program.functions.first) unless program.functions.empty?
+      output
     end
 
     def format_function(output, function)
       output << "  - func:\n"
       output << "    - name: '#{function.name}'\n"
+      unless function.parameters.empty?
+        output << "    - params:\n"
+        output << "      - name: #{function.parameters.first}\n"
+      end
       output << "    - return:\n"
       format_return(output, function.return)
     end
@@ -31,6 +37,8 @@ class PPrinter
       expression.parameters.each do |param|
         if param.is_a? IntegerConstant
           format_integer(output, param, indent + 4)
+        elsif param.is_a? Variable
+          format_variable(output, param, indent + 4)
         else
           format_expression(output, param, indent + 4)
         end
@@ -47,6 +55,10 @@ class PPrinter
 
     def format_integer(output, integer, indent = 6)
       output << indent("- int: #{integer.value}\n", indent)
+    end
+
+    def format_variable(output, variable, indent = 6)
+      output << indent("- var: #{variable.name}\n", indent)
     end
 
     def indent(string, count)

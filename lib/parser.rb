@@ -10,20 +10,33 @@ class Parser
     close_expression: proc { |_, _, _| nil },
     open_expression: proc { |details, _, tokens| details.push(parse_exp(tokens)) },
     function_call: proc { |details, token, _| details.unshift(token.value) },
-    integer_constant: proc { |details, token, _| details.push(parse_int([token])) }
+    integer_constant: proc { |details, token, _| details.push(parse_int([token])) },
+    variable: proc { |details, token, _| details.push(parse_var(token)) }
   }
 
   class << self
     private
 
     def parse_program(tokens)
-      Program.new(parse_function(tokens))
+      funcs = tokens.slice_after(Token.new(:end))
+      Program.new(
+        parse_function(funcs.first),
+        *funcs.drop(1).map { |func| parse_function(func) })
     end
 
     def parse_function(tokens)
       raise ParseError, "Unexpected token: 'main'" unless tokens.shift.type == :type
 
-      Function.new(tokens.shift.value, parse_ret(tokens))
+      name = tokens.shift.value
+
+      params = []
+      while tokens.first.type == :type
+        tokens.shift
+        params.push Parameter.new(tokens.shift.value)
+        tokens.shift if tokens.first.type == :separator
+      end
+
+      Function.new(name, *params, parse_ret(tokens))
     end
 
     def parse_ret(tokens)
@@ -35,7 +48,7 @@ class Parser
 
     def parse_exp(tokens)
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
-      return parse_int(tokens) if tokens.length == 1
+      return parse_int(tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
 
       function_call, *arguments = parse_details([], tokens)
 
@@ -56,6 +69,10 @@ class Parser
 
     def parse_int(tokens)
       IntegerConstant.new(tokens.shift.value)
+    end
+
+    def parse_var(token)
+      Variable.new(token.value)
     end
   end
 end

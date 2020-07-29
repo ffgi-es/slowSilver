@@ -15,30 +15,57 @@ end
 
 # The program of the AST
 class Program
-  attr_reader :function
+  attr_reader :function, :functions
 
-  def initialize(function)
-    @function = function
+  def initialize(entry_function, *functions)
+    @function = entry_function
+    @functions = functions
   end
 
   def code
-    @function.code
+    "global _#{@function.name}\n" \
+      << @function.code(true) \
+      << @functions.map(&:code).join
   end
 end
 
 # A function in the program
 class Function
-  attr_reader :name, :return
+  attr_reader :name, :parameters, :return
 
-  def initialize(name, return_exp)
+  def initialize(name, *params, return_exp)
     @name = name
+    @parameters = params.map(&:name)
     @return = return_exp
   end
 
-  def code
-    "global _#{name}\n\n" \
-      << "_#{name}:\n" \
-      << @return.code
+  def code(entry = false)
+    output = "\n_#{name}:\n"
+    output << 'push rbp'.asm << 'mov rbp, rsp'.asm unless entry || @parameters.empty?
+    output << @return.code(entry, @parameters)
+  end
+end
+
+# a parameter for a function
+class Parameter
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+end
+
+# a variable in a function
+class Variable
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def code(reg, parameters)
+    ind = (parameters.count + 1) - parameters.index(@name)
+    "mov #{reg.r64}, [rbp+#{8 * ind}]".asm
   end
 end
 
@@ -50,10 +77,14 @@ class Return
     @expression = expression
   end
 
-  def code
-    @expression.code(Register[:bx]) \
-      << 'mov rax, 1'.asm \
-      << 'int 80h'.asm
+  def code(entry, parameters = [])
+    result = @expression.code(Register[:bx], parameters)
+    if entry
+      result << 'mov rax, 1'.asm << 'int 80h'.asm
+    else
+      result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
+      result << "    ret\n"
+    end
   end
 end
 
@@ -108,20 +139,26 @@ class Expression
     @action = self.class.actions[function]
   end
 
-  def code(reg)
+  def code(reg, func_params = [])
     regs = self.class.registers_except reg
 
-    res = get_parameters regs
+    res = get_parameters regs, func_params
 
-    @action.call(res, reg, regs)
+    if @action
+      @action.call(res, reg, regs)
+    else
+      res << 'push rdx'.asm unless @parameters.empty?
+      res << "call _#{function}".asm
+    end
   end
 
-  def get_parameters(regs)
-    return @parameters.first.code(regs[0]) if @parameters.count == 1
+  def get_parameters(regs, func_params)
+    return '' if @parameters.empty?
+    return @parameters.first.code(regs[0], func_params) if @parameters.count == 1
 
-    @parameters[0].code(regs[0]) \
+    @parameters[0].code(regs[0], func_params) \
       << "push #{regs[0].r64}".asm \
-      << @parameters[1].code(regs[0])
+      << @parameters[1].code(regs[0], func_params)
   end
 end
 
@@ -133,7 +170,7 @@ class IntegerConstant
     @value = value
   end
 
-  def code(reg)
+  def code(reg, _)
     "mov #{reg.r64}, #{value}".asm
   end
 end
