@@ -156,7 +156,7 @@ class Expression
     return '' if @parameters.empty?
     return @parameters.first.code(regs[0], func_params) if @parameters.count == 1
 
-    output = @parameters[0..-2].reduce("") do |out, param|
+    output = @parameters[0..-2].reduce('') do |out, param|
       out << param.code(regs[0], func_params)
       out << "push #{regs[0].r64}".asm
     end
