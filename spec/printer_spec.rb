@@ -135,7 +135,7 @@ describe PPrinter do
                 :double,
                 IntegerConstant.new(4)))),
           Function.new(
-            'add',
+            'double',
             Parameter.new(:X),
             Return.new(
               Expression.new(
@@ -155,7 +155,7 @@ describe PPrinter do
                 - params:
                   - int: 4
           - func:
-            - name: 'add'
+            - name: 'double'
             - params:
               - name: X
             - return:
@@ -164,6 +164,54 @@ describe PPrinter do
                 - params:
                   - var: X
                   - var: X
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format function definition with two parameters AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :add,
+                IntegerConstant.new(4),
+                IntegerConstant.new(5)))),
+          Function.new(
+            'add',
+            Parameter.new(:X),
+            Parameter.new(:Y),
+            Return.new(
+              Expression.new(
+                :+,
+                Variable.new(:X),
+                Variable.new(:Y))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: add
+                - params:
+                  - int: 4
+                  - int: 5
+          - func:
+            - name: 'add'
+            - params:
+              - name: X
+              - name: Y
+            - return:
+              - call:
+                - name: +
+                - params:
+                  - var: X
+                  - var: Y
       OUTPUT
 
       expect(output).to eq expected_output

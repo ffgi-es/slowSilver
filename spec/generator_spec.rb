@@ -450,4 +450,79 @@ describe 'Generator' do
       end
     end
   end
+
+  describe 'function with three parameters' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :sum,
+                IntegerConstant.new(3),
+                IntegerConstant.new(8),
+                IntegerConstant.new(4)))),
+          Function.new(
+            'sum',
+            Parameter.new(:A),
+            Parameter.new(:B),
+            Parameter.new(:C),
+            Return.new(
+              Expression.new(
+                :+,
+                Expression.new(
+                  :+,
+                  Variable.new(:A),
+                  Variable.new(:B)),
+                Variable.new(:C))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rdx, 3
+              push    rdx
+              mov     rdx, 8
+              push    rdx
+              mov     rdx, 4
+              push    rdx
+              call    _sum
+              mov     rax, 1
+              int     80h
+
+          _sum:
+              push    rbp
+              mov     rbp, rsp
+              mov     rcx, [rbp+32]
+              push    rcx
+              mov     rcx, [rbp+24]
+              pop     rdx
+              add     rdx, rcx
+              push    rdx
+              mov     rdx, [rbp+16]
+              pop     rbx
+              add     rbx, rdx
+              mov     rsp, rbp
+              pop     rbp
+              ret
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
 end

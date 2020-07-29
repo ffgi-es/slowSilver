@@ -1,0 +1,3 @@
+INT main => :sum 3 4 2.
+
+INT sum: INT A, INT B, INT C => (A :+ B) :+ C.
