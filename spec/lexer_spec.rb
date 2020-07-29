@@ -220,5 +220,32 @@ describe 'Lexer' do
       lexer = Lexer.new(in_file)
       expect(lexer.lex).to eq out_tokens
     end
+
+    it 'should return a list of tokens for function3.sag' do
+      in_file = File.expand_path 'fixtures/function3.sag', File.dirname(__FILE__)
+      out_tokens = [
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
+        Token.new(:integer_constant, 3),
+        Token.new(:function_call, 'plus'),
+        Token.new(:integer_constant, 8),
+        Token.new(:end),
+        Token.new(:type, :INT),
+        Token.new(:identifier, 'plus'),
+        Token.new(:type, :INT),
+        Token.new(:variable, 'A'),
+        Token.new(:separator),
+        Token.new(:type, :INT),
+        Token.new(:variable, 'B'),
+        Token.new(:return),
+        Token.new(:variable, 'A'),
+        Token.new(:function_call, '+'),
+        Token.new(:variable, 'B'),
+        Token.new(:end)
+      ]
+      lexer = Lexer.new(in_file)
+      expect(lexer.lex).to eq out_tokens
+    end
   end
 end

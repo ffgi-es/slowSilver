@@ -19,7 +19,7 @@ class PPrinter
       output << "    - name: '#{function.name}'\n"
       unless function.parameters.empty?
         output << "    - params:\n"
-        output << "      - name: #{function.parameters.first.name}\n"
+        output << "      - name: #{function.parameters.first}\n"
       end
       output << "    - return:\n"
       format_return(output, function.return)

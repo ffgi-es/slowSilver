@@ -35,14 +35,14 @@ class Function
 
   def initialize(name, *params, return_exp)
     @name = name
-    @parameters = params
+    @parameters = params.map(&:name)
     @return = return_exp
   end
 
   def code(entry = false)
     output = "\n_#{name}:\n"
     output << 'push rbp'.asm << 'mov rbp, rsp'.asm unless entry || @parameters.empty?
-    output << @return.code(entry, !@parameters.empty?)
+    output << @return.code(entry, @parameters)
   end
 end
 
@@ -63,8 +63,9 @@ class Variable
     @name = name
   end
 
-  def code(reg)
-    "mov #{reg.r64}, [rbp+16]".asm
+  def code(reg, parameters)
+    ind = (parameters.count + 1) - parameters.index(@name)
+    "mov #{reg.r64}, [rbp+#{8 * ind}]".asm
   end
 end
 
@@ -76,12 +77,12 @@ class Return
     @expression = expression
   end
 
-  def code(entry, parameters = false)
-    result = @expression.code(Register[:bx])
+  def code(entry, parameters = [])
+    result = @expression.code(Register[:bx], parameters)
     if entry
       result << 'mov rax, 1'.asm << 'int 80h'.asm
     else
-      result << 'mov rsp, rbp'.asm << 'pop rbp'.asm if parameters
+      result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
       result << "    ret\n"
     end
   end
@@ -138,10 +139,10 @@ class Expression
     @action = self.class.actions[function]
   end
 
-  def code(reg)
+  def code(reg, func_params = [])
     regs = self.class.registers_except reg
 
-    res = get_parameters regs
+    res = get_parameters regs, func_params
 
     if @action
       @action.call(res, reg, regs)
@@ -151,13 +152,13 @@ class Expression
     end
   end
 
-  def get_parameters(regs)
+  def get_parameters(regs, func_params)
     return '' if @parameters.empty?
-    return @parameters.first.code(regs[0]) if @parameters.count == 1
+    return @parameters.first.code(regs[0], func_params) if @parameters.count == 1
 
-    @parameters[0].code(regs[0]) \
+    @parameters[0].code(regs[0], func_params) \
       << "push #{regs[0].r64}".asm \
-      << @parameters[1].code(regs[0])
+      << @parameters[1].code(regs[0], func_params)
   end
 end
 
@@ -169,7 +170,7 @@ class IntegerConstant
     @value = value
   end
 
-  def code(reg)
+  def code(reg, _)
     "mov #{reg.r64}, #{value}".asm
   end
 end

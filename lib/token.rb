@@ -17,6 +17,7 @@ class Token
     identifier: /^[a-z]+:?$/,
     variable: /^[A-Z]$/,
     return: /^=>$/,
+    separator: /^,$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,
     function_call: /^:([+-=!]|[a-z]+)$/,

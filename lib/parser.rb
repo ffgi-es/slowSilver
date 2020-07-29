@@ -33,6 +33,7 @@ class Parser
       while tokens.first.type == :type
         tokens.shift
         params.push Parameter.new(tokens.shift.value)
+        tokens.shift if tokens.first.type == :separator
       end
 
       Function.new(name, *params, parse_ret(tokens))
