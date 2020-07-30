@@ -122,6 +122,12 @@ class Expression
       res \
         << "cmp #{regs[0].r64}, 0".asm \
         << "sete #{reg.r8}".asm
+    end,
+
+    :* => proc do |res, reg, regs|
+      res \
+        << "pop #{reg.r64}".asm \
+        << "imul #{reg.r64}, #{regs[0].r64}".asm
     end
   }
 
