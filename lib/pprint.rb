@@ -10,7 +10,7 @@ class PPrinter
     def format_program(output, program)
       output << "program:\n"
       format_function(output, program.function)
-      format_function(output, program.functions.first) unless program.functions.empty?
+      program.functions.each { |func| format_function(output, func) }
       output
     end
 
@@ -19,7 +19,7 @@ class PPrinter
       output << "    - name: '#{function.name}'\n"
       unless function.parameters.empty?
         output << "    - params:\n"
-        output << "      - name: #{function.parameters.first}\n"
+        function.parameters.reduce(output) { |out, p| out << "      - name: #{p}\n" }
       end
       output << "    - return:\n"
       format_return(output, function.return)

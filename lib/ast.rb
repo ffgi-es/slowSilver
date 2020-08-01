@@ -1,4 +1,5 @@
 require_relative 'register'
+require_relative 'actions'
 
 # root of the AST
 class ASTree
@@ -63,9 +64,9 @@ class Variable
     @name = name
   end
 
-  def code(reg, parameters)
-    ind = (parameters.count + 1) - parameters.index(@name)
-    "mov #{reg.r64}, [rbp+#{8 * ind}]".asm
+  def code(parameters)
+    ind = parameters.index(@name) + 2
+    "mov #{Register[:ax]}, [rbp+#{8 * ind}]".asm
   end
 end
 
@@ -78,8 +79,9 @@ class Return
   end
 
   def code(entry, parameters = [])
-    result = @expression.code(Register[:bx], parameters)
+    result = @expression.code(parameters)
     if entry
+      result << 'mov rbx, rax'.asm
       result << 'mov rax, 1'.asm << 'int 80h'.asm
     else
       result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
@@ -92,93 +94,27 @@ end
 class Expression
   attr_reader :function, :parameters
 
-  @registers = [
-    Register[:di],
-    Register[:cx],
-    Register[:bx]
-  ]
-
-  @actions = {
-    :+ => proc do |res, reg, regs|
-      res \
-        << "pop #{reg.r64}".asm \
-        << "add #{reg.r64}, #{regs[0].r64}".asm
-    end,
-
-    :- => proc do |res, reg, regs|
-      res \
-        << "pop #{reg.r64}".asm \
-        << "sub #{reg.r64}, #{regs[0].r64}".asm
-    end,
-
-    :"=" => proc do |res, reg, regs|
-      res \
-        << "pop #{regs[1].r64}".asm \
-        << "cmp #{regs[1].r64}, #{regs[0].r64}".asm \
-        << "sete #{reg.r8}".asm
-    end,
-
-    :! => proc do |res, reg, regs|
-      res \
-        << "cmp #{regs[0].r64}, 0".asm \
-        << "sete #{reg.r8}".asm
-    end,
-
-    :* => proc do |res, reg, regs|
-      res \
-        << "pop #{reg.r64}".asm \
-        << "imul #{reg.r64}, #{regs[0].r64}".asm
-    end,
-
-    :/ => proc do |res, reg, regs|
-      res \
-        << 'pop rax'.asm \
-        << "idiv #{regs[0].r64}".asm \
-        << "mov #{reg.r64}, rax".asm
-    end,
-
-    :% => proc do |res, reg, regs|
-      res \
-        << 'pop rax'.asm \
-        << "idiv #{regs[0].r64}".asm \
-        << "mov #{reg.r64}, rdx".asm
-    end
-  }
-
-  class << self
-    attr_reader :registers, :actions
-
-    def registers_except(reg)
-      @registers.filter { |r| r != reg }
-    end
-  end
-
   def initialize(function, *params)
     @function = function
     @parameters = params
-    @action = self.class.actions[function]
+    @action = Action[function]
   end
 
-  def code(reg, func_params = [])
-    regs = self.class.registers_except reg
+  def code(func_params = [])
+    res = get_parameters func_params
 
-    res = get_parameters regs, func_params
-
-    if @action
-      @action.call(res, reg, regs)
-    else
-      res << "push #{regs[0].r64}".asm unless @parameters.empty?
-      res << "call _#{function}".asm
-    end
+    @action.call(res, @function, @parameters)
   end
 
-  def get_parameters(regs, func_params)
+  def get_parameters(func_params)
     return '' if @parameters.empty?
-    return @parameters.first.code(regs[0], func_params) if @parameters.count == 1
+    return @parameters.first.code(func_params) if @parameters.count == 1
 
-    @parameters[0].code(regs[0], func_params) \
-      << "push #{regs[0].r64}".asm \
-      << @parameters[1].code(regs[0], func_params)
+    output = @parameters[1..-1].reverse.reduce('') do |out, param|
+      out << param.code(func_params)
+      out << "push #{Register[:ax]}".asm
+    end
+    output << @parameters.first.code(func_params)
   end
 end
 
@@ -190,8 +126,8 @@ class IntegerConstant
     @value = value
   end
 
-  def code(reg, _)
-    "mov #{reg.r64}, #{value}".asm
+  def code(_)
+    "mov #{Register[:ax]}, #{value}".asm
   end
 end
 
