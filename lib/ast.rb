@@ -135,6 +135,13 @@ class Expression
         << 'pop rax'.asm \
         << "idiv #{regs[0].r64}".asm \
         << "mov #{reg.r64}, rax".asm
+    end,
+
+    :% => proc do |res, reg, regs|
+      res \
+        << 'pop rax'.asm \
+        << "idiv #{regs[0].r64}".asm \
+        << "mov #{reg.r64}, rdx".asm
     end
   }
 

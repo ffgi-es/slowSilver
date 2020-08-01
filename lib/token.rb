@@ -20,7 +20,7 @@ class Token
     separator: /^,$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,
-    function_call: /^:([+-=!*]|[a-z]+)$/,
+    function_call: /^:([+-=!*%]|[a-z]+)$/,
     open_expression: /^\($/,
     close_expression: /^\)$/
   }
