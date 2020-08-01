@@ -10,7 +10,7 @@ describe 'compiling and running program' do
     File.delete out_file if File.exist? out_file
   end
 
-  it 'should return 4 for addition1.sag' do
+  it 'should return 4 for multiplication1.sag' do
     o, e, s = Open3.capture3("#{slwslvr} #{sample1}")
 
     puts e if s.exitstatus != 0
