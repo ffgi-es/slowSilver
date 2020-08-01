@@ -15,6 +15,7 @@ class Register
   end
 
   @registers = {
+    ax: Register.new('rax', 'eax', 'ax', 'al'),
     bx: Register.new('rbx', 'ebx', 'bx', 'bl'),
     cx: Register.new('rcx', 'ecx', 'cx', 'cl'),
     dx: Register.new('rdx', 'edx', 'dx', 'dl'),

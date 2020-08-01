@@ -21,7 +21,8 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rbx, 6
+              mov     rax, 6
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -60,11 +61,12 @@ describe 'Generator' do
           global _blam
 
           _blam:
-              mov     rdi, 4
-              push    rdi
-              mov     rdi, 8
-              pop     rbx
-              add     rbx, rdi
+              mov     rax, 8
+              push    rax
+              mov     rax, 4
+              pop     rcx
+              add     rax, rcx
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -103,11 +105,12 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 8
-              push    rdi
-              mov     rdi, 5
-              pop     rbx
-              sub     rbx, rdi
+              mov     rax, 5
+              push    rax
+              mov     rax, 8
+              pop     rcx
+              sub     rax, rcx
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -146,12 +149,15 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 3
-              push    rdi
-              mov     rdi, 3
+              mov     rax, 3
+              push    rax
+              mov     rax, 3
+              mov     rbx, rax
               pop     rcx
-              cmp     rcx, rdi
-              sete    bl
+              xor     rax, rax
+              cmp     rbx, rcx
+              sete    al
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -196,22 +202,29 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rcx, 3
-              push    rcx
-              mov     rcx, 3
-              pop     rbx
-              cmp     rbx, rcx
-              sete    dil
-              push    rdi
-              mov     rcx, 4
-              push    rcx
-              mov     rcx, 4
-              pop     rbx
-              cmp     rbx, rcx
-              sete    dil
+              mov     rax, 4
+              push    rax
+              mov     rax, 4
+              mov     rbx, rax
               pop     rcx
-              cmp     rcx, rdi
-              sete    bl
+              xor     rax, rax
+              cmp     rbx, rcx
+              sete    al
+              push    rax
+              mov     rax, 3
+              push    rax
+              mov     rax, 3
+              mov     rbx, rax
+              pop     rcx
+              xor     rax, rax
+              cmp     rbx, rcx
+              sete    al
+              mov     rbx, rax
+              pop     rcx
+              xor     rax, rax
+              cmp     rbx, rcx
+              sete    al
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -252,14 +265,19 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rcx, 3
-              push    rcx
-              mov     rcx, 3
-              pop     rbx
+              mov     rax, 3
+              push    rax
+              mov     rax, 3
+              mov     rbx, rax
+              pop     rcx
+              xor     rax, rax
               cmp     rbx, rcx
-              sete    dil
-              cmp     rdi, 0
-              sete    bl
+              sete    al
+              mov     rbx, rax
+              xor     rax, rax
+              cmp     rbx, 0
+              sete    al
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -303,15 +321,16 @@ describe 'Generator' do
 
           _main:
               call    _add
+              mov     rbx, rax
               mov     rax, 1
               int     80h
 
           _add:
-              mov     rdi, 3
-              push    rdi
-              mov     rdi, 4
-              pop     rbx
-              add     rbx, rdi
+              mov     rax, 4
+              push    rax
+              mov     rax, 3
+              pop     rcx
+              add     rax, rcx
               ret
         ASM
 
@@ -356,20 +375,21 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 4
-              push    rdi
+              mov     rax, 4
+              push    rax
               call    _double
+              mov     rbx, rax
               mov     rax, 1
               int     80h
 
           _double:
               push    rbp
               mov     rbp, rsp
-              mov     rdi, [rbp+16]
-              push    rdi
-              mov     rdi, [rbp+16]
-              pop     rbx
-              add     rbx, rdi
+              mov     rax, [rbp+16]
+              push    rax
+              mov     rax, [rbp+16]
+              pop     rcx
+              add     rax, rcx
               mov     rsp, rbp
               pop     rbp
               ret
@@ -418,22 +438,23 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 3
-              push    rdi
-              mov     rdi, 8
-              push    rdi
+              mov     rax, 8
+              push    rax
+              mov     rax, 3
+              push    rax
               call    _plus
+              mov     rbx, rax
               mov     rax, 1
               int     80h
 
           _plus:
               push    rbp
               mov     rbp, rsp
-              mov     rdi, [rbp+24]
-              push    rdi
-              mov     rdi, [rbp+16]
-              pop     rbx
-              add     rbx, rdi
+              mov     rax, [rbp+24]
+              push    rax
+              mov     rax, [rbp+16]
+              pop     rcx
+              add     rax, rcx
               mov     rsp, rbp
               pop     rbp
               ret
@@ -473,11 +494,12 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 3
-              push    rdi
-              mov     rdi, 8
-              pop     rbx
-              imul    rbx, rdi
+              mov     rax, 8
+              push    rax
+              mov     rax, 3
+              pop     rcx
+              imul    rax, rcx
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
@@ -516,11 +538,11 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 8
-              push    rdi
-              mov     rdi, 2
-              pop     rax
-              idiv    rdi
+              mov     rax, 2
+              push    rax
+              mov     rax, 8
+              pop     rcx
+              idiv    rcx
               mov     rbx, rax
               mov     rax, 1
               int     80h
@@ -560,12 +582,13 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 9
-              push    rdi
-              mov     rdi, 2
-              pop     rax
-              idiv    rdi
-              mov     rbx, rdx
+              mov     rax, 2
+              push    rax
+              mov     rax, 9
+              pop     rcx
+              idiv    rcx
+              mov     rax, rdx
+              mov     rbx, rax
               mov     rax, 1
               int     80h
         ASM
