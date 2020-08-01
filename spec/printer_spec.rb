@@ -216,5 +216,84 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format multiple function definitions AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :proc,
+                IntegerConstant.new(4),
+                IntegerConstant.new(5),
+                IntegerConstant.new(6)))),
+          Function.new(
+            'proc',
+            Parameter.new(:X),
+            Parameter.new(:Y),
+            Parameter.new(:Z),
+            Return.new(
+              Expression.new(
+                :-,
+                Variable.new(:X),
+                Expression.new(
+                  :add,
+                  Variable.new(:Y),
+                  Variable.new(:Z))))),
+          Function.new(
+            'add',
+            Parameter.new(:A),
+            Parameter.new(:B),
+            Return.new(
+              Expression.new(
+                :+,
+                Variable.new(:A),
+                Variable.new(:B))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: proc
+                - params:
+                  - int: 4
+                  - int: 5
+                  - int: 6
+          - func:
+            - name: 'proc'
+            - params:
+              - name: X
+              - name: Y
+              - name: Z
+            - return:
+              - call:
+                - name: -
+                - params:
+                  - var: X
+                  - call:
+                    - name: add
+                    - params:
+                      - var: Y
+                      - var: Z
+          - func:
+            - name: 'add'
+            - params:
+              - name: A
+              - name: B
+            - return:
+              - call:
+                - name: +
+                - params:
+                  - var: A
+                  - var: B
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end

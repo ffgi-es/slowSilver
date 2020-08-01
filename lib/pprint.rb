@@ -10,7 +10,7 @@ class PPrinter
     def format_program(output, program)
       output << "program:\n"
       format_function(output, program.function)
-      format_function(output, program.functions.first) unless program.functions.empty?
+      program.functions.each { |func| format_function(output, func) }
       output
     end
 
