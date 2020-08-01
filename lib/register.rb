@@ -21,4 +21,8 @@ class Register
   def self.[](key)
     @registers[key]
   end
+
+  def to_s
+    @r64
+  end
 end
