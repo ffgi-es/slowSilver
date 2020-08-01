@@ -17,7 +17,8 @@ class Register
   @registers = {
     bx: Register.new('rbx', 'ebx', 'bx', 'bl'),
     cx: Register.new('rcx', 'ecx', 'cx', 'cl'),
-    dx: Register.new('rdx', 'edx', 'dx', 'dl')
+    dx: Register.new('rdx', 'edx', 'dx', 'dl'),
+    di: Register.new('rdi', 'edi', 'di', 'dil')
   }
 
   def self.[](key)

@@ -60,11 +60,11 @@ describe 'Generator' do
           global _blam
 
           _blam:
-              mov     rdx, 4
-              push    rdx
-              mov     rdx, 8
+              mov     rdi, 4
+              push    rdi
+              mov     rdi, 8
               pop     rbx
-              add     rbx, rdx
+              add     rbx, rdi
               mov     rax, 1
               int     80h
         ASM
@@ -103,11 +103,11 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdx, 8
-              push    rdx
-              mov     rdx, 5
+              mov     rdi, 8
+              push    rdi
+              mov     rdi, 5
               pop     rbx
-              sub     rbx, rdx
+              sub     rbx, rdi
               mov     rax, 1
               int     80h
         ASM
@@ -146,11 +146,11 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdx, 3
-              push    rdx
-              mov     rdx, 3
+              mov     rdi, 3
+              push    rdi
+              mov     rdi, 3
               pop     rcx
-              cmp     rcx, rdx
+              cmp     rcx, rdi
               sete    bl
               mov     rax, 1
               int     80h
@@ -201,16 +201,16 @@ describe 'Generator' do
               mov     rcx, 3
               pop     rbx
               cmp     rbx, rcx
-              sete    dl
-              push    rdx
+              sete    dil
+              push    rdi
               mov     rcx, 4
               push    rcx
               mov     rcx, 4
               pop     rbx
               cmp     rbx, rcx
-              sete    dl
+              sete    dil
               pop     rcx
-              cmp     rcx, rdx
+              cmp     rcx, rdi
               sete    bl
               mov     rax, 1
               int     80h
@@ -257,8 +257,8 @@ describe 'Generator' do
               mov     rcx, 3
               pop     rbx
               cmp     rbx, rcx
-              sete    dl
-              cmp     rdx, 0
+              sete    dil
+              cmp     rdi, 0
               sete    bl
               mov     rax, 1
               int     80h
@@ -307,11 +307,11 @@ describe 'Generator' do
               int     80h
 
           _add:
-              mov     rdx, 3
-              push    rdx
-              mov     rdx, 4
+              mov     rdi, 3
+              push    rdi
+              mov     rdi, 4
               pop     rbx
-              add     rbx, rdx
+              add     rbx, rdi
               ret
         ASM
 
@@ -356,8 +356,8 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdx, 4
-              push    rdx
+              mov     rdi, 4
+              push    rdi
               call    _double
               mov     rax, 1
               int     80h
@@ -365,11 +365,11 @@ describe 'Generator' do
           _double:
               push    rbp
               mov     rbp, rsp
-              mov     rdx, [rbp+16]
-              push    rdx
-              mov     rdx, [rbp+16]
+              mov     rdi, [rbp+16]
+              push    rdi
+              mov     rdi, [rbp+16]
               pop     rbx
-              add     rbx, rdx
+              add     rbx, rdi
               mov     rsp, rbp
               pop     rbp
               ret
@@ -418,10 +418,10 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdx, 3
-              push    rdx
-              mov     rdx, 8
-              push    rdx
+              mov     rdi, 3
+              push    rdi
+              mov     rdi, 8
+              push    rdi
               call    _plus
               mov     rax, 1
               int     80h
@@ -429,14 +429,145 @@ describe 'Generator' do
           _plus:
               push    rbp
               mov     rbp, rsp
-              mov     rdx, [rbp+24]
-              push    rdx
-              mov     rdx, [rbp+16]
+              mov     rdi, [rbp+24]
+              push    rdi
+              mov     rdi, [rbp+16]
               pop     rbx
-              add     rbx, rdx
+              add     rbx, rdi
               mov     rsp, rbp
               pop     rbp
               ret
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
+
+  describe 'multiplication' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :*,
+                IntegerConstant.new(3),
+                IntegerConstant.new(8))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rdi, 3
+              push    rdi
+              mov     rdi, 8
+              pop     rbx
+              imul    rbx, rdi
+              mov     rax, 1
+              int     80h
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
+
+  describe 'division' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :/,
+                IntegerConstant.new(8),
+                IntegerConstant.new(2))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rdi, 8
+              push    rdi
+              mov     rdi, 2
+              pop     rax
+              idiv    rdi
+              mov     rbx, rax
+              mov     rax, 1
+              int     80h
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
+
+  describe 'division' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :%,
+                IntegerConstant.new(9),
+                IntegerConstant.new(2))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rdi, 9
+              push    rdi
+              mov     rdi, 2
+              pop     rax
+              idiv    rdi
+              mov     rbx, rdx
+              mov     rax, 1
+              int     80h
         ASM
 
         expect(subject.code).to eq expected_asm
