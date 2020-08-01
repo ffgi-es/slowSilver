@@ -257,7 +257,7 @@ describe 'Lexer' do
         Token.new(:integer_constant, 3),
         Token.new(:function_call, '*'),
         Token.new(:integer_constant, 6),
-        Token.new(:end),
+        Token.new(:end)
       ]
       lexer = Lexer.new(in_file)
       expect(lexer.lex).to eq out_tokens
