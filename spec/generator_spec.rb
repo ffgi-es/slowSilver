@@ -641,28 +641,126 @@ describe 'Generator' do
           global _main
 
           _main:
-              mov     rdi, 3
-              push    rdi
-              mov     rdi, 8
-              push    rdi
-              mov     rdi, 4
-              push    rdi
+              mov     rax, 4
+              push    rax
+              mov     rax, 8
+              push    rax
+              mov     rax, 3
+              push    rax
               call    _sum
+              mov     rbx, rax
               mov     rax, 1
               int     80h
 
           _sum:
               push    rbp
               mov     rbp, rsp
-              mov     rcx, [rbp+32]
-              push    rcx
-              mov     rcx, [rbp+24]
-              pop     rdi
-              add     rdi, rcx
-              push    rdi
-              mov     rdi, [rbp+16]
-              pop     rbx
-              add     rbx, rdi
+              mov     rax, [rbp+32]
+              push    rax
+              mov     rax, [rbp+24]
+              push    rax
+              mov     rax, [rbp+16]
+              pop     rcx
+              add     rax, rcx
+              pop     rcx
+              add     rax, rcx
+              mov     rsp, rbp
+              pop     rbp
+              ret
+        ASM
+
+        expect(subject.code).to eq expected_asm
+      end
+    end
+
+    describe '#entry_point' do
+      it 'should return the entry function' do
+        expected_entry = '_main'
+        expect(subject.entry_point).to eq expected_entry
+      end
+    end
+  end
+
+  describe 'nested functions' do
+    let('ast') do
+      ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :sum,
+                IntegerConstant.new(3),
+                IntegerConstant.new(8),
+                IntegerConstant.new(4)))),
+          Function.new(
+            'sum',
+            Parameter.new(:A),
+            Parameter.new(:B),
+            Parameter.new(:C),
+            Return.new(
+              Expression.new(
+                :-,
+                Variable.new(:A),
+                Expression.new(
+                  :add,
+                  Variable.new(:B),
+                  Variable.new(:C))))),
+          Function.new(
+            'add',
+            Parameter.new(:X),
+            Parameter.new(:Y),
+            Return.new(
+              Expression.new(
+                :+,
+                Variable.new(:X),
+                Variable.new(:Y))))))
+    end
+
+    subject { Generator.new(ast) }
+
+    describe '#code' do
+      it 'should return the expected code' do
+        expected_asm = <<~ASM
+          SECTION .text
+          global _main
+
+          _main:
+              mov     rax, 4
+              push    rax
+              mov     rax, 8
+              push    rax
+              mov     rax, 3
+              push    rax
+              call    _sum
+              mov     rbx, rax
+              mov     rax, 1
+              int     80h
+
+          _sum:
+              push    rbp
+              mov     rbp, rsp
+              mov     rax, [rbp+32]
+              push    rax
+              mov     rax, [rbp+24]
+              push    rax
+              call    _add
+              push    rax
+              mov     rax, [rbp+16]
+              pop     rcx
+              sub     rax, rcx
+              mov     rsp, rbp
+              pop     rbp
+              ret
+
+          _add:
+              push    rbp
+              mov     rbp, rsp
+              mov     rax, [rbp+24]
+              push    rax
+              mov     rax, [rbp+16]
+              pop     rcx
+              add     rax, rcx
               mov     rsp, rbp
               pop     rbp
               ret
