@@ -63,7 +63,7 @@ class Variable
     @name = name
   end
 
-  def code(reg, parameters)
+  def code(parameters)
     ind = parameters.index(@name) + 2
     "mov #{Register[:ax].r64}, [rbp+#{8 * ind}]".asm
   end
@@ -78,7 +78,7 @@ class Return
   end
 
   def code(entry, parameters = [])
-    result = @expression.code(Register[:bx], parameters)
+    result = @expression.code(parameters)
     if entry
       result << 'mov rbx, rax'.asm
       result << 'mov rax, 1'.asm << 'int 80h'.asm
@@ -93,26 +93,20 @@ end
 class Expression
   attr_reader :function, :parameters
 
-  @registers = [
-    Register[:di],
-    Register[:cx],
-    Register[:bx]
-  ]
-
   @actions = {
-    :+ => proc do |res, reg, regs|
+    :+ => proc do |res|
       res \
         << "pop #{Register[:cx].r64}".asm \
         << "add #{Register[:ax].r64}, #{Register[:cx].r64}".asm
     end,
 
-    :- => proc do |res, reg, regs|
+    :- => proc do |res|
       res \
         << "pop #{Register[:cx].r64}".asm \
         << "sub #{Register[:ax].r64}, #{Register[:cx].r64}".asm
     end,
 
-    :"=" => proc do |res, reg, regs|
+    :"=" => proc do |res|
       res \
         << "mov #{Register[:bx].r64}, #{Register[:ax].r64}".asm \
         << "pop #{Register[:cx].r64}".asm \
@@ -121,7 +115,7 @@ class Expression
         << "sete #{Register[:ax].r8}".asm
     end,
 
-    :! => proc do |res, reg, regs|
+    :! => proc do |res|
       res \
         << "mov #{Register[:bx].r64}, #{Register[:ax].r64}".asm \
         << "xor #{Register[:ax].r64}, #{Register[:ax].r64}".asm \
@@ -129,19 +123,19 @@ class Expression
         << "sete #{Register[:ax].r8}".asm
     end,
 
-    :* => proc do |res, reg, regs|
+    :* => proc do |res|
       res \
         << "pop #{Register[:cx].r64}".asm \
         << "imul #{Register[:ax].r64}, #{Register[:cx].r64}".asm
     end,
 
-    :/ => proc do |res, reg, regs|
+    :/ => proc do |res|
       res \
         << "pop #{Register[:cx].r64}".asm \
         << "idiv #{Register[:cx].r64}".asm
     end,
 
-    :% => proc do |res, reg, regs|
+    :% => proc do |res|
       res \
         << "pop #{Register[:cx].r64}".asm \
         << "idiv #{Register[:cx].r64}".asm \
@@ -150,11 +144,7 @@ class Expression
   }
 
   class << self
-    attr_reader :registers, :actions
-
-    def registers_except(reg)
-      @registers.filter { |r| r != reg }
-    end
+    attr_reader :actions
   end
 
   def initialize(function, *params)
@@ -163,28 +153,28 @@ class Expression
     @action = self.class.actions[function]
   end
 
-  def code(reg, func_params = [])
-    regs = self.class.registers_except reg
-
-    res = get_parameters regs, func_params
+  def code(func_params = [])
+    res = get_parameters func_params
 
     if @action
-      @action.call(res, reg, regs)
+      @action.call(res)
     else
       res << "push #{Register[:ax].r64}".asm unless @parameters.empty?
       res << "call _#{function}".asm
+      res << "add #{Register[:sp].r64}, #{@parameters.count * 8}".asm unless @parameters.empty?
+      res
     end
   end
 
-  def get_parameters(regs, func_params)
+  def get_parameters(func_params)
     return '' if @parameters.empty?
-    return @parameters.first.code(regs[0], func_params) if @parameters.count == 1
+    return @parameters.first.code(func_params) if @parameters.count == 1
 
     output = @parameters[1..-1].reverse.reduce('') do |out, param|
-      out << param.code(regs[0], func_params)
+      out << param.code(func_params)
       out << "push #{Register[:ax].r64}".asm
     end
-    output << @parameters.first.code(regs[0], func_params)
+    output << @parameters.first.code(func_params)
   end
 end
 
@@ -196,7 +186,7 @@ class IntegerConstant
     @value = value
   end
 
-  def code(reg, _)
+  def code(_)
     "mov #{Register[:ax].r64}, #{value}".asm
   end
 end

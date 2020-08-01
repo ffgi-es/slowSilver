@@ -9,16 +9,12 @@ class Register
     @r8 = reg8
   end
 
-  def ==(other)
-    other.is_a?(Register) &&
-      @r64 == other.r64
-  end
-
   @registers = {
     ax: Register.new('rax', 'eax', 'ax', 'al'),
     bx: Register.new('rbx', 'ebx', 'bx', 'bl'),
     cx: Register.new('rcx', 'ecx', 'cx', 'cl'),
     dx: Register.new('rdx', 'edx', 'dx', 'dl'),
+    sp: Register.new('rsp', 'esp', 'sp', 'spl'),
     di: Register.new('rdi', 'edi', 'di', 'dil')
   }
 

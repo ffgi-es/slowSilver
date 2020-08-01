@@ -378,6 +378,7 @@ describe 'Generator' do
               mov     rax, 4
               push    rax
               call    _double
+              add     rsp, 8
               mov     rbx, rax
               mov     rax, 1
               int     80h
@@ -443,6 +444,7 @@ describe 'Generator' do
               mov     rax, 3
               push    rax
               call    _plus
+              add     rsp, 16
               mov     rbx, rax
               mov     rax, 1
               int     80h
@@ -648,6 +650,7 @@ describe 'Generator' do
               mov     rax, 3
               push    rax
               call    _sum
+              add     rsp, 24
               mov     rbx, rax
               mov     rax, 1
               int     80h
@@ -733,6 +736,7 @@ describe 'Generator' do
               mov     rax, 3
               push    rax
               call    _sum
+              add     rsp, 24
               mov     rbx, rax
               mov     rax, 1
               int     80h
@@ -745,6 +749,7 @@ describe 'Generator' do
               mov     rax, [rbp+24]
               push    rax
               call    _add
+              add     rsp, 16
               push    rax
               mov     rax, [rbp+16]
               pop     rcx
