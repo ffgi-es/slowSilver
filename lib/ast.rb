@@ -131,6 +131,26 @@ class IntegerConstant
   end
 end
 
+# a function with multiple parameter matched clauses
+class MatchFunction
+  attr_reader :name, :clauses
+
+  def initialize(name, *clauses)
+    @name = name
+    @clauses = clauses
+  end
+end
+
+# a single match of a matched function
+class Clause
+  attr_reader :parameters, :return
+
+  def initialize(*params, return_expr)
+    @parameters = params
+    @return = return_expr
+  end
+end
+
 # add helper formatting function to String class
 class String
   def asm
