@@ -9,7 +9,7 @@ class Lexer
   def lex
     File.foreach(@filename).reduce([]) do |tokens, line|
       tokens + line
-        .split(/(\s|\.|\(|\)|,)/)
+        .split(/(\s|\.|\(|\)|,|;)/)
         .reject { |s| s =~ /^\s*$/ }
         .map { |part| self.class.lex_part(part) }
     end
@@ -37,7 +37,8 @@ class Lexer
     end: nil,
     function_call: proc { |str| str[1..-1] },
     open_expression: nil,
-    close_expression: nil
+    close_expression: nil,
+    break: nil,
   }
 end
 

@@ -22,7 +22,8 @@ class Token
     integer_constant: /^-?[0-9]+$/,
     function_call: /^:([+-=!*%]|[a-z]+)$/,
     open_expression: /^\($/,
-    close_expression: /^\)$/
+    close_expression: /^\)$/,
+    break: /^;$/
   }
 
   def self.[](type)
