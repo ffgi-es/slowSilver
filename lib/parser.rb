@@ -25,10 +25,10 @@ class Parser
     end
 
     def parse_function(tokens)
-      unless tokens.any?(Token.new(:break))
-        parse_single_function(tokens)
-      else
+      if tokens.any?(Token.new(:break))
         parse_matching_function(tokens)
+      else
+        parse_single_function(tokens)
       end
     end
 
@@ -54,13 +54,13 @@ class Parser
       clauses = tokens.slice_after(Token.new(:break)).reduce([]) do |res, clause_tokens|
         res.push parse_clause(clause_tokens)
       end
-      
+
       MatchFunction.new(name, *clauses)
     end
 
     def parse_clause(tokens)
       tokens.shift
-      
+
       params = []
       while tokens.first.type != :return
         if tokens.first.type == :integer_constant
@@ -76,7 +76,9 @@ class Parser
 
     def parse_ret(tokens)
       raise ParseError, "Unexpected token: '6'" unless tokens.shift.type == :return
-      raise ParseError, "Expected token: '.'" unless tokens.last&.type == :end || tokens.last&.type == :break
+      unless tokens.last&.type == :end || tokens.last&.type == :break
+        raise ParseError, "Expected token: '.'"
+      end
 
       tokens.pop
 

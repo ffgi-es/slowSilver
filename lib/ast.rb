@@ -143,9 +143,30 @@ class MatchFunction
   end
 
   def code
+    output = start_function
+
+    param_checks, clause_results = clause_code
+
+    output << param_checks.join
+
+    output << clause_results.join
+  end
+
+  private
+
+  def start_function
     output = "\n_#{name}:\n"
     output << 'push rbp'.asm << 'mov rbp, rsp'.asm
+  end
 
+  def finish_function
+    output = "_#{name}done:\n"
+    output << 'mov rsp, rbp'.asm
+    output << 'pop rbp'.asm
+    output << "    ret\n"
+  end
+
+  def clause_code
     param_checks = []
     clause_results = []
 
@@ -155,18 +176,15 @@ class MatchFunction
       clause_results.push result
     end
 
-    param_checks.each { |check| output << check }
+    [param_checks, prep_clause_results(clause_results)]
+  end
 
-    output << clause_results.last.gsub("jmp _#{name}done".asm, "")
-
-    output << "_#{name}done:\n"
-    output << "mov rsp, rbp".asm
-    output << "pop rbp".asm
-    output << "    ret\n"
-
-    clause_results[0..-2].each_with_index { |result, ind| output << "_#{name}#{ind}:\n" << result }
-
-    output
+  def prep_clause_results(clause_results)
+    [
+      clause_results.last.gsub("jmp _#{name}done".asm, ''),
+      finish_function,
+      clause_results[0..-2].map.with_index { |result, i| "_#{name}#{i}:\n" << result }
+    ].flatten
   end
 end
 
@@ -180,10 +198,10 @@ class Clause
   end
 
   def code(name, index)
-    param_checks = ""
+    param_checks = ''
     if @parameters.first.is_a? IntegerConstant
       param_checks << @parameters.first.code
-      param_checks << "cmp rax, [rbp+16]".asm
+      param_checks << 'cmp rax, [rbp+16]'.asm
       param_checks << "je _#{name}#{index}".asm
     end
 

@@ -295,7 +295,7 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
-    
+
     it 'should format param matching function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(

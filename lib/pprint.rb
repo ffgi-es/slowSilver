@@ -44,12 +44,15 @@ class PPrinter
 
     def format_parameter(output, parameter, indent)
       return output << indent("- name: #{parameter.name}\n", indent) if parameter.is_a? Parameter
-      return output << indent("- int: #{parameter.value}\n", indent) if parameter.is_a? IntegerConstant
+
+      output << indent("- int: #{parameter.value}\n", indent) if parameter.is_a? IntegerConstant
     end
 
     def format_return(output, ret, indent)
       output << indent("- return:\n", indent)
-      return format_integer(output, ret.expression, indent + 2) if ret.expression.is_a? IntegerConstant
+      if ret.expression.is_a? IntegerConstant
+        return format_integer(output, ret.expression, indent + 2)
+      end
 
       format_expression(output, ret.expression, indent + 2)
     end
