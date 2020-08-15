@@ -69,6 +69,7 @@ class Parser
           tokens.shift
           params.push Parameter.new(tokens.shift.value)
         end
+        tokens.shift if tokens.first.type == :separator
       end
 
       Clause.new(*params, parse_ret(tokens))
