@@ -17,8 +17,6 @@ class PPrinter
     def format_function(output, function, indent)
       return format_single_function(output, function, indent) if function.is_a? Function
       return format_match_function(output, function, indent) if function.is_a? MatchFunction
-      
-      output
     end
 
     def format_single_function(output, function, indent)
@@ -47,8 +45,6 @@ class PPrinter
     def format_parameter(output, parameter, indent)
       return output << indent("- name: #{parameter.name}\n", indent) if parameter.is_a? Parameter
       return output << indent("- int: #{parameter.value}\n", indent) if parameter.is_a? IntegerConstant
-
-      output
     end
 
     def format_return(output, ret, indent)

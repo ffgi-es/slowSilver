@@ -78,14 +78,16 @@ class Return
     @expression = expression
   end
 
-  def code(entry, parameters = [])
+  def code(entry, parameters = [], done_name = nil)
     result = @expression.code(parameters)
     if entry
       result << 'mov rbx, rax'.asm
       result << 'mov rax, 1'.asm << 'int 80h'.asm
-    else
+    elsif done_name.nil?
       result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
       result << "    ret\n"
+    else
+      result << "jmp #{done_name}".asm
     end
   end
 end
@@ -120,13 +122,13 @@ end
 
 # a constant integer value
 class IntegerConstant
-  attr_reader :value
+  attr_reader :value, :name
 
   def initialize(value)
     @value = value
   end
 
-  def code(_)
+  def code(_ = nil)
     "mov #{Register[:ax]}, #{value}".asm
   end
 end
@@ -139,6 +141,33 @@ class MatchFunction
     @name = name
     @clauses = clauses
   end
+
+  def code
+    output = "\n_#{name}:\n"
+    output << 'push rbp'.asm << 'mov rbp, rsp'.asm
+
+    param_checks = []
+    clause_results = []
+
+    @clauses.each_with_index do |clause, index|
+      checks, result = clause.code(name, index)
+      param_checks.push checks
+      clause_results.push result
+    end
+
+    param_checks.each { |check| output << check }
+
+    output << clause_results.last.gsub("jmp _#{name}done".asm, "")
+
+    output << "_#{name}done:\n"
+    output << "mov rsp, rbp".asm
+    output << "pop rbp".asm
+    output << "    ret\n"
+
+    clause_results[0..-2].each_with_index { |result, ind| output << "_#{name}#{ind}:\n" << result }
+
+    output
+  end
 end
 
 # a single match of a matched function
@@ -148,6 +177,17 @@ class Clause
   def initialize(*params, return_expr)
     @parameters = params
     @return = return_expr
+  end
+
+  def code(name, index)
+    param_checks = ""
+    if @parameters.first.is_a? IntegerConstant
+      param_checks << @parameters.first.code
+      param_checks << "cmp rax, [rbp+16]".asm
+      param_checks << "je _#{name}#{index}".asm
+    end
+
+    [param_checks, @return.code(false, @parameters.map(&:name), "_#{name}done")]
   end
 end
 
