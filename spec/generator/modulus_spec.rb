@@ -1,5 +1,5 @@
 require 'generator'
-require 'parser'
+require 'ast'
 
 describe 'Generator' do
   describe 'modulus' do
