@@ -143,25 +143,24 @@ class MatchFunction
   end
 
   def code
-    output = start_function
-
-    output << clause_code
-
-    output << finish_function
+    start_function
+      .concat clause_code
+      .concat finish_function
   end
 
   private
 
   def start_function
-    output = "\n_#{name}:\n"
-    output << 'push rbp'.asm << 'mov rbp, rsp'.asm
+    "\n_#{name}:\n"
+      .concat 'push rbp'.asm
+      .concat 'mov rbp, rsp'.asm
   end
 
   def finish_function
-    output = "_#{name}done:\n"
-    output << 'mov rsp, rbp'.asm
-    output << 'pop rbp'.asm
-    output << "    ret\n"
+    "_#{name}done:\n"
+      .concat 'mov rsp, rbp'.asm
+      .concat 'pop rbp'.asm
+      .concat "    ret\n"
   end
 
   def clause_code
