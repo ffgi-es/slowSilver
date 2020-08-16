@@ -145,9 +145,7 @@ class MatchFunction
   def code
     output = start_function
 
-    param_checks = clause_code
-
-    output << param_checks.join
+    output << clause_code
 
     output << finish_function
   end
@@ -167,16 +165,10 @@ class MatchFunction
   end
 
   def clause_code
-    param_checks = []
-
-    @clauses.each_with_index do |clause, index|
-      checks = clause.code(name, index)
-      param_checks.push checks
-    end
-
-    param_checks.last.gsub!(/^\s*jmp\s+_\w+done\n\Z/, '')
-
-    param_checks
+    @clauses
+      .map.with_index { |clause, index| clause.code(name, index) }
+      .join
+      .gsub(/^\s*jmp\s+_\w+done\n\Z/, '')
   end
 end
 
@@ -190,17 +182,22 @@ class Clause
   end
 
   def code(name, index)
-    param_checks = "_#{name}#{index}:\n"
+    start = "_#{name}#{index}:\n"
+    done =  "_#{name}done"
+    @parameters
+      .each_with_index
+      .reduce(start) { |code, (p, i)| code << parameter_check(p, name, index, i) }
+      .concat @return.code(false, @parameters.map(&:name), done)
+  end
 
-    @parameters.each_with_index do |parameter, i|
-      if parameter.is_a? IntegerConstant
-        param_checks << parameter.code
-        param_checks << "cmp rax, [rbp+#{16+(8*i)}]".asm
-        param_checks << "jne _#{name}#{index+1}".asm
-      end
-    end
+  private
 
-    param_checks << @return.code(false, @parameters.map(&:name), "_#{name}done")
+  def parameter_check(parameter, function_name, clause_index, parameter_index)
+    return '' unless parameter.is_a? IntegerConstant
+
+    parameter.code
+      .concat "cmp rax, [rbp+#{16 + (8 * parameter_index)}]".asm
+      .concat "jne _#{function_name}#{clause_index + 1}".asm
   end
 end
 

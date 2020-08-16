@@ -62,17 +62,22 @@ class Parser
       tokens.shift
 
       params = []
-      while tokens.first.type != :return
-        if tokens.first.type == :integer_constant
-          params.push IntegerConstant.new(tokens.shift.value)
-        elsif tokens.first.type == :type
-          tokens.shift
-          params.push Parameter.new(tokens.shift.value)
-        end
-        tokens.shift if tokens.first.type == :separator
-      end
+
+      add_clause_parameter(params, tokens) while tokens.first.type != :return
 
       Clause.new(*params, parse_ret(tokens))
+    end
+
+    def add_clause_parameter(parameters, tokens)
+      case tokens.first.type
+      when :integer_constant
+        parameters.push IntegerConstant.new(tokens.shift.value)
+      when :type
+        tokens.shift
+        parameters.push Parameter.new(tokens.shift.value)
+      when :separator
+        tokens.shift if tokens.first.type == :separator
+      end
     end
 
     def parse_ret(tokens)
