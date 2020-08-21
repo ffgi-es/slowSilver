@@ -78,14 +78,16 @@ class Return
     @expression = expression
   end
 
-  def code(entry, parameters = [])
+  def code(entry, parameters = [], done_name = nil)
     result = @expression.code(parameters)
     if entry
       result << 'mov rbx, rax'.asm
       result << 'mov rax, 1'.asm << 'int 80h'.asm
-    else
+    elsif done_name.nil?
       result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
       result << "    ret\n"
+    else
+      result << "jmp #{done_name}".asm
     end
   end
 end
@@ -120,14 +122,81 @@ end
 
 # a constant integer value
 class IntegerConstant
-  attr_reader :value
+  attr_reader :value, :name
 
   def initialize(value)
     @value = value
   end
 
-  def code(_)
+  def code(_ = nil)
     "mov #{Register[:ax]}, #{value}".asm
+  end
+end
+
+# a function with multiple parameter matched clauses
+class MatchFunction
+  attr_reader :name, :clauses
+
+  def initialize(name, *clauses)
+    @name = name
+    @clauses = clauses
+  end
+
+  def code
+    start_function
+      .concat clause_code
+      .concat finish_function
+  end
+
+  private
+
+  def start_function
+    "\n_#{name}:\n"
+      .concat 'push rbp'.asm
+      .concat 'mov rbp, rsp'.asm
+  end
+
+  def finish_function
+    "_#{name}done:\n"
+      .concat 'mov rsp, rbp'.asm
+      .concat 'pop rbp'.asm
+      .concat "    ret\n"
+  end
+
+  def clause_code
+    @clauses
+      .map.with_index { |clause, index| clause.code(name, index) }
+      .join
+      .gsub(/^\s*jmp\s+_\w+done\n\Z/, '')
+  end
+end
+
+# a single match of a matched function
+class Clause
+  attr_reader :parameters, :return
+
+  def initialize(*params, return_expr)
+    @parameters = params
+    @return = return_expr
+  end
+
+  def code(name, index)
+    start = "_#{name}#{index}:\n"
+    done =  "_#{name}done"
+    @parameters
+      .each_with_index
+      .reduce(start) { |code, (p, i)| code << parameter_check(p, name, index, i) }
+      .concat @return.code(false, @parameters.map(&:name), done)
+  end
+
+  private
+
+  def parameter_check(parameter, function_name, clause_index, parameter_index)
+    return '' unless parameter.is_a? IntegerConstant
+
+    parameter.code
+      .concat "cmp rax, [rbp+#{16 + (8 * parameter_index)}]".asm
+      .concat "jne _#{function_name}#{clause_index + 1}".asm
   end
 end
 

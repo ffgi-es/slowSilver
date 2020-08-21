@@ -295,5 +295,93 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format param matching function definition AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :fib,
+                IntegerConstant.new(7)))),
+          MatchFunction.new(
+            'fib',
+            Clause.new(
+              IntegerConstant.new(0),
+              Return.new(
+                IntegerConstant.new(0))),
+            Clause.new(
+              IntegerConstant.new(1),
+              Return.new(
+                IntegerConstant.new(1))),
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Expression.new(
+                    :fib,
+                    Expression.new(
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(1))),
+                  Expression.new(
+                    :fib,
+                    Expression.new(
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(2)))))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: fib
+                - params:
+                  - int: 7
+          - match-func:
+            - name: 'fib'
+            - clause:
+              - params:
+                - int: 0
+              - return:
+                - int: 0
+            - clause:
+              - params:
+                - int: 1
+              - return:
+                - int: 1
+            - clause:
+              - params:
+                - name: X
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - call:
+                      - name: fib
+                      - params:
+                        - call:
+                          - name: -
+                          - params:
+                            - var: X
+                            - int: 1
+                    - call:
+                      - name: fib
+                      - params:
+                        - call:
+                          - name: -
+                          - params:
+                            - var: X
+                            - int: 2
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end

@@ -1,0 +1,7 @@
+INT main => :+
+    ((:test 2 3 4) :+ (:test 2 4 3))
+    (:test 4 5 2).
+
+INT test: 2, 3, 4 => 1;
+    test: INT X, INT Y, INT Z =>
+        (X :* Y) :- Z.
