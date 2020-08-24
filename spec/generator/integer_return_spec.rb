@@ -1,5 +1,6 @@
 require 'generator'
 require 'ast'
+require_relative 'code_generation'
 
 describe 'Generator' do
   describe 'return integer' do
@@ -22,9 +23,7 @@ describe 'Generator' do
 
           _main:
               mov     rax, 6
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
         ASM
 
         expect(subject.code).to eq expected_asm

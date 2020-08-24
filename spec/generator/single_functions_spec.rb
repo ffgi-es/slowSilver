@@ -1,5 +1,6 @@
 require 'generator'
 require 'ast'
+require_relative 'code_generation'
 
 describe 'Generator' do
   describe 'multiple functions' do
@@ -29,9 +30,7 @@ describe 'Generator' do
 
           _main:
               call    _add
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
 
           _add:
               mov     rax, 4
@@ -87,9 +86,7 @@ describe 'Generator' do
               push    rax
               call    _double
               add     rsp, 8
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
 
           _double:
               push    rbp
@@ -153,9 +150,7 @@ describe 'Generator' do
               push    rax
               call    _plus
               add     rsp, 16
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
 
           _plus:
               push    rbp
@@ -226,9 +221,7 @@ describe 'Generator' do
               push    rax
               call    _sum
               add     rsp, 24
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
 
           _sum:
               push    rbp
@@ -312,9 +305,7 @@ describe 'Generator' do
               push    rax
               call    _sum
               add     rsp, 24
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
 
           _sum:
               push    rbp

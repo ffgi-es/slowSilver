@@ -1,5 +1,6 @@
 require 'generator'
 require 'ast'
+require_relative 'code_generation'
 
 describe 'Generator' do
   describe 'boolean negation' do
@@ -38,9 +39,7 @@ describe 'Generator' do
               xor     rax, rax
               cmp     rbx, 0
               sete    al
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
         ASM
 
         expect(subject.code).to eq expected_asm

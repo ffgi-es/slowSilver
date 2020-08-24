@@ -1,5 +1,6 @@
 require 'generator'
 require 'ast'
+require_relative 'code_generation'
 
 describe 'Generator' do
   describe 'equal comparison' do
@@ -32,9 +33,7 @@ describe 'Generator' do
               xor     rax, rax
               cmp     rbx, rcx
               sete    al
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
         ASM
 
         expect(subject.code).to eq expected_asm
@@ -99,9 +98,7 @@ describe 'Generator' do
               xor     rax, rax
               cmp     rbx, rcx
               sete    al
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit "rax"}
         ASM
 
         expect(subject.code).to eq expected_asm
