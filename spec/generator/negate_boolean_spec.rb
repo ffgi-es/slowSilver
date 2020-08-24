@@ -39,7 +39,7 @@ describe 'Generator' do
               xor     rax, rax
               cmp     rbx, 0
               sete    al
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
         ASM
 
         expect(subject.code).to eq expected_asm

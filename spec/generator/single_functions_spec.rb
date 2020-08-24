@@ -30,7 +30,7 @@ describe 'Generator' do
 
           _main:
               call    _add
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _add:
               mov     rax, 4
@@ -86,7 +86,7 @@ describe 'Generator' do
               push    rax
               call    _double
               add     rsp, 8
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _double:
               push    rbp
@@ -150,7 +150,7 @@ describe 'Generator' do
               push    rax
               call    _plus
               add     rsp, 16
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _plus:
               push    rbp
@@ -221,7 +221,7 @@ describe 'Generator' do
               push    rax
               call    _sum
               add     rsp, 24
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _sum:
               push    rbp
@@ -305,7 +305,7 @@ describe 'Generator' do
               push    rax
               call    _sum
               add     rsp, 24
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _sum:
               push    rbp

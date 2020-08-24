@@ -30,7 +30,7 @@ describe 'Generator' do
               mov     rax, 3
               pop     rcx
               imul    rax, rcx
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
         ASM
 
         expect(subject.code).to eq expected_asm

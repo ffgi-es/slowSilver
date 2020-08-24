@@ -85,7 +85,7 @@ class Return
       result << 'mov rax, 60'.asm << 'syscall'.asm
     elsif done_name.nil?
       result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
-      result << "    ret\n"
+      result << 'ret'.asm
     else
       result << "jmp #{done_name}".asm
     end
@@ -160,7 +160,7 @@ class MatchFunction
     "_#{name}done:\n"
       .concat 'mov rsp, rbp'.asm
       .concat 'pop rbp'.asm
-      .concat "    ret\n"
+      .concat 'ret'.asm
   end
 
   def clause_code

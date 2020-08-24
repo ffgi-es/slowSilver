@@ -55,7 +55,7 @@ describe 'Generator' do
               push    rax
               call    _fib
               add     rsp, 8
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _fib:
               push    rbp
@@ -168,7 +168,7 @@ describe 'Generator' do
               add     rsp, 16
               pop     rcx
               add     rax, rcx
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
 
           _test:
               push    rbp

@@ -31,7 +31,7 @@ describe 'Generator' do
               pop     rcx
               idiv    rcx
               mov     rax, rdx
-          #{CodeGen.exit "rax"}
+          #{CodeGen.exit 'rax'}
         ASM
 
         expect(subject.code).to eq expected_asm
