@@ -1,5 +1,6 @@
 require 'generator'
 require 'ast'
+require_relative 'code_generation'
 
 describe 'Generator' do
   describe 'param matching functions' do
@@ -54,9 +55,7 @@ describe 'Generator' do
               push    rax
               call    _fib
               add     rsp, 8
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit 'rax'}
 
           _fib:
               push    rbp
@@ -169,9 +168,7 @@ describe 'Generator' do
               add     rsp, 16
               pop     rcx
               add     rax, rcx
-              mov     rbx, rax
-              mov     rax, 1
-              int     80h
+          #{CodeGen.exit 'rax'}
 
           _test:
               push    rbp
