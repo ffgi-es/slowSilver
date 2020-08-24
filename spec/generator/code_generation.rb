@@ -1,9 +1,9 @@
 class CodeGen
   def self.exit(exit_code)
     <<-ASM
-    mov     rbx, #{exit_code}
-    mov     rax, 1
-    int     80h
+    mov     rdi, #{exit_code}
+    mov     rax, 60
+    syscall
     ASM
       .chomp
   end

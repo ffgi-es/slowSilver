@@ -81,8 +81,8 @@ class Return
   def code(entry, parameters = [], done_name = nil)
     result = @expression.code(parameters)
     if entry
-      result << 'mov rbx, rax'.asm
-      result << 'mov rax, 1'.asm << 'int 80h'.asm
+      result << 'mov rdi, rax'.asm
+      result << 'mov rax, 60'.asm << 'syscall'.asm
     elsif done_name.nil?
       result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
       result << "    ret\n"
@@ -203,6 +203,6 @@ end
 # add helper formatting function to String class
 class String
   def asm
-    gsub(/^(\w+) /) { |cmd| "    #{cmd.ljust 8}" } << "\n"
+    gsub(/^(\w+) ?/) { |cmd| "    #{cmd.ljust 8}" }.rstrip << "\n"
   end
 end
