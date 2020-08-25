@@ -53,6 +53,9 @@ class PPrinter
       if ret.expression.is_a? IntegerConstant
         return format_integer(output, ret.expression, indent + 2)
       end
+      if ret.expression.is_a? Variable
+        return format_variable(output, ret.expression, indent + 2)
+      end
 
       format_expression(output, ret.expression, indent + 2)
     end
