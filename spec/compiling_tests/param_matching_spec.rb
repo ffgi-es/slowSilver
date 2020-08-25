@@ -86,6 +86,6 @@ describe 'compiling and running program' do
     expect(o).to be_empty
 
     `./#{out_file}`
-    expect($CHILD_STATUS.exitstatus).to eq 55
+    expect($CHILD_STATUS.exitstatus).to eq 89
   end
 end

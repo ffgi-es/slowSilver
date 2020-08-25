@@ -30,7 +30,7 @@ describe 'Lexer' do
         Token.new(:type, :INT),
         Token.new(:variable, 'X2'),
         Token.new(:separator),
-        Token.new(:integer_constant, 1),
+        Token.new(:integer_constant, 0),
         Token.new(:return),
         Token.new(:variable, 'X1'),
         Token.new(:break),
