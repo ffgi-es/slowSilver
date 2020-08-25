@@ -14,13 +14,13 @@ class Token
 
   @token_patterns = {
     type: /^[A-Z]{2,}$/,
-    identifier: /^[a-z]+:?$/,
-    variable: /^[A-Z]$/,
+    identifier: /^[a-z_]+:?$/,
+    variable: /^[A-Z][a-z0-9]*$/,
     return: /^=>$/,
     separator: /^,$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,
-    function_call: /^:([+-=!*%]|[a-z]+)$/,
+    function_call: /^:([+-=!*%]|[a-z_]+)$/,
     open_expression: /^\($/,
     close_expression: /^\)$/,
     break: /^;$/
