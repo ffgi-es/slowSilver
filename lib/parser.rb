@@ -94,6 +94,7 @@ class Parser
     def parse_exp(tokens)
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
       return parse_int(tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
+      return parse_var(*tokens) if tokens.length == 1 && tokens.first.type == :variable
 
       function_call, *arguments = parse_details([], tokens)
 
