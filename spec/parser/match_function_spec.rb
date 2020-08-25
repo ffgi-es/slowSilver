@@ -164,7 +164,7 @@ describe 'Parser' do
         .to eq PPrinter.format(expected_ast)
     end
 
-    it 'should return a tree for function call with parameter matching for multiple mixed parameters' do
+    it 'should return a tree for function call with parameter matching for mixed parameters' do
       tokens_list = [
         Token.new(:type, :INT),
         Token.new(:identifier, 'main'),
@@ -216,7 +216,7 @@ describe 'Parser' do
         Token.new(:function_call, '-'),
         Token.new(:integer_constant, 1),
         Token.new(:close_expression),
-        Token.new(:end),
+        Token.new(:end)
       ]
 
       expected_ast = ASTree.new(

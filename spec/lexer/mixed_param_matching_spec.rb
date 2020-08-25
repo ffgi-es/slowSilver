@@ -22,7 +22,6 @@ describe 'Lexer' do
         Token.new(:integer_constant, 1),
         Token.new(:variable, 'Start'),
         Token.new(:end),
-
         Token.new(:type, :INT),
         Token.new(:identifier, 'fib_rec'),
         Token.new(:type, :INT),
@@ -31,7 +30,7 @@ describe 'Lexer' do
         Token.new(:type, :INT),
         Token.new(:variable, 'X2'),
         Token.new(:separator),
-        Token.new(:integer_constant, 0),
+        Token.new(:integer_constant, 1),
         Token.new(:return),
         Token.new(:variable, 'X1'),
         Token.new(:break),
@@ -57,7 +56,7 @@ describe 'Lexer' do
         Token.new(:function_call, '-'),
         Token.new(:integer_constant, 1),
         Token.new(:close_expression),
-        Token.new(:end),
+        Token.new(:end)
       ]
       lexer = Lexer.new(in_file)
       expect(lexer.lex).to eq out_tokens

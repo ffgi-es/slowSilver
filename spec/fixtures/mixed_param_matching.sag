@@ -2,7 +2,7 @@ INT main => :fib 11.
 
 INT fib: INT Start => :fib_rec 0 1 Start.
 
-INT fib_rec: INT X1, INT X2, 0 => X1;
+INT fib_rec: INT X1, INT X2, 1 => X1;
     fib_rec: INT X1, INT X2, INT N =>
         :fib_rec
             X2
