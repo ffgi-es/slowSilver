@@ -383,5 +383,42 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format function which just returns variable AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Return.new(
+              Expression.new(
+                :fib,
+                IntegerConstant.new(7)))),
+          Function.new(
+            'fib',
+            Parameter.new(:Var),
+            Return.new(
+              Variable.new(:Var)))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - return:
+              - call:
+                - name: fib
+                - params:
+                  - int: 7
+          - func:
+            - name: 'fib'
+            - params:
+              - name: Var
+            - return:
+              - var: Var
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end
