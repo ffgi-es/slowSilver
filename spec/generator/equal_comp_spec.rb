@@ -28,11 +28,8 @@ describe 'Generator' do
               mov     rax, 3
               push    rax
               mov     rax, 3
-              mov     rbx, rax
               pop     rcx
-              xor     rax, rax
-              cmp     rbx, rcx
-              sete    al
+          #{CodeGen.compare 'rcx'}
           #{CodeGen.exit 'rax'}
         ASM
 
@@ -79,25 +76,16 @@ describe 'Generator' do
               mov     rax, 4
               push    rax
               mov     rax, 4
-              mov     rbx, rax
               pop     rcx
-              xor     rax, rax
-              cmp     rbx, rcx
-              sete    al
+          #{CodeGen.compare 'rcx'}
               push    rax
               mov     rax, 3
               push    rax
               mov     rax, 3
-              mov     rbx, rax
               pop     rcx
-              xor     rax, rax
-              cmp     rbx, rcx
-              sete    al
-              mov     rbx, rax
+          #{CodeGen.compare 'rcx'}
               pop     rcx
-              xor     rax, rax
-              cmp     rbx, rcx
-              sete    al
+          #{CodeGen.compare 'rcx'}
           #{CodeGen.exit 'rax'}
         ASM
 

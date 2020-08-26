@@ -7,4 +7,14 @@ class CodeGen
     ASM
       .chomp
   end
+
+  def self.compare(against, opcode = 'sete')
+    <<-ASM
+    mov     rbx, rax
+    xor     rax, rax
+    cmp     rbx, #{against}
+    #{opcode.ljust(8)}al
+    ASM
+      .chomp
+  end
 end

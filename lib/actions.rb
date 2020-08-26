@@ -17,12 +17,7 @@ class Action
 
   @actions[:<] = proc { compare 'setl' }
 
-  @actions[:!] = proc do
-    ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
-      .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
-      .concat "cmp #{Register[:bx]}, 0".asm
-      .concat "sete #{Register[:ax].r8}".asm
-  end
+  @actions[:!] = proc { compare_with('sete', 0) }
 
   @actions[:*] = proc { arithmacy 'imul' }
 
@@ -45,10 +40,13 @@ class Action
     private
 
     def compare(comparison)
+      "pop #{Register[:cx]}".asm << compare_with(comparison, Register[:cx])
+    end
+
+    def compare_with(comparison, other)
       ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
-        .concat "pop #{Register[:cx]}".asm
         .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
-        .concat "cmp #{Register[:bx]}, #{Register[:cx]}".asm
+        .concat "cmp #{Register[:bx]}, #{other}".asm
         .concat "#{comparison} #{Register[:ax].r8}".asm
     end
 
