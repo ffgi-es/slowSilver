@@ -1,39 +1,40 @@
 # holds the inbuilt function actions
 class Action
   @actions = Hash.new(
-    proc do |res, name, params|
-      res << "push #{Register[:ax]}".asm unless params.empty?
-      res << "call _#{name}".asm
-      res << "add #{Register[:sp]}, #{params.count * 8}".asm unless params.empty?
-      res
+    proc do |name, params|
+      next "call _#{name}".asm if params.empty?
+
+      ''.concat "push #{Register[:ax]}".asm
+        .concat "call _#{name}".asm
+        .concat "add #{Register[:sp]}, #{params.count * 8}".asm
     end)
 
-  @actions[:+] = proc { |res| res << arithmacy('add') }
+  @actions[:+] = proc { arithmacy 'add' }
 
-  @actions[:-] = proc { |res| res << arithmacy('sub') }
+  @actions[:-] = proc { arithmacy 'sub' }
 
-  @actions[:"="] = proc { |res| res << compare('sete') }
+  @actions[:"="] = proc { compare 'sete' }
 
-  @actions[:<] = proc { |res| res << compare('setl') }
+  @actions[:<] = proc { compare 'setl' }
 
-  @actions[:!] = proc do |res|
-    res << "mov #{Register[:bx]}, #{Register[:ax]}".asm
-    res << "xor #{Register[:ax]}, #{Register[:ax]}".asm
-    res << "cmp #{Register[:bx]}, 0".asm
-    res << "sete #{Register[:ax].r8}".asm
+  @actions[:!] = proc do
+    ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
+      .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
+      .concat "cmp #{Register[:bx]}, 0".asm
+      .concat "sete #{Register[:ax].r8}".asm
   end
 
-  @actions[:*] = proc { |res| res << arithmacy('imul') }
+  @actions[:*] = proc { arithmacy 'imul' }
 
-  @actions[:/] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "idiv #{Register[:cx]}".asm
+  @actions[:/] = proc do
+    ''.concat "pop #{Register[:cx]}".asm
+      .concat "idiv #{Register[:cx]}".asm
   end
 
-  @actions[:%] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "idiv #{Register[:cx]}".asm
-    res << "mov #{Register[:ax]}, #{Register[:dx]}".asm
+  @actions[:%] = proc do
+    ''.concat "pop #{Register[:cx]}".asm
+      .concat "idiv #{Register[:cx]}".asm
+      .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
   class << self
