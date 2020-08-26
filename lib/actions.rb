@@ -26,6 +26,14 @@ class Action
     res << "sete #{Register[:ax].r8}".asm
   end
 
+  @actions[:<] = proc do |res|
+    res << "mov #{Register[:bx]}, #{Register[:ax]}".asm
+    res << "pop #{Register[:cx]}".asm
+    res << "xor #{Register[:ax]}, #{Register[:ax]}".asm
+    res << "cmp #{Register[:bx]}, #{Register[:cx]}".asm
+    res << "setl #{Register[:ax].r8}".asm
+  end
+
   @actions[:!] = proc do |res|
     res << "mov #{Register[:bx]}, #{Register[:ax]}".asm
     res << "xor #{Register[:ax]}, #{Register[:ax]}".asm
