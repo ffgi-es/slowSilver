@@ -21,6 +21,8 @@ class Action
 
   @actions[:>] = proc { compare 'setg' }
 
+  @actions[:>=] = proc { compare 'setge' }
+
   @actions[:!] = proc { compare_with('sete', 0) }
 
   @actions[:*] = proc { arithmacy 'imul' }
