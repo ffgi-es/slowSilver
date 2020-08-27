@@ -45,7 +45,7 @@ describe 'Generator' do
     end
   end
 
-  describe 'less_than' do
+  describe 'less_than_equal' do
     let('ast') do
       ASTree.new(
         Program.new(
