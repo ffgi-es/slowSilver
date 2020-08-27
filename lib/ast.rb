@@ -103,9 +103,8 @@ class Expression
   end
 
   def code(func_params = [])
-    res = get_parameters func_params
-
-    @action.call(res, @function, @parameters)
+    get_parameters(func_params)
+      .concat @action.call(@function, @parameters)
   end
 
   def get_parameters(func_params)

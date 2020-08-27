@@ -1,57 +1,64 @@
 # holds the inbuilt function actions
 class Action
   @actions = Hash.new(
-    proc do |res, name, params|
-      res << "push #{Register[:ax]}".asm unless params.empty?
-      res << "call _#{name}".asm
-      res << "add #{Register[:sp]}, #{params.count * 8}".asm unless params.empty?
-      res
+    proc do |name, params|
+      next "call _#{name}".asm if params.empty?
+
+      ''.concat "push #{Register[:ax]}".asm
+        .concat "call _#{name}".asm
+        .concat "add #{Register[:sp]}, #{params.count * 8}".asm
     end)
 
-  @actions[:+] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "add #{Register[:ax]}, #{Register[:cx]}".asm
+  @actions[:+] = proc { arithmacy 'add' }
+
+  @actions[:-] = proc { arithmacy 'sub' }
+
+  @actions[:"="] = proc { compare 'sete' }
+
+  @actions[:<] = proc { compare 'setl' }
+
+  @actions[:<=] = proc { compare 'setle' }
+
+  @actions[:>] = proc { compare 'setg' }
+
+  @actions[:>=] = proc { compare 'setge' }
+
+  @actions[:!] = proc { compare_with('sete', 0) }
+
+  @actions[:*] = proc { arithmacy 'imul' }
+
+  @actions[:/] = proc do
+    ''.concat "pop #{Register[:cx]}".asm
+      .concat "idiv #{Register[:cx]}".asm
   end
 
-  @actions[:-] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "sub #{Register[:ax]}, #{Register[:cx]}".asm
-  end
-
-  @actions[:"="] = proc do |res|
-    res << "mov #{Register[:bx]}, #{Register[:ax]}".asm
-    res << "pop #{Register[:cx]}".asm
-    res << "xor #{Register[:ax]}, #{Register[:ax]}".asm
-    res << "cmp #{Register[:bx]}, #{Register[:cx]}".asm
-    res << "sete #{Register[:ax].r8}".asm
-  end
-
-  @actions[:!] = proc do |res|
-    res << "mov #{Register[:bx]}, #{Register[:ax]}".asm
-    res << "xor #{Register[:ax]}, #{Register[:ax]}".asm
-    res << "cmp #{Register[:bx]}, 0".asm
-    res << "sete #{Register[:ax].r8}".asm
-  end
-
-  @actions[:*] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "imul #{Register[:ax]}, #{Register[:cx]}".asm
-  end
-
-  @actions[:/] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "idiv #{Register[:cx]}".asm
-  end
-
-  @actions[:%] = proc do |res|
-    res << "pop #{Register[:cx]}".asm
-    res << "idiv #{Register[:cx]}".asm
-    res << "mov #{Register[:ax]}, #{Register[:dx]}".asm
+  @actions[:%] = proc do
+    ''.concat "pop #{Register[:cx]}".asm
+      .concat "idiv #{Register[:cx]}".asm
+      .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
   class << self
     def [](name)
       @actions[name]
+    end
+
+    private
+
+    def compare(comparison)
+      "pop #{Register[:cx]}".asm << compare_with(comparison, Register[:cx])
+    end
+
+    def compare_with(comparison, other)
+      ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
+        .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
+        .concat "cmp #{Register[:bx]}, #{other}".asm
+        .concat "#{comparison} #{Register[:ax].r8}".asm
+    end
+
+    def arithmacy(operation)
+      ''.concat "pop #{Register[:cx]}".asm
+        .concat "#{operation} #{Register[:ax]}, #{Register[:cx]}".asm
     end
   end
 end

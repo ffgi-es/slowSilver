@@ -1,14 +1,9 @@
-require 'English'
-require 'open3'
+require_relative 'shared'
 
 describe 'compiling and running program' do
-  let('slwslvr') { './slwslvr' }
-  let('sample1') { File.expand_path('../fixtures/addition1.sag', File.dirname(__FILE__)) }
-  let('out_file') { 'a.out' }
+  include_context 'compiling test'
 
-  after(:example) do
-    File.delete out_file if File.exist? out_file
-  end
+  let('sample1') { File.expand_path('../fixtures/addition1.sag', File.dirname(__FILE__)) }
 
   it "should print the AST with '-ast' option" do
     o, e, s = Open3.capture3("#{slwslvr} -ast #{sample1}")
