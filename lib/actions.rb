@@ -17,6 +17,8 @@ class Action
 
   @actions[:<] = proc { compare 'setl' }
 
+  @actions[:<=] = proc { compare 'setle' }
+
   @actions[:>] = proc { compare 'setg' }
 
   @actions[:!] = proc { compare_with('sete', 0) }
