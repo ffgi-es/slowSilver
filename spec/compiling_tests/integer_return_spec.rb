@@ -4,13 +4,15 @@ describe 'integer return compiler tests' do
   include_context 'compiling test'
 
   [
-    [ 'integer_return1.sag', 2],
-    [ 'integer_return2.sag', 3],
+    ['integer_return1.sag', 2],
+    ['integer_return2.sag', 3]
   ]
     .each { |(file, exit_code)| include_examples 'exit code', file, exit_code }
 
   let('sample1') { File.expand_path('../fixtures/integer_return1.sag', File.dirname(__FILE__)) }
-  let('sample2') { File.expand_path('../fixtures/integer_return_fail1.sag', File.dirname(__FILE__)) }
+  let('sample2') do
+    File.expand_path('../fixtures/integer_return_fail1.sag', File.dirname(__FILE__))
+  end
 
   it 'should delete its temporary files' do
     `#{slwslvr} #{sample1}`

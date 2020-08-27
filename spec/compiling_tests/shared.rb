@@ -12,7 +12,7 @@ end
 
 shared_examples 'exit code' do |file, exit_code|
   it "should return #{exit_code} for #{file}" do
-    path = File.expand_path("../fixtures/#{file}", File.dirname(__FILE__)) 
+    path = File.expand_path("../fixtures/#{file}", File.dirname(__FILE__))
 
     o, e, s = Open3.capture3("#{slwslvr} #{path}")
 
