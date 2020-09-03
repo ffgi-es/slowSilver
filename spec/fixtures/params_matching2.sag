@@ -1,7 +1,11 @@
-INT main => :+
+main => INT
+===========
+main => :+
     (:test 2 3)
     (:test 4 5).
 
-INT test: 2, 3 => 1;
-    test: INT X, INT Y =>
-        X :* Y.
+test: INT, INT => INT
+---------------------
+test: 2, 3 => 1;
+test: X, Y =>
+    X :* Y.

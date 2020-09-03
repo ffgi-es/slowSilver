@@ -16,6 +16,8 @@ class Token
     type: /^[A-Z]{2,}$/,
     identifier: /^[a-z_]+:?$/,
     variable: /^[A-Z][a-z0-9]*$/,
+    entry_function_line: /^={3,}$/,
+    function_line: /^-{3,}$/,
     return: /^=>$/,
     separator: /^,$/,
     end: /^\.$/,
@@ -25,6 +27,10 @@ class Token
     close_expression: /^\)$/,
     break: /^;$/
   }
+
+  def to_s
+    "#{type}: #{@value}"
+  end
 
   def self.[](type)
     @token_patterns[type]

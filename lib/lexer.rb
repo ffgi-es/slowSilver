@@ -38,7 +38,9 @@ class Lexer
     function_call: proc { |str| str[1..-1] },
     open_expression: nil,
     close_expression: nil,
-    break: nil
+    break: nil,
+    entry_function_line: nil,
+    function_line: nil
   }
 end
 

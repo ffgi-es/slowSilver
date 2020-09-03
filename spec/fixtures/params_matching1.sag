@@ -1,9 +1,12 @@
-INT main => :fib 7.
+main => INT
+===========
+main => :fib 7.
 
-INT fib: 0 => 0;
-    fib: 1 => 1;
-    fib: INT X =>
-        :+
-        (:fib (X :- 1))
-        (:fib (X :- 2)).
-
+fib: INT => INT
+---------------
+fib: 0 => 0;
+fib: 1 => 1;
+fib: X =>
+    :+
+    (:fib (X :- 1))
+    (:fib (X :- 2)).

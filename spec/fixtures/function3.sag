@@ -1,3 +1,7 @@
-INT main => 3 :plus 8.
+main => INT
+===========
+main => 3 :plus 8.
 
-INT plus: INT A, INT B => A :+ B.
+plus: INT, INT => INT
+---------------------
+plus: A, B => A :+ B.

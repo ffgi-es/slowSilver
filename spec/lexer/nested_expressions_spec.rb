@@ -6,7 +6,10 @@ describe 'Lexer' do
     it 'should return a list of tokens for nested_expession1.sag' do
       in_file = File.expand_path '../fixtures/nested_expression1.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:open_expression),
@@ -25,7 +28,10 @@ describe 'Lexer' do
     it 'should return a list of tokens for multiline1.sag' do
       in_file = File.expand_path '../fixtures/multiline1.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:function_call, '+'),

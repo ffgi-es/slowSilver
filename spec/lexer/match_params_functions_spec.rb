@@ -6,13 +6,20 @@ describe 'Lexer' do
     it 'should return a list of tokens for params_matching1.sag' do
       in_file = File.expand_path '../fixtures/params_matching1.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:function_call, 'fib'),
         Token.new(:integer_constant, 7),
         Token.new(:end),
+        Token.new(:identifier, 'fib'),
         Token.new(:type, :INT),
+        Token.new(:return),
+        Token.new(:type, :INT),
+        Token.new(:function_line),
         Token.new(:identifier, 'fib'),
         Token.new(:integer_constant, 0),
         Token.new(:return),
@@ -24,7 +31,6 @@ describe 'Lexer' do
         Token.new(:integer_constant, 1),
         Token.new(:break),
         Token.new(:identifier, 'fib'),
-        Token.new(:type, :INT),
         Token.new(:variable, 'X'),
         Token.new(:return),
         Token.new(:function_call, '+'),

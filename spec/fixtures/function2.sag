@@ -1,3 +1,7 @@
-INT main => :double 4.
+main => INT
+===========
+main => :double 4.
 
-INT double: INT X => X :+ X.
+double: INT => INT
+------------------
+double: X => X :+ X.
