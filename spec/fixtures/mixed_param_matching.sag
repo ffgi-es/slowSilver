@@ -1,10 +1,16 @@
-INT main => :fib 11.
+main => INT
+===========
+main => :fib 11.
 
-INT fib: INT Start => :fib_rec 0 1 Start.
+fib: INT => INT
+---------------
+fib: Start => :fib_rec 0 1 Start.
 
-INT fib_rec: INT X1, INT X2, 0 => X1;
-    fib_rec: INT X1, INT X2, INT N =>
-        :fib_rec
-            X2
-            (X1 :+ X2)
-            (N :- 1).
+fib_rec: INT, INT, INT => INT
+-----------------------------
+fib_rec: X1, X2, 0 => X1;
+fib_rec: X1, X2, N =>
+    :fib_rec
+        X2
+        (X1 :+ X2)
+        (N :- 1).

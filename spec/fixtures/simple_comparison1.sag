@@ -1,2 +1,4 @@
-INT main =>
+main => INT
+===========
+main =>
    3 := 3.

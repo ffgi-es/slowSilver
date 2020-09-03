@@ -1,3 +1,7 @@
-INT main => :sum 3 4 2.
+main => INT
+===========
+main => :sum 3 4 2.
 
-INT sum: INT A, INT B, INT C => (A :+ B) :+ C.
+sum: INT, INT, INT => INT
+-------------------------
+sum: A, B, C => (A :+ B) :+ C.

@@ -1,5 +1,11 @@
-INT main => :proc 24 7 6.
+main => INT
+===========
+main => :proc 24 7 6.
 
-INT proc: INT A, INT B, INT C => A :- (:add B C).
+proc => INT, INT, INT => INT
+----------------------------
+proc: A, B, C => A :- (:add B C).
 
-INT add: INT A, INT B => A :+ B.
+add: INT => INT
+---------------
+add: A, B => A :+ B.
