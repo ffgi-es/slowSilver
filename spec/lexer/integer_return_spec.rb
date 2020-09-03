@@ -6,7 +6,10 @@ describe 'Lexer' do
     it 'should return a list of tokens for integer_return1.sag' do
       in_file = File.expand_path '../fixtures/integer_return1.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, 2),
@@ -19,7 +22,10 @@ describe 'Lexer' do
     it 'should return a list of tokens for integer_return2.sag' do
       in_file = File.expand_path '../fixtures/integer_return2.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, 3),
@@ -32,7 +38,10 @@ describe 'Lexer' do
     it 'should return a list of tokens for integer_return3.sag' do
       in_file = File.expand_path '../fixtures/integer_return3.sag', File.dirname(__FILE__)
       out_tokens = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, -2),
