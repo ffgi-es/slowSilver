@@ -2,7 +2,7 @@ main => INT
 ===========
 main => :proc 24 7 6.
 
-proc => INT, INT, INT => INT
+proc: INT, INT, INT => INT
 ----------------------------
 proc: A, B, C => A :- (:add B C).
 
