@@ -6,7 +6,10 @@ describe 'Parser' do
   describe '#parse' do
     it 'should return AST for returning 4' do
       tokens_list = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, 4),
@@ -28,7 +31,10 @@ describe 'Parser' do
 
     it 'should return AST for returning 3' do
       tokens_list = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:integer_constant, 6),

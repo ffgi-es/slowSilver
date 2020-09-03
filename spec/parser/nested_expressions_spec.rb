@@ -6,7 +6,10 @@ describe 'Parser' do
   describe '#parse' do
     it 'should return a tree for nested expressions' do
       tokens_list = [
+        Token.new(:identifier, 'main'),
+        Token.new(:return),
         Token.new(:type, :INT),
+        Token.new(:entry_function_line),
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:open_expression),
