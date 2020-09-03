@@ -15,7 +15,7 @@ describe 'Lexer' do
         Token.new(:function_call, 'fib'),
         Token.new(:integer_constant, 11),
         Token.new(:end),
-        
+
         Token.new(:identifier, 'fib'),
         Token.new(:type, :INT),
         Token.new(:return),

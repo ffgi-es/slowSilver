@@ -39,13 +39,18 @@ class Parser
 
       tokens = tokens.drop_while { |t| t.type != :identifier } [1..-1]
 
+      params = parse_function_params(tokens)
+
+      Function.new(name, *params, parse_ret(tokens))
+    end
+
+    def parse_function_params(tokens)
       params = []
       while tokens.first.type == :variable
         params.push Parameter.new(tokens.shift.value)
         tokens.shift if tokens.first.type == :separator
       end
-
-      Function.new(name, *params, parse_ret(tokens))
+      params
     end
 
     def parse_matching_function(tokens)
