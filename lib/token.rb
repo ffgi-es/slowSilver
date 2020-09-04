@@ -25,6 +25,7 @@ class Token
     function_call: /^:([+-=!*%>]+|[a-z_]+)$/,
     open_expression: /^\($/,
     close_expression: /^\)$/,
+    condition: /^\?$/,
     break: /^;$/
   }
 
@@ -32,7 +33,9 @@ class Token
     "#{type}: #{@value}"
   end
 
-  def self.[](type)
-    @token_patterns[type]
+  def self.create(string, lexers)
+    @token_patterns.reduce(nil) do |res, (type, pattern)|
+      break Token.new(type, lexers[type]&.call(string)) if string =~ pattern
+    end
   end
 end
