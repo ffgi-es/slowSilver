@@ -76,23 +76,23 @@ describe 'Parser' do
               IntegerConstant.new(1),
               Return.new(
                 IntegerConstant.new(1))),
-                Clause.new(
-                  Parameter.new(:X),
-                  Return.new(
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Expression.new(
+                    :fib,
                     Expression.new(
-                      :+,
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(1))),
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(2)))))))))
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(1))),
+                  Expression.new(
+                    :fib,
+                    Expression.new(
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(2)))))))))
 
       actual_ast = Parser.parse(tokens_list)
 
@@ -274,30 +274,30 @@ describe 'Parser' do
                   IntegerConstant.new(0),
                   IntegerConstant.new(1),
                   Variable.new(:Start))))),
-                  MatchFunction.new(
-                    'fib_rec',
-                    Clause.new(
-                      Parameter.new(:X1),
-                      Parameter.new(:X2),
-                      IntegerConstant.new(0),
-                      Return.new(
-                        Variable.new(:X1))),
-                    Clause.new(
-                      Parameter.new(:X1),
-                      Parameter.new(:X2),
-                      Parameter.new(:N),
-                      Return.new(
-                        Expression.new(
-                          :fib_rec,
-                          Variable.new(:X2),
-                          Expression.new(
-                            :+,
-                            Variable.new(:X1),
-                            Variable.new(:X2)),
-                          Expression.new(
-                            :-,
-                            Variable.new(:N),
-                            IntegerConstant.new(1))))))))
+          MatchFunction.new(
+            'fib_rec',
+            Clause.new(
+              Parameter.new(:X1),
+              Parameter.new(:X2),
+              IntegerConstant.new(0),
+              Return.new(
+                Variable.new(:X1))),
+            Clause.new(
+              Parameter.new(:X1),
+              Parameter.new(:X2),
+              Parameter.new(:N),
+              Return.new(
+                Expression.new(
+                  :fib_rec,
+                  Variable.new(:X2),
+                  Expression.new(
+                    :+,
+                    Variable.new(:X1),
+                    Variable.new(:X2)),
+                  Expression.new(
+                    :-,
+                    Variable.new(:N),
+                    IntegerConstant.new(1))))))))
 
       actual_ast = Parser.parse(tokens_list)
 

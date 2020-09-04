@@ -40,7 +40,7 @@ class Parser
       tokens.shift
 
       params = []
-      
+
       add_clause_parameter(params, tokens) while tokens.first.type != :return
 
       Clause.new(*params, parse_ret(tokens))

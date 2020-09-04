@@ -15,20 +15,6 @@ class PPrinter
     end
 
     def format_function(output, function, indent)
-      return format_match_function(output, function, indent) if function.is_a? MatchFunction
-    end
-
-    def format_single_function(output, function, indent)
-      output << indent("- func:\n", indent)
-      output << indent("- name: '#{function.name}'\n", indent + 2)
-      unless function.parameters.empty?
-        output << indent("- params:\n", indent + 2)
-        function.parameters.reduce(output) { |out, p| out << indent("- name: #{p}\n", indent + 4) }
-      end
-      format_return(output, function.return, indent + 2)
-    end
-
-    def format_match_function(output, function, indent)
       output << indent("- match-func:\n", indent)
       output << indent("- name: '#{function.name}'\n", indent + 2)
       function.clauses.reduce(output) { |out, clause| format_clause(out, clause, indent + 2) }
