@@ -15,7 +15,7 @@ class PPrinter
     end
 
     def format_function(output, function, indent)
-      output << indent("- match-func:\n", indent)
+      output << indent("- func:\n", indent)
       output << indent("- name: '#{function.name}'\n", indent + 2)
       function.clauses.reduce(output) { |out, clause| format_clause(out, clause, indent + 2) }
     end

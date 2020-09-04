@@ -16,7 +16,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -43,7 +43,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -77,7 +77,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -117,7 +117,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -125,7 +125,7 @@ describe PPrinter do
                 - call:
                   - name: add
                   - params:
-          - match-func:
+          - func:
             - name: 'add'
             - clause:
               - params:
@@ -164,7 +164,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -173,7 +173,7 @@ describe PPrinter do
                   - name: double
                   - params:
                     - int: 4
-          - match-func:
+          - func:
             - name: 'double'
             - clause:
               - params:
@@ -215,7 +215,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -225,7 +225,7 @@ describe PPrinter do
                   - params:
                     - int: 4
                     - int: 5
-          - match-func:
+          - func:
             - name: 'add'
             - clause:
               - params:
@@ -283,7 +283,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -294,7 +294,7 @@ describe PPrinter do
                     - int: 4
                     - int: 5
                     - int: 6
-          - match-func:
+          - func:
             - name: 'proc'
             - clause:
               - params:
@@ -311,7 +311,7 @@ describe PPrinter do
                       - params:
                         - var: Y
                         - var: Z
-          - match-func:
+          - func:
             - name: 'add'
             - clause:
               - params:
@@ -370,7 +370,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -379,7 +379,7 @@ describe PPrinter do
                   - name: fib
                   - params:
                     - int: 7
-          - match-func:
+          - func:
             - name: 'fib'
             - clause:
               - params:
@@ -440,7 +440,7 @@ describe PPrinter do
 
       expected_output = <<~OUTPUT
         program:
-          - match-func:
+          - func:
             - name: 'main'
             - clause:
               - params:
@@ -449,7 +449,7 @@ describe PPrinter do
                   - name: fib
                   - params:
                     - int: 7
-          - match-func:
+          - func:
             - name: 'fib'
             - clause:
               - params:

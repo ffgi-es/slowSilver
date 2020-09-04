@@ -13,7 +13,7 @@ describe 'compiling and running program' do
 
     expected_output = <<~OUTPUT
       program:
-        - match-func:
+        - func:
           - name: 'main'
           - clause:
             - params:
