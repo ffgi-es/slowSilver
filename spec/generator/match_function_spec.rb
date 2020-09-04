@@ -24,23 +24,23 @@ describe 'Generator' do
               IntegerConstant.new(1),
               Return.new(
                 IntegerConstant.new(1))),
-                Clause.new(
-                  Parameter.new(:X),
-                  Return.new(
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Expression.new(
+                    :fib,
                     Expression.new(
-                      :+,
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(1))),
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(2)))))))))
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(1))),
+                  Expression.new(
+                    :fib,
+                    Expression.new(
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(2)))))))))
     end
 
     subject { Generator.new(ast) }

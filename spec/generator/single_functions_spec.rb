@@ -287,16 +287,16 @@ describe 'Generator' do
                     :add,
                     Variable.new(:B),
                     Variable.new(:C)))))),
-                  MatchFunction.new(
-                    'add',
-                    Clause.new(
-                      Parameter.new(:X),
-                      Parameter.new(:Y),
-                      Return.new(
-                        Expression.new(
-                          :+,
-                          Variable.new(:X),
-                          Variable.new(:Y)))))))
+          MatchFunction.new(
+            'add',
+            Clause.new(
+              Parameter.new(:X),
+              Parameter.new(:Y),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:Y)))))))
     end
 
     subject { Generator.new(ast) }

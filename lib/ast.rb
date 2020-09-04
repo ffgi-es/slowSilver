@@ -62,8 +62,10 @@ class Return
   end
 
   def code(parameters = [], done_name = nil)
-    return @expression.code(parameters)
-      .concat "jmp #{done_name}".asm if done_name
+    if done_name
+      return @expression.code(parameters)
+          .concat "jmp #{done_name}".asm
+    end
 
     @expression.code(parameters)
   end
@@ -140,9 +142,11 @@ class MatchFunction
   end
 
   def finish_function(entry)
-    return 'mov rdi, rax'.asm
-      .concat 'mov rax, 60'.asm
-      .concat 'syscall'.asm if entry
+    if entry
+      return 'mov rdi, rax'.asm
+          .concat 'mov rax, 60'.asm
+          .concat 'syscall'.asm
+    end
 
     done_label
       .concat reset_stack
