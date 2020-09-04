@@ -49,7 +49,7 @@ describe 'Parser' do
 
       expect { Parser.parse tokens_list } .to raise_exception(
         ParseError,
-        "Unexpected token: '6'")
+        "Unexpected token: '.'")
     end
   end
 end

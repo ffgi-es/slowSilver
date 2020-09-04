@@ -28,17 +28,19 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(:add))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(:add)))),
+          MatchFunction.new(
             'add',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(3),
-                IntegerConstant.new(4))))))
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(4)))))))
 
       actual_ast = Parser.parse(tokens_list)
 
@@ -73,20 +75,22 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :double,
-                IntegerConstant.new(4)))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :double,
+                  IntegerConstant.new(4))))),
+          MatchFunction.new(
             'double',
-            Parameter.new(:X),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:X),
-                Variable.new(:X))))))
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:X)))))))
 
       actual_ast = Parser.parse(tokens_list)
 
@@ -126,22 +130,24 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :plus,
-                IntegerConstant.new(3),
-                IntegerConstant.new(8)))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :plus,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(8))))),
+          MatchFunction.new(
             'plus',
-            Parameter.new(:A),
-            Parameter.new(:B),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:A),
-                Variable.new(:B))))))
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:A),
+                  Variable.new(:B)))))))
 
       actual_ast = Parser.parse(tokens_list)
 

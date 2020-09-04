@@ -15,7 +15,6 @@ class PPrinter
     end
 
     def format_function(output, function, indent)
-      return format_single_function(output, function, indent) if function.is_a? Function
       return format_match_function(output, function, indent) if function.is_a? MatchFunction
     end
 

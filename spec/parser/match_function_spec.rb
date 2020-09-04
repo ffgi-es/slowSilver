@@ -59,12 +59,13 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(7)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
           MatchFunction.new(
             'fib',
             Clause.new(
@@ -75,23 +76,23 @@ describe 'Parser' do
               IntegerConstant.new(1),
               Return.new(
                 IntegerConstant.new(1))),
-            Clause.new(
-              Parameter.new(:X),
-              Return.new(
-                Expression.new(
-                  :+,
-                  Expression.new(
-                    :fib,
+                Clause.new(
+                  Parameter.new(:X),
+                  Return.new(
                     Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(1))),
-                  Expression.new(
-                    :fib,
-                    Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(2)))))))))
+                      :+,
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(1))),
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(2)))))))))
 
       actual_ast = Parser.parse(tokens_list)
 
@@ -149,19 +150,20 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :+,
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :test,
-                  IntegerConstant.new(2),
-                  IntegerConstant.new(3)),
-                Expression.new(
-                  :test,
-                  IntegerConstant.new(4),
-                  IntegerConstant.new(5))))),
+                  :+,
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(2),
+                    IntegerConstant.new(3)),
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(4),
+                    IntegerConstant.new(5)))))),
           MatchFunction.new(
             'test',
             Clause.new(
@@ -255,45 +257,47 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
-            'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(11)))),
-          Function.new(
-            'fib',
-            Parameter.new(:Start),
-            Return.new(
-              Expression.new(
-                :fib_rec,
-                IntegerConstant.new(0),
-                IntegerConstant.new(1),
-                Variable.new(:Start)))),
           MatchFunction.new(
-            'fib_rec',
+            'main',
             Clause.new(
-              Parameter.new(:X1),
-              Parameter.new(:X2),
-              IntegerConstant.new(0),
               Return.new(
-                Variable.new(:X1))),
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(11))))),
+          MatchFunction.new(
+            'fib',
             Clause.new(
-              Parameter.new(:X1),
-              Parameter.new(:X2),
-              Parameter.new(:N),
+              Parameter.new(:Start),
               Return.new(
                 Expression.new(
                   :fib_rec,
-                  Variable.new(:X2),
-                  Expression.new(
-                    :+,
-                    Variable.new(:X1),
-                    Variable.new(:X2)),
-                  Expression.new(
-                    :-,
-                    Variable.new(:N),
-                    IntegerConstant.new(1))))))))
+                  IntegerConstant.new(0),
+                  IntegerConstant.new(1),
+                  Variable.new(:Start))))),
+                  MatchFunction.new(
+                    'fib_rec',
+                    Clause.new(
+                      Parameter.new(:X1),
+                      Parameter.new(:X2),
+                      IntegerConstant.new(0),
+                      Return.new(
+                        Variable.new(:X1))),
+                    Clause.new(
+                      Parameter.new(:X1),
+                      Parameter.new(:X2),
+                      Parameter.new(:N),
+                      Return.new(
+                        Expression.new(
+                          :fib_rec,
+                          Variable.new(:X2),
+                          Expression.new(
+                            :+,
+                            Variable.new(:X1),
+                            Variable.new(:X2)),
+                          Expression.new(
+                            :-,
+                            Variable.new(:N),
+                            IntegerConstant.new(1))))))))
 
       actual_ast = Parser.parse(tokens_list)
 

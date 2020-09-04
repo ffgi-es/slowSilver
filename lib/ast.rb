@@ -30,23 +30,6 @@ class Program
   end
 end
 
-# A function in the program
-class Function
-  attr_reader :name, :parameters, :return
-
-  def initialize(name, *params, return_exp)
-    @name = name
-    @parameters = params.map(&:name)
-    @return = return_exp
-  end
-
-  def code(entry = false)
-    output = "\n_#{name}:\n"
-    output << 'push rbp'.asm << 'mov rbp, rsp'.asm unless entry || @parameters.empty?
-    output << @return.code(entry, @parameters)
-  end
-end
-
 # a parameter for a function
 class Parameter
   attr_reader :name

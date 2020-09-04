@@ -25,42 +25,13 @@ class Parser
     end
 
     def parse_function(tokens)
-      if tokens.any?(Token.new(:break))
-        parse_matching_function(tokens)
-      else
-        parse_single_function(tokens)
-      end
-    end
-
-    def parse_single_function(tokens)
-      raise ParseError, "Unexpected token: 'main'" unless tokens.first.type == :identifier
-
-      name = tokens.shift.value
-
-      tokens = tokens.drop_while { |t| t.type != :identifier } [1..-1]
-
-      params = parse_function_params(tokens)
-
-      Function.new(name, *params, parse_ret(tokens))
-    end
-
-    def parse_function_params(tokens)
-      params = []
-      while tokens.first.type == :variable
-        params.push Parameter.new(tokens.shift.value)
-        tokens.shift if tokens.first.type == :separator
-      end
-      params
-    end
-
-    def parse_matching_function(tokens)
       name = tokens.shift.value
 
       tokens = tokens.drop_while { |t| t.type != :identifier }
 
-      clauses = tokens.slice_after(Token.new(:break)).reduce([]) do |res, clause_tokens|
-        res.push parse_clause(clause_tokens)
-      end
+      clauses = tokens
+        .slice_after(Token.new(:break))
+        .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
 
       MatchFunction.new(name, *clauses)
     end
@@ -69,7 +40,7 @@ class Parser
       tokens.shift
 
       params = []
-
+      
       add_clause_parameter(params, tokens) while tokens.first.type != :return
 
       Clause.new(*params, parse_ret(tokens))
@@ -83,6 +54,8 @@ class Parser
         parameters.push Parameter.new(tokens.shift.value)
       when :separator
         tokens.shift if tokens.first.type == :separator
+      else
+        raise ParseError, "Unexpected token: '.'"
       end
     end
 

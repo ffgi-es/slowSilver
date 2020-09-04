@@ -18,10 +18,11 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              IntegerConstant.new(4)))))
+            Clause.new(
+              Return.new(
+                IntegerConstant.new(4))))))
 
       actual_ast = Parser.parse(tokens_list)
 
@@ -43,10 +44,11 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              IntegerConstant.new(6)))))
+            Clause.new(
+              Return.new(
+                IntegerConstant.new(6))))))
 
       actual_ast = Parser.parse(tokens_list)
 
