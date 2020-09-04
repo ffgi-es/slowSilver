@@ -9,11 +9,12 @@ describe 'Generator' do
         Program.new(
           Function.new(
             'blam',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(4),
-                IntegerConstant.new(8))))))
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(4),
+                  IntegerConstant.new(8)))))))
     end
 
     subject { Generator.new(ast) }

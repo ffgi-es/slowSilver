@@ -15,12 +15,14 @@ describe 'compiling and running program' do
       program:
         - func:
           - name: 'main'
-          - return:
-            - call:
-              - name: +
-              - params:
-                - int: 2
-                - int: 2
+          - clause:
+            - params:
+            - return:
+              - call:
+                - name: +
+                - params:
+                  - int: 2
+                  - int: 2
     OUTPUT
     expect(o).to eq expected_output
   end

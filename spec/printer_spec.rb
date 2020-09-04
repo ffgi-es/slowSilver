@@ -8,8 +8,9 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              IntegerConstant.new(4)))))
+            Clause.new(
+              Return.new(
+                IntegerConstant.new(4))))))
 
       output = PPrinter.format(ast)
 
@@ -17,8 +18,10 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - int: 4
+            - clause:
+              - params:
+              - return:
+                - int: 4
       OUTPUT
 
       expect(output).to eq expected_output
@@ -29,11 +32,12 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(3),
-                IntegerConstant.new(4))))))
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(4)))))))
 
       output = PPrinter.format(ast)
 
@@ -41,12 +45,14 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: +
-                - params:
-                  - int: 3
-                  - int: 4
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - int: 3
+                    - int: 4
       OUTPUT
 
       expect(output).to eq expected_output
@@ -57,14 +63,15 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :-,
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :+,
-                  IntegerConstant.new(13),
-                  IntegerConstant.new(2)),
-                IntegerConstant.new(5))))))
+                  :-,
+                  Expression.new(
+                    :+,
+                    IntegerConstant.new(13),
+                    IntegerConstant.new(2)),
+                  IntegerConstant.new(5)))))))
 
       output = PPrinter.format(ast)
 
@@ -72,16 +79,18 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: -
-                - params:
-                  - call:
-                    - name: +
-                    - params:
-                      - int: 13
-                      - int: 2
-                  - int: 5
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: -
+                  - params:
+                    - call:
+                      - name: +
+                      - params:
+                        - int: 13
+                        - int: 2
+                    - int: 5
       OUTPUT
 
       expect(output).to eq expected_output
@@ -92,15 +101,17 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(:add))),
+            Clause.new(
+              Return.new(
+                Expression.new(:add)))),
           Function.new(
             'add',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(3),
-                IntegerConstant.new(4))))))
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(4)))))))
 
       output = PPrinter.format(ast)
 
@@ -108,18 +119,22 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: add
-                - params:
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: add
+                  - params:
           - func:
             - name: 'add'
-            - return:
-              - call:
-                - name: +
-                - params:
-                  - int: 3
-                  - int: 4
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - int: 3
+                    - int: 4
       OUTPUT
 
       expect(output).to eq expected_output
@@ -130,18 +145,20 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :double,
-                IntegerConstant.new(4)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :double,
+                  IntegerConstant.new(4))))),
           Function.new(
             'double',
-            Parameter.new(:X),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:X),
-                Variable.new(:X))))))
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:X)))))))
 
       output = PPrinter.format(ast)
 
@@ -149,21 +166,24 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: double
-                - params:
-                  - int: 4
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: double
+                  - params:
+                    - int: 4
           - func:
             - name: 'double'
-            - params:
-              - name: X
-            - return:
-              - call:
-                - name: +
-                - params:
-                  - var: X
-                  - var: X
+            - clause:
+              - params:
+                - name: X
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - var: X
+                    - var: X
       OUTPUT
 
       expect(output).to eq expected_output
@@ -174,20 +194,22 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :add,
-                IntegerConstant.new(4),
-                IntegerConstant.new(5)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :add,
+                  IntegerConstant.new(4),
+                  IntegerConstant.new(5))))),
           Function.new(
             'add',
-            Parameter.new(:X),
-            Parameter.new(:Y),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:X),
-                Variable.new(:Y))))))
+            Clause.new(
+              Parameter.new(:X),
+              Parameter.new(:Y),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:Y)))))))
 
       output = PPrinter.format(ast)
 
@@ -195,23 +217,26 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: add
-                - params:
-                  - int: 4
-                  - int: 5
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: add
+                  - params:
+                    - int: 4
+                    - int: 5
           - func:
             - name: 'add'
-            - params:
-              - name: X
-              - name: Y
-            - return:
-              - call:
-                - name: +
-                - params:
-                  - var: X
-                  - var: Y
+            - clause:
+              - params:
+                - name: X
+                - name: Y
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - var: X
+                    - var: Y
       OUTPUT
 
       expect(output).to eq expected_output
@@ -222,34 +247,37 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :proc,
-                IntegerConstant.new(4),
-                IntegerConstant.new(5),
-                IntegerConstant.new(6)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :proc,
+                  IntegerConstant.new(4),
+                  IntegerConstant.new(5),
+                  IntegerConstant.new(6))))),
           Function.new(
             'proc',
-            Parameter.new(:X),
-            Parameter.new(:Y),
-            Parameter.new(:Z),
-            Return.new(
-              Expression.new(
-                :-,
-                Variable.new(:X),
+            Clause.new(
+              Parameter.new(:X),
+              Parameter.new(:Y),
+              Parameter.new(:Z),
+              Return.new(
                 Expression.new(
-                  :add,
-                  Variable.new(:Y),
-                  Variable.new(:Z))))),
+                  :-,
+                  Variable.new(:X),
+                  Expression.new(
+                    :add,
+                    Variable.new(:Y),
+                    Variable.new(:Z)))))),
           Function.new(
             'add',
-            Parameter.new(:A),
-            Parameter.new(:B),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:A),
-                Variable.new(:B))))))
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:A),
+                  Variable.new(:B)))))))
 
       output = PPrinter.format(ast)
 
@@ -257,40 +285,44 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: proc
-                - params:
-                  - int: 4
-                  - int: 5
-                  - int: 6
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: proc
+                  - params:
+                    - int: 4
+                    - int: 5
+                    - int: 6
           - func:
             - name: 'proc'
-            - params:
-              - name: X
-              - name: Y
-              - name: Z
-            - return:
-              - call:
-                - name: -
-                - params:
-                  - var: X
-                  - call:
-                    - name: add
-                    - params:
-                      - var: Y
-                      - var: Z
+            - clause:
+              - params:
+                - name: X
+                - name: Y
+                - name: Z
+              - return:
+                - call:
+                  - name: -
+                  - params:
+                    - var: X
+                    - call:
+                      - name: add
+                      - params:
+                        - var: Y
+                        - var: Z
           - func:
             - name: 'add'
-            - params:
-              - name: A
-              - name: B
-            - return:
-              - call:
-                - name: +
-                - params:
-                  - var: A
-                  - var: B
+            - clause:
+              - params:
+                - name: A
+                - name: B
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - var: A
+                    - var: B
       OUTPUT
 
       expect(output).to eq expected_output
@@ -301,11 +333,12 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(7)))),
-          MatchFunction.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
+          Function.new(
             'fib',
             Clause.new(
               IntegerConstant.new(0),
@@ -339,12 +372,14 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: fib
-                - params:
-                  - int: 7
-          - match-func:
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: fib
+                  - params:
+                    - int: 7
+          - func:
             - name: 'fib'
             - clause:
               - params:
@@ -389,15 +424,17 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(7)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
           Function.new(
             'fib',
-            Parameter.new(:Var),
-            Return.new(
-              Variable.new(:Var)))))
+            Clause.new(
+              Parameter.new(:Var),
+              Return.new(
+                Variable.new(:Var))))))
 
       output = PPrinter.format(ast)
 
@@ -405,17 +442,20 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
-            - return:
-              - call:
-                - name: fib
-                - params:
-                  - int: 7
+            - clause:
+              - params:
+              - return:
+                - call:
+                  - name: fib
+                  - params:
+                    - int: 7
           - func:
             - name: 'fib'
-            - params:
-              - name: Var
-            - return:
-              - var: Var
+            - clause:
+              - params:
+                - name: Var
+              - return:
+                - var: Var
       OUTPUT
 
       expect(output).to eq expected_output

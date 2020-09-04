@@ -9,8 +9,9 @@ describe 'Generator' do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              IntegerConstant.new(6)))))
+            Clause.new(
+              Return.new(
+                IntegerConstant.new(6))))))
     end
 
     subject { Generator.new(ast) }

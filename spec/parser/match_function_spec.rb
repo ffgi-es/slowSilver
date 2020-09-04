@@ -61,11 +61,12 @@ describe 'Parser' do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(7)))),
-          MatchFunction.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
+          Function.new(
             'fib',
             Clause.new(
               IntegerConstant.new(0),
@@ -151,18 +152,19 @@ describe 'Parser' do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :+,
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :test,
-                  IntegerConstant.new(2),
-                  IntegerConstant.new(3)),
-                Expression.new(
-                  :test,
-                  IntegerConstant.new(4),
-                  IntegerConstant.new(5))))),
-          MatchFunction.new(
+                  :+,
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(2),
+                    IntegerConstant.new(3)),
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(4),
+                    IntegerConstant.new(5)))))),
+          Function.new(
             'test',
             Clause.new(
               IntegerConstant.new(2),
@@ -257,20 +259,22 @@ describe 'Parser' do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(11)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(11))))),
           Function.new(
             'fib',
-            Parameter.new(:Start),
-            Return.new(
-              Expression.new(
-                :fib_rec,
-                IntegerConstant.new(0),
-                IntegerConstant.new(1),
-                Variable.new(:Start)))),
-          MatchFunction.new(
+            Clause.new(
+              Parameter.new(:Start),
+              Return.new(
+                Expression.new(
+                  :fib_rec,
+                  IntegerConstant.new(0),
+                  IntegerConstant.new(1),
+                  Variable.new(:Start))))),
+          Function.new(
             'fib_rec',
             Clause.new(
               Parameter.new(:X1),

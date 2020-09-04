@@ -25,13 +25,14 @@ describe 'Parser' do
         Program.new(
           Function.new(
             'main',
-            Return.new(
-              Expression.new(
-                :!,
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :"=",
-                  IntegerConstant.new(13),
-                  IntegerConstant.new(2)))))))
+                  :!,
+                  Expression.new(
+                    :"=",
+                    IntegerConstant.new(13),
+                    IntegerConstant.new(2))))))))
 
       actual_ast = Parser.parse(tokens_list)
 
