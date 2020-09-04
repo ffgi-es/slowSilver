@@ -6,7 +6,7 @@ describe PPrinter do
     it 'should format return AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -30,7 +30,7 @@ describe PPrinter do
     it 'should format expression AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -61,7 +61,7 @@ describe PPrinter do
     it 'should format nested expression AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -99,12 +99,12 @@ describe PPrinter do
     it 'should format function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(:add)))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Return.new(
@@ -143,14 +143,14 @@ describe PPrinter do
     it 'should format function definition with a parameter AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :double,
                   IntegerConstant.new(4))))),
-          MatchFunction.new(
+          Function.new(
             'double',
             Clause.new(
               Parameter.new(:X),
@@ -192,7 +192,7 @@ describe PPrinter do
     it 'should format function definition with two parameters AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -200,7 +200,7 @@ describe PPrinter do
                   :add,
                   IntegerConstant.new(4),
                   IntegerConstant.new(5))))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Parameter.new(:X),
@@ -245,7 +245,7 @@ describe PPrinter do
     it 'should format multiple function definitions AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -254,7 +254,7 @@ describe PPrinter do
                   IntegerConstant.new(4),
                   IntegerConstant.new(5),
                   IntegerConstant.new(6))))),
-          MatchFunction.new(
+          Function.new(
             'proc',
             Clause.new(
               Parameter.new(:X),
@@ -268,7 +268,7 @@ describe PPrinter do
                     :add,
                     Variable.new(:Y),
                     Variable.new(:Z)))))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Parameter.new(:A),
@@ -331,14 +331,14 @@ describe PPrinter do
     it 'should format param matching function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :fib,
                   IntegerConstant.new(7))))),
-          MatchFunction.new(
+          Function.new(
             'fib',
             Clause.new(
               IntegerConstant.new(0),
@@ -422,14 +422,14 @@ describe PPrinter do
     it 'should format function which just returns variable AST to readable form' do
       ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :fib,
                   IntegerConstant.new(7))))),
-          MatchFunction.new(
+          Function.new(
             'fib',
             Clause.new(
               Parameter.new(:Var),

@@ -1,7 +1,7 @@
 require_relative 'helpers'
 
 # a function with multiple parameter matched clauses
-class MatchFunction
+class Function
   attr_reader :name, :clauses
 
   def initialize(name, *clauses)

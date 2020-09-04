@@ -59,14 +59,14 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :fib,
                   IntegerConstant.new(7))))),
-          MatchFunction.new(
+          Function.new(
             'fib',
             Clause.new(
               IntegerConstant.new(0),
@@ -150,7 +150,7 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -164,7 +164,7 @@ describe 'Parser' do
                     :test,
                     IntegerConstant.new(4),
                     IntegerConstant.new(5)))))),
-          MatchFunction.new(
+          Function.new(
             'test',
             Clause.new(
               IntegerConstant.new(2),
@@ -257,14 +257,14 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :fib,
                   IntegerConstant.new(11))))),
-          MatchFunction.new(
+          Function.new(
             'fib',
             Clause.new(
               Parameter.new(:Start),
@@ -274,7 +274,7 @@ describe 'Parser' do
                   IntegerConstant.new(0),
                   IntegerConstant.new(1),
                   Variable.new(:Start))))),
-          MatchFunction.new(
+          Function.new(
             'fib_rec',
             Clause.new(
               Parameter.new(:X1),

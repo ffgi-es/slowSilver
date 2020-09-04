@@ -33,7 +33,7 @@ class Parser
         .slice_after(Token.new(:break))
         .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
 
-      MatchFunction.new(name, *clauses)
+      Function.new(name, *clauses)
     end
 
     def parse_clause(tokens)

@@ -7,14 +7,14 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :fib,
                   IntegerConstant.new(7))))),
-          MatchFunction.new(
+          Function.new(
             'fib',
             Clause.new(
               IntegerConstant.new(0),
@@ -115,7 +115,7 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -129,7 +129,7 @@ describe 'Generator' do
                     :test,
                     IntegerConstant.new(4),
                     IntegerConstant.new(5)))))),
-          MatchFunction.new(
+          Function.new(
             'test',
             Clause.new(
               IntegerConstant.new(2),

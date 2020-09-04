@@ -28,12 +28,12 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(:add)))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Return.new(
@@ -75,14 +75,14 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :double,
                   IntegerConstant.new(4))))),
-          MatchFunction.new(
+          Function.new(
             'double',
             Clause.new(
               Parameter.new(:X),
@@ -130,7 +130,7 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -138,7 +138,7 @@ describe 'Parser' do
                   :plus,
                   IntegerConstant.new(3),
                   IntegerConstant.new(8))))),
-          MatchFunction.new(
+          Function.new(
             'plus',
             Clause.new(
               Parameter.new(:A),

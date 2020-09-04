@@ -24,7 +24,7 @@ describe 'Parser' do
 
       expected_ast = ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(

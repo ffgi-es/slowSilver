@@ -7,7 +7,7 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'blam',
             Clause.new(
               Return.new(

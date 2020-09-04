@@ -7,12 +7,12 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(:add)))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Return.new(
@@ -59,14 +59,14 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
                 Expression.new(
                   :double,
                   IntegerConstant.new(4))))),
-          MatchFunction.new(
+          Function.new(
             'double',
             Clause.new(
               Parameter.new(:X),
@@ -121,7 +121,7 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -129,7 +129,7 @@ describe 'Generator' do
                   :plus,
                   IntegerConstant.new(3),
                   IntegerConstant.new(8))))),
-          MatchFunction.new(
+          Function.new(
             'plus',
             Clause.new(
               Parameter.new(:A),
@@ -187,7 +187,7 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -196,7 +196,7 @@ describe 'Generator' do
                   IntegerConstant.new(3),
                   IntegerConstant.new(8),
                   IntegerConstant.new(4))))),
-          MatchFunction.new(
+          Function.new(
             'sum',
             Clause.new(
               Parameter.new(:A),
@@ -264,7 +264,7 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          MatchFunction.new(
+          Function.new(
             'main',
             Clause.new(
               Return.new(
@@ -273,7 +273,7 @@ describe 'Generator' do
                   IntegerConstant.new(3),
                   IntegerConstant.new(8),
                   IntegerConstant.new(4))))),
-          MatchFunction.new(
+          Function.new(
             'sum',
             Clause.new(
               Parameter.new(:A),
@@ -287,7 +287,7 @@ describe 'Generator' do
                     :add,
                     Variable.new(:B),
                     Variable.new(:C)))))),
-          MatchFunction.new(
+          Function.new(
             'add',
             Clause.new(
               Parameter.new(:X),
