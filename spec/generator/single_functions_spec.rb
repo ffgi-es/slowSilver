@@ -7,17 +7,19 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(:add))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(:add)))),
+          MatchFunction.new(
             'add',
-            Return.new(
-              Expression.new(
-                :+,
-                IntegerConstant.new(3),
-                IntegerConstant.new(4))))))
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(4)))))))
     end
 
     subject { Generator.new(ast) }
@@ -57,20 +59,22 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :double,
-                IntegerConstant.new(4)))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :double,
+                  IntegerConstant.new(4))))),
+          MatchFunction.new(
             'double',
-            Parameter.new(:X),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:X),
-                Variable.new(:X))))))
+            Clause.new(
+              Parameter.new(:X),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:X)))))))
     end
 
     subject { Generator.new(ast) }
@@ -117,22 +121,24 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :plus,
-                IntegerConstant.new(3),
-                IntegerConstant.new(8)))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :plus,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(8))))),
+          MatchFunction.new(
             'plus',
-            Parameter.new(:A),
-            Parameter.new(:B),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:A),
-                Variable.new(:B))))))
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:A),
+                  Variable.new(:B)))))))
     end
 
     subject { Generator.new(ast) }
@@ -181,27 +187,29 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :sum,
-                IntegerConstant.new(3),
-                IntegerConstant.new(8),
-                IntegerConstant.new(4)))),
-          Function.new(
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :sum,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(8),
+                  IntegerConstant.new(4))))),
+          MatchFunction.new(
             'sum',
-            Parameter.new(:A),
-            Parameter.new(:B),
-            Parameter.new(:C),
-            Return.new(
-              Expression.new(
-                :+,
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              Parameter.new(:C),
+              Return.new(
                 Expression.new(
                   :+,
-                  Variable.new(:A),
-                  Variable.new(:B)),
-                Variable.new(:C))))))
+                  Expression.new(
+                    :+,
+                    Variable.new(:A),
+                    Variable.new(:B)),
+                  Variable.new(:C)))))))
     end
 
     subject { Generator.new(ast) }
@@ -256,36 +264,39 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :sum,
-                IntegerConstant.new(3),
-                IntegerConstant.new(8),
-                IntegerConstant.new(4)))),
-          Function.new(
-            'sum',
-            Parameter.new(:A),
-            Parameter.new(:B),
-            Parameter.new(:C),
-            Return.new(
-              Expression.new(
-                :-,
-                Variable.new(:A),
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :add,
-                  Variable.new(:B),
-                  Variable.new(:C))))),
-          Function.new(
-            'add',
-            Parameter.new(:X),
-            Parameter.new(:Y),
-            Return.new(
-              Expression.new(
-                :+,
-                Variable.new(:X),
-                Variable.new(:Y))))))
+                  :sum,
+                  IntegerConstant.new(3),
+                  IntegerConstant.new(8),
+                  IntegerConstant.new(4))))),
+          MatchFunction.new(
+            'sum',
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              Parameter.new(:C),
+              Return.new(
+                Expression.new(
+                  :-,
+                  Variable.new(:A),
+                  Expression.new(
+                    :add,
+                    Variable.new(:B),
+                    Variable.new(:C)))))),
+                  MatchFunction.new(
+                    'add',
+                    Clause.new(
+                      Parameter.new(:X),
+                      Parameter.new(:Y),
+                      Return.new(
+                        Expression.new(
+                          :+,
+                          Variable.new(:X),
+                          Variable.new(:Y)))))))
     end
 
     subject { Generator.new(ast) }

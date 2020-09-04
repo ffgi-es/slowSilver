@@ -7,12 +7,13 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :fib,
-                IntegerConstant.new(7)))),
+            Clause.new(
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
           MatchFunction.new(
             'fib',
             Clause.new(
@@ -23,23 +24,23 @@ describe 'Generator' do
               IntegerConstant.new(1),
               Return.new(
                 IntegerConstant.new(1))),
-            Clause.new(
-              Parameter.new(:X),
-              Return.new(
-                Expression.new(
-                  :+,
-                  Expression.new(
-                    :fib,
+                Clause.new(
+                  Parameter.new(:X),
+                  Return.new(
                     Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(1))),
-                  Expression.new(
-                    :fib,
-                    Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(2)))))))))
+                      :+,
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(1))),
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(2)))))))))
     end
 
     subject { Generator.new(ast) }
@@ -114,19 +115,20 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              Expression.new(
-                :+,
+            Clause.new(
+              Return.new(
                 Expression.new(
-                  :test,
-                  IntegerConstant.new(2),
-                  IntegerConstant.new(3)),
-                Expression.new(
-                  :test,
-                  IntegerConstant.new(4),
-                  IntegerConstant.new(5))))),
+                  :+,
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(2),
+                    IntegerConstant.new(3)),
+                  Expression.new(
+                    :test,
+                    IntegerConstant.new(4),
+                    IntegerConstant.new(5)))))),
           MatchFunction.new(
             'test',
             Clause.new(

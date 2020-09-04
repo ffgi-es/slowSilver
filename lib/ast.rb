@@ -61,17 +61,11 @@ class Return
     @expression = expression
   end
 
-  def code(entry, parameters = [], done_name = nil)
-    result = @expression.code(parameters)
-    if entry
-      result << 'mov rdi, rax'.asm
-      result << 'mov rax, 60'.asm << 'syscall'.asm
-    elsif done_name.nil?
-      result << 'mov rsp, rbp'.asm << 'pop rbp'.asm unless parameters.empty?
-      result << 'ret'.asm
-    else
-      result << "jmp #{done_name}".asm
-    end
+  def code(parameters = [], done_name = nil)
+    return @expression.code(parameters)
+      .concat "jmp #{done_name}".asm if done_name
+
+    @expression.code(parameters)
   end
 end
 
@@ -124,28 +118,52 @@ class MatchFunction
     @clauses = clauses
   end
 
-  def code
-    start_function
+  def code(entry = false)
+    start_function(entry)
       .concat clause_code
-      .concat finish_function
+      .concat finish_function(entry)
   end
 
   private
 
-  def start_function
+  def start_function(entry)
+    return "\n_#{name}:\n" if entry
+
     "\n_#{name}:\n"
-      .concat 'push rbp'.asm
-      .concat 'mov rbp, rsp'.asm
+      .concat set_stack
   end
 
-  def finish_function
-    "_#{name}done:\n"
-      .concat 'mov rsp, rbp'.asm
-      .concat 'pop rbp'.asm
+  def set_stack
+    return '' if @clauses.first.parameters.empty?
+
+    'push rbp'.asm << 'mov rbp, rsp'.asm
+  end
+
+  def finish_function(entry)
+    return 'mov rdi, rax'.asm
+      .concat 'mov rax, 60'.asm
+      .concat 'syscall'.asm if entry
+
+    done_label
+      .concat reset_stack
       .concat 'ret'.asm
   end
 
+  def done_label
+    return '' if @clauses.count < 2
+
+    "_#{name}done:\n"
+  end
+
+  def reset_stack
+    return '' if @clauses.first.parameters.empty?
+
+    'mov rsp, rbp'.asm << 'pop rbp'.asm
+  end
+
   def clause_code
+    return @clauses.first.single_code if @clauses.count == 1
+
     @clauses
       .map.with_index { |clause, index| clause.code(name, index) }
       .join
@@ -168,7 +186,11 @@ class Clause
     @parameters
       .each_with_index
       .reduce(start) { |code, (p, i)| code << parameter_check(p, name, index, i) }
-      .concat @return.code(false, @parameters.map(&:name), done)
+      .concat @return.code(@parameters.map(&:name), done)
+  end
+
+  def single_code
+    @return.code(@parameters.map(&:name))
   end
 
   private

@@ -7,10 +7,11 @@ describe 'Generator' do
     let('ast') do
       ASTree.new(
         Program.new(
-          Function.new(
+          MatchFunction.new(
             'main',
-            Return.new(
-              IntegerConstant.new(6)))))
+            Clause.new(
+              Return.new(
+                IntegerConstant.new(6))))))
     end
 
     subject { Generator.new(ast) }
