@@ -34,7 +34,7 @@ class Token
   end
 
   def self.create(string, lexers)
-    @token_patterns.reduce(nil) do |res, (type, pattern)|
+    @token_patterns.reduce(nil) do |_, (type, pattern)|
       break Token.new(type, lexers[type]&.call(string)) if string =~ pattern
     end
   end

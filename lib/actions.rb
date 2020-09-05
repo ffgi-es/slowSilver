@@ -27,14 +27,10 @@ class Action
 
   @actions[:*] = proc { arithmacy 'imul' }
 
-  @actions[:/] = proc do
-    ''.concat "pop #{Register[:cx]}".asm
-      .concat "idiv #{Register[:cx]}".asm
-  end
+  @actions[:/] = proc { division }
 
   @actions[:%] = proc do
-    ''.concat "pop #{Register[:cx]}".asm
-      .concat "idiv #{Register[:cx]}".asm
+    division
       .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
@@ -59,6 +55,12 @@ class Action
     def arithmacy(operation)
       ''.concat "pop #{Register[:cx]}".asm
         .concat "#{operation} #{Register[:ax]}, #{Register[:cx]}".asm
+    end
+
+    def division
+      ''.concat "pop #{Register[:cx]}".asm
+        .concat "xor #{Register[:dx]}, #{Register[:dx]}".asm
+        .concat "idiv #{Register[:cx]}".asm
     end
   end
 end

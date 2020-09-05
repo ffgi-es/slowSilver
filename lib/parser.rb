@@ -51,7 +51,7 @@ class Parser
     end
 
     def end_of_parameters?(type)
-      type == :return || type == :condition
+      %i[return condition].include? type
     end
 
     def add_clause_parameter(parameters, tokens)

@@ -31,6 +31,7 @@ describe 'Generator' do
               push    rax
               mov     rax, 9
               pop     rcx
+              xor     rdx, rdx
               idiv    rcx
               mov     rax, rdx
           #{CodeGen.exit 'rax'}

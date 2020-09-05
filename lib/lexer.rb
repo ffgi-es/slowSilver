@@ -24,7 +24,7 @@ class Lexer
     identifier: proc { |str| str.gsub(':', '') },
     variable: proc { |str| str },
     integer_constant: proc { |str| str.to_i },
-    function_call: proc { |str| str[1..-1] },
+    function_call: proc { |str| str[1..-1] }
   }
 end
 
