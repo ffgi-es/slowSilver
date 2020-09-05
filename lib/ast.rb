@@ -23,6 +23,7 @@ class ASTree
   private
 
   def data_section
+    DataLabel.reset
     data = @program.data
     return '' if data.empty?
 
