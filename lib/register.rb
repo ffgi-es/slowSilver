@@ -15,7 +15,8 @@ class Register
     cx: Register.new('rcx', 'ecx', 'cx', 'cl'),
     dx: Register.new('rdx', 'edx', 'dx', 'dl'),
     sp: Register.new('rsp', 'esp', 'sp', 'spl'),
-    di: Register.new('rdi', 'edi', 'di', 'dil')
+    di: Register.new('rdi', 'edi', 'di', 'dil'),
+    si: Register.new('rsi', 'esi', 'si', 'sil')
   }
 
   def self.[](key)

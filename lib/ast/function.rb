@@ -15,6 +15,10 @@ class Function
       .concat finish_function(entry)
   end
 
+  def data
+    @clauses.map(&:data).join
+  end
+
   private
 
   def start_function(entry)

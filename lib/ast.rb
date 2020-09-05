@@ -17,6 +17,15 @@ class ASTree
   end
 
   def code
-    "SECTION .text\n" << @program.code
+    "SECTION .text\n" << @program.code << data_section
+  end
+
+  private
+
+  def data_section
+    data = @program.data
+    return '' if data.empty?
+
+    "\nSECTION .data\n" << data
   end
 end

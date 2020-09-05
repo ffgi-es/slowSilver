@@ -10,7 +10,7 @@ class Lexer
     File.foreach(@filename).reduce([]) do |tokens, line|
       tokens + line
         .split(/(\s|\.|\(|\)|,|;|')/)
-        .reduce({ parts: [], quote: false }) { |result, part| combine_quotes(result, part) }[:parts]
+        .reduce(parts: [], quote: false) { |result, part| combine_quotes(result, part) }[:parts]
         .reject { |s| s =~ /^\s*$/ }
         .map { |part| self.class.lex_part(part) }
     end
