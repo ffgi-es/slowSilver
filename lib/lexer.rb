@@ -16,31 +16,15 @@ class Lexer
   end
 
   def self.lex_part(string)
-    @lexers.each do |key, value|
-      result = lex(string, key, value)
-      return result unless result.nil?
-    end
-    raise LexError, "Unknown token '#{string}'"
-  end
-
-  def self.lex(string, identifier, value)
-    Token.new(identifier, value&.call(string)) if string =~ Token[identifier]
+    Token.create(string, @lexers) || (raise LexError, "Unknown token '#{string}'")
   end
 
   @lexers = {
     type: proc { |str| str.to_sym },
     identifier: proc { |str| str.gsub(':', '') },
     variable: proc { |str| str },
-    return: nil,
     integer_constant: proc { |str| str.to_i },
-    separator: nil,
-    end: nil,
-    function_call: proc { |str| str[1..-1] },
-    open_expression: nil,
-    close_expression: nil,
-    break: nil,
-    entry_function_line: nil,
-    function_line: nil
+    function_call: proc { |str| str[1..-1] }
   }
 end
 

@@ -17,6 +17,7 @@ describe 'compiling and running program' do
           - name: 'main'
           - clause:
             - params:
+            - cond:
             - return:
               - call:
                 - name: +

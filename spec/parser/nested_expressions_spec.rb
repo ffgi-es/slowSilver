@@ -27,6 +27,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :-,

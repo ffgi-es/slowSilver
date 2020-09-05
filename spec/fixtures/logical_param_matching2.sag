@@ -1,0 +1,11 @@
+main => INT
+===========
+main => :collatz 3.
+
+collatz: INT => INT
+-------------------
+collatz: 1 => 1;
+collatz: X ? (X :% 2) := 0 =>
+    X :/ 2;
+collatz: X =>
+    (X :* 3) :+ 1.

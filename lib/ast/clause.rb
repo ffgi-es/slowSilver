@@ -2,10 +2,11 @@ require_relative 'helpers'
 
 # a single match of a matched function
 class Clause
-  attr_reader :parameters, :return
+  attr_reader :parameters, :condition, :return
 
-  def initialize(*params, return_expr)
+  def initialize(*params, condition, return_expr)
     @parameters = params
+    @condition = condition
     @return = return_expr
   end
 
@@ -15,6 +16,7 @@ class Clause
     @parameters
       .each_with_index
       .reduce(start) { |code, (p, i)| code << parameter_check(p, name, index, i) }
+      .concat condition_code(name, index)
       .concat @return.code(@parameters.map(&:name), done)
   end
 
@@ -30,5 +32,13 @@ class Clause
     parameter.code
       .concat "cmp rax, [rbp+#{16 + (8 * parameter_index)}]".asm
       .concat "jne _#{function_name}#{clause_index + 1}".asm
+  end
+
+  def condition_code(name, index)
+    return '' if @condition.nil?
+
+    @condition.code(@parameters.map(&:name))
+      .concat 'cmp rax, 1'.asm
+      .concat "jne _#{name}#{index + 1}".asm
   end
 end

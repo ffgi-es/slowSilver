@@ -21,6 +21,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 IntegerConstant.new(4))))))
 
@@ -47,6 +48,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 IntegerConstant.new(6))))))
 

@@ -9,6 +9,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 IntegerConstant.new(4))))))
 
@@ -20,6 +21,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - int: 4
       OUTPUT
@@ -33,6 +35,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -47,6 +50,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -64,6 +68,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :-,
@@ -81,6 +86,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: -
@@ -102,11 +108,13 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(:add)))),
           Function.new(
             'add',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -121,6 +129,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: add
@@ -129,6 +138,7 @@ describe PPrinter do
             - name: 'add'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -146,6 +156,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :double,
@@ -154,6 +165,7 @@ describe PPrinter do
             'double',
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -168,6 +180,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: double
@@ -178,6 +191,7 @@ describe PPrinter do
             - clause:
               - params:
                 - name: X
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -195,6 +209,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :add,
@@ -205,6 +220,7 @@ describe PPrinter do
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -219,6 +235,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: add
@@ -231,6 +248,7 @@ describe PPrinter do
               - params:
                 - name: X
                 - name: Y
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -248,6 +266,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :proc,
@@ -260,6 +279,7 @@ describe PPrinter do
               Parameter.new(:X),
               Parameter.new(:Y),
               Parameter.new(:Z),
+              nil,
               Return.new(
                 Expression.new(
                   :-,
@@ -273,6 +293,7 @@ describe PPrinter do
             Clause.new(
               Parameter.new(:A),
               Parameter.new(:B),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -287,6 +308,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: proc
@@ -301,6 +323,7 @@ describe PPrinter do
                 - name: X
                 - name: Y
                 - name: Z
+              - cond:
               - return:
                 - call:
                   - name: -
@@ -317,6 +340,7 @@ describe PPrinter do
               - params:
                 - name: A
                 - name: B
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -334,6 +358,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :fib,
@@ -342,14 +367,17 @@ describe PPrinter do
             'fib',
             Clause.new(
               IntegerConstant.new(0),
+              nil,
               Return.new(
                 IntegerConstant.new(0))),
             Clause.new(
               IntegerConstant.new(1),
+              nil,
               Return.new(
                 IntegerConstant.new(1))),
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -374,6 +402,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: fib
@@ -384,16 +413,19 @@ describe PPrinter do
             - clause:
               - params:
                 - int: 0
+              - cond:
               - return:
                 - int: 0
             - clause:
               - params:
                 - int: 1
+              - cond:
               - return:
                 - int: 1
             - clause:
               - params:
                 - name: X
+              - cond:
               - return:
                 - call:
                   - name: +
@@ -425,6 +457,7 @@ describe PPrinter do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :fib,
@@ -433,6 +466,7 @@ describe PPrinter do
             'fib',
             Clause.new(
               Parameter.new(:Var),
+              nil,
               Return.new(
                 Variable.new(:Var))))))
 
@@ -444,6 +478,7 @@ describe PPrinter do
             - name: 'main'
             - clause:
               - params:
+              - cond:
               - return:
                 - call:
                   - name: fib
@@ -454,6 +489,61 @@ describe PPrinter do
             - clause:
               - params:
                 - name: Var
+              - cond:
+              - return:
+                - var: Var
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format function with a condition AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :fib,
+                  IntegerConstant.new(7))))),
+          Function.new(
+            'fib',
+            Clause.new(
+              Parameter.new(:Var),
+              Expression.new(
+                :<,
+                Variable.new(:Var),
+                IntegerConstant.new(3)),
+              Return.new(
+                Variable.new(:Var))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: fib
+                  - params:
+                    - int: 7
+          - func:
+            - name: 'fib'
+            - clause:
+              - params:
+                - name: Var
+              - cond:
+                - call:
+                  - name: <
+                  - params:
+                    - var: Var
+                    - int: 3
               - return:
                 - var: Var
       OUTPUT

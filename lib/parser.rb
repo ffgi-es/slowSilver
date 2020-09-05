@@ -41,9 +41,17 @@ class Parser
 
       params = []
 
-      add_clause_parameter(params, tokens) while tokens.first.type != :return
+      add_clause_parameter(params, tokens) until end_of_parameters? tokens.first.type
 
-      Clause.new(*params, parse_ret(tokens))
+      (return_tokens, condition_tokens) = tokens.slice_before(Token.new(:return)).to_a.reverse
+
+      condition = parse_exp(condition_tokens[1..-1]) if condition_tokens
+
+      Clause.new(*params, condition, parse_ret(return_tokens))
+    end
+
+    def end_of_parameters?(type)
+      %i[return condition].include? type
     end
 
     def add_clause_parameter(parameters, tokens)

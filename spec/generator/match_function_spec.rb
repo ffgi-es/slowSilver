@@ -10,6 +10,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :fib,
@@ -18,14 +19,17 @@ describe 'Generator' do
             'fib',
             Clause.new(
               IntegerConstant.new(0),
+              nil,
               Return.new(
                 IntegerConstant.new(0))),
             Clause.new(
               IntegerConstant.new(1),
+              nil,
               Return.new(
                 IntegerConstant.new(1))),
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -118,6 +122,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -134,11 +139,13 @@ describe 'Generator' do
             Clause.new(
               IntegerConstant.new(2),
               IntegerConstant.new(3),
+              nil,
               Return.new(
                 IntegerConstant.new(1))),
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
+              nil,
               Return.new(
                 Expression.new(
                   :*,

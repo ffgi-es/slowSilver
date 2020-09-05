@@ -24,6 +24,8 @@ class PPrinter
       output << indent("- clause:\n", indent)
       output << indent("- params:\n", indent + 2)
       clause.parameters.reduce(output) { |out, param| format_parameter(out, param, indent + 4) }
+      output << indent("- cond:\n", indent + 2)
+      format_expression(output, clause.condition, indent + 4) if clause.condition
       format_return(output, clause.return, indent + 2)
     end
 

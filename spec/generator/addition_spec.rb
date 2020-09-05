@@ -10,6 +10,7 @@ describe 'Generator' do
           Function.new(
             'blam',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
