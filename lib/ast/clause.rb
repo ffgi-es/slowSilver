@@ -2,10 +2,11 @@ require_relative 'helpers'
 
 # a single match of a matched function
 class Clause
-  attr_reader :parameters, :return
+  attr_reader :parameters, :condition, :return
 
-  def initialize(*params, return_expr)
+  def initialize(*params, condition, return_expr)
     @parameters = params
+    @condition = condition
     @return = return_expr
   end
 

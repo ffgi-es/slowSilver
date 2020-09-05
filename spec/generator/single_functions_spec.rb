@@ -10,11 +10,13 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(:add)))),
           Function.new(
             'add',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -62,6 +64,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :double,
@@ -70,6 +73,7 @@ describe 'Generator' do
             'double',
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -124,6 +128,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :plus,
@@ -134,6 +139,7 @@ describe 'Generator' do
             Clause.new(
               Parameter.new(:A),
               Parameter.new(:B),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -190,6 +196,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :sum,
@@ -202,6 +209,7 @@ describe 'Generator' do
               Parameter.new(:A),
               Parameter.new(:B),
               Parameter.new(:C),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -267,6 +275,7 @@ describe 'Generator' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :sum,
@@ -279,6 +288,7 @@ describe 'Generator' do
               Parameter.new(:A),
               Parameter.new(:B),
               Parameter.new(:C),
+              nil,
               Return.new(
                 Expression.new(
                   :-,
@@ -292,6 +302,7 @@ describe 'Generator' do
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
+              nil,
               Return.new(
                 Expression.new(
                   :+,

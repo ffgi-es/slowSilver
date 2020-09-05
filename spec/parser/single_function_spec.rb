@@ -31,11 +31,13 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(:add)))),
           Function.new(
             'add',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -78,6 +80,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :double,
@@ -86,6 +89,7 @@ describe 'Parser' do
             'double',
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -133,6 +137,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :plus,
@@ -143,6 +148,7 @@ describe 'Parser' do
             Clause.new(
               Parameter.new(:A),
               Parameter.new(:B),
+              nil,
               Return.new(
                 Expression.new(
                   :+,

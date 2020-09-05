@@ -62,6 +62,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :fib,
@@ -70,14 +71,17 @@ describe 'Parser' do
             'fib',
             Clause.new(
               IntegerConstant.new(0),
+              nil,
               Return.new(
                 IntegerConstant.new(0))),
             Clause.new(
               IntegerConstant.new(1),
+              nil,
               Return.new(
                 IntegerConstant.new(1))),
             Clause.new(
               Parameter.new(:X),
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -153,6 +157,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :+,
@@ -169,11 +174,13 @@ describe 'Parser' do
             Clause.new(
               IntegerConstant.new(2),
               IntegerConstant.new(3),
+              nil,
               Return.new(
                 IntegerConstant.new(1))),
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
+              nil,
               Return.new(
                 Expression.new(
                   :*,
@@ -260,6 +267,7 @@ describe 'Parser' do
           Function.new(
             'main',
             Clause.new(
+              nil,
               Return.new(
                 Expression.new(
                   :fib,
@@ -268,6 +276,7 @@ describe 'Parser' do
             'fib',
             Clause.new(
               Parameter.new(:Start),
+              nil,
               Return.new(
                 Expression.new(
                   :fib_rec,
@@ -280,12 +289,14 @@ describe 'Parser' do
               Parameter.new(:X1),
               Parameter.new(:X2),
               IntegerConstant.new(0),
+              nil,
               Return.new(
                 Variable.new(:X1))),
             Clause.new(
               Parameter.new(:X1),
               Parameter.new(:X2),
               Parameter.new(:N),
+              nil,
               Return.new(
                 Expression.new(
                   :fib_rec,
