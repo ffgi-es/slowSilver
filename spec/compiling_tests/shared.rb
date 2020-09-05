@@ -12,16 +12,28 @@ end
 
 shared_examples 'exit code' do |file, exit_code|
   it "should return #{exit_code} for #{file}" do
-    path = File.expand_path("../fixtures/#{file}", File.dirname(__FILE__))
-
-    o, e, s = Open3.capture3("#{slwslvr} #{path}")
-
-    puts e if s.exitstatus != 0
-    expect(s.exitstatus).to eq 0
-    expect(e).to be_empty
-    expect(o).to be_empty
-
-    `./#{out_file}`
-    expect($CHILD_STATUS.exitstatus).to eq exit_code
+    _, _, stat = compile_and_run file, slwslvr, out_file
+    expect(stat.exitstatus).to eq exit_code
   end
+end
+
+shared_examples 'output' do |file, exit_code, output|
+  it "should return print '#{output}' for #{file}" do
+    out, _, stat = compile_and_run file, slwslvr, out_file
+    expect(stat.exitstatus).to eq exit_code
+    expect(out).to eq output
+  end
+end
+
+def compile_and_run(file, compiler, executeable)
+  path = File.expand_path("../fixtures/#{file}", File.dirname(__FILE__))
+
+  o, e, s = Open3.capture3("#{compiler} #{path}")
+
+  puts e if s.exitstatus != 0
+  expect(s.exitstatus).to eq 0
+  expect(e).to be_empty
+  expect(o).to be_empty
+
+  Open3.capture3("./#{executeable}")
 end
