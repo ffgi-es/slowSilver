@@ -1,5 +1,6 @@
 **/*.out
 *.asm
+*.o
 test.*
 
 clean.sh

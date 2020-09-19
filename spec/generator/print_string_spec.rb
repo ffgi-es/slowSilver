@@ -27,15 +27,8 @@ describe 'Generator' do
 
           _main:
               mov     rax, str0
+              mov     rdx, 13
               mov     rsi, rax
-              mov     rdi, rax
-              xor     rax, rax
-              mov     rcx, -1
-              cld
-          repne scasb
-              not     rcx
-              dec     rcx
-              mov     rdx, rcx
               mov     rdi, 1
               mov     rax, 1
               syscall
@@ -43,7 +36,7 @@ describe 'Generator' do
           #{CodeGen.exit 'rax'}
 
           SECTION .data
-          str0    db 'Hello, World!',0
+          str0    db 'Hello, World!'
         ASM
 
         expect(subject.code).to eq expected_asm
@@ -107,9 +100,9 @@ describe 'Generator' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
           SECTION .data
-          str0    db 'too few',0
-          str1    db 'enough',0
-          str2    db 'too many',0
+          str0    db 'too few'
+          str1    db 'enough'
+          str2    db 'too many'
         ASM
 
         expect(subject.code).to include expected_asm
