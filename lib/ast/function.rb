@@ -22,8 +22,12 @@ class Function
   private
 
   def start_function(entry)
-    return "\n_#{name}:\n"
-      .concat "call init".asm if entry
+    if entry
+      return "\n" << <<~ASM
+        _#{name}:
+            call    init
+      ASM
+    end
 
     "\n_#{name}:\n"
       .concat set_stack

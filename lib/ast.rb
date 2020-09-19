@@ -18,10 +18,10 @@ class ASTree
 
   def code
     <<~ASM
-    extern init
-    extern alloc
+      extern init
+      extern alloc
 
-    SECTION .text
+      SECTION .text
     ASM
       .concat @program.code
       .concat data_section

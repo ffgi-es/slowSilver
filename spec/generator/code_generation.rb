@@ -20,8 +20,8 @@ class CodeGen
 
   def self.externs
     <<~ASM
-    extern init
-    extern alloc
+      extern init
+      extern alloc
     ASM
       .chomp
   end
