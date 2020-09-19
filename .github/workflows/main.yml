@@ -15,6 +15,10 @@ jobs:
         ruby-version: 2.6
     - name: Install NASM
       run: sudo apt-get install nasm
+    - name: Compile memory manager
+      run: |
+        cd asm
+        nasm -felf64 memory-manager.asm
     - name: Install dependencies
       run: bundle install
     - name: Run tests
