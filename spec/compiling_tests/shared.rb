@@ -19,7 +19,8 @@ end
 
 shared_examples 'output' do |file, exit_code, output|
   it "should return print '#{output}' for #{file}" do
-    out, _, stat = compile_and_run file, slwslvr, out_file
+    out, err, stat = compile_and_run file, slwslvr, out_file
+    expect(err).to be_empty
     expect(stat.exitstatus).to eq exit_code
     expect(out).to eq output
   end

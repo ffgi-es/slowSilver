@@ -29,10 +29,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _main
 
           _main:
+              call    init
               call    _add
           #{CodeGen.exit 'rax'}
 
@@ -86,10 +89,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _main
 
           _main:
+              call    init
               mov     rax, 4
               push    rax
               call    _double
@@ -152,10 +158,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _main
 
           _main:
+              call    init
               mov     rax, 8
               push    rax
               mov     rax, 3
@@ -225,10 +234,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _main
 
           _main:
+              call    init
               mov     rax, 4
               push    rax
               mov     rax, 8
@@ -315,10 +327,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _main
 
           _main:
+              call    init
               mov     rax, 4
               push    rax
               mov     rax, 8

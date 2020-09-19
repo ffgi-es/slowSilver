@@ -17,7 +17,14 @@ class ASTree
   end
 
   def code
-    "SECTION .text\n" << @program.code << data_section
+    <<~ASM
+    extern init
+    extern alloc
+
+    SECTION .text
+    ASM
+      .concat @program.code
+      .concat data_section
   end
 
   private

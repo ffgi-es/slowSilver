@@ -17,4 +17,12 @@ class CodeGen
     ASM
       .chomp
   end
+
+  def self.externs
+    <<~ASM
+    extern init
+    extern alloc
+    ASM
+      .chomp
+  end
 end

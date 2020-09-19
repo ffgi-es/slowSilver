@@ -11,16 +11,19 @@ class Register
 
   @registers = {
     ax: Register.new('rax', 'eax', 'ax', 'al'),
-    bx: Register.new('rbx', 'ebx', 'bx', 'bl'),
     cx: Register.new('rcx', 'ecx', 'cx', 'cl'),
     dx: Register.new('rdx', 'edx', 'dx', 'dl'),
+    bx: Register.new('rbx', 'ebx', 'bx', 'bl'),
     sp: Register.new('rsp', 'esp', 'sp', 'spl'),
+    bp: Register.new('rbp', 'ebp', 'bp', 'bpl'),
+    si: Register.new('rsi', 'esi', 'si', 'sil'),
     di: Register.new('rdi', 'edi', 'di', 'dil'),
-    si: Register.new('rsi', 'esi', 'si', 'sil')
+    "12": Register.new('r12', 'r12d', 'r12w', 'r12b'),
+    "14": Register.new('r14', 'r14d', 'r14w', 'r14b')
   }
 
   def self.[](key)
-    @registers[key]
+    @registers.fetch key
   end
 
   def to_s

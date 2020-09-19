@@ -16,8 +16,14 @@ There are currently no plans to expand on this.
 
 ## Installation
 
-Given the compiler currently only requires standard library ruby, it should be possible to run the compiler
-without any further steps assuming you have successfully installed ruby and nasm.
+The current iteration of the compiler requires a memory manager that needs to be compiled
+so that it can be separately linked into the final executable. This can be done with a single
+`nasm` command in the `asm` directory. Starting in the root project directory:
+```sh
+$> cd asm
+$> nasm -felf64 memory-manager.asm
+```
+The compiler should now run correctly from the root project directory.
 
 ### Running the Tests
 

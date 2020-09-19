@@ -3,6 +3,8 @@
 *.o
 test.*
 
+!asm/**/*.asm
+
 clean.sh
 
 coverage
