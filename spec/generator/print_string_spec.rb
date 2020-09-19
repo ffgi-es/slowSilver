@@ -27,8 +27,8 @@ describe 'Generator' do
 
           _main:
               mov     rax, str0
-              mov     rdx, 13
               mov     rsi, rax
+              movsx   rdx, DWORD [rax-4]
               mov     rdi, 1
               mov     rax, 1
               syscall
@@ -36,6 +36,7 @@ describe 'Generator' do
           #{CodeGen.exit 'rax'}
 
           SECTION .data
+          str0l   dd 13
           str0    db 'Hello, World!'
         ASM
 
@@ -100,8 +101,11 @@ describe 'Generator' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
           SECTION .data
+          str0l   dd 7
           str0    db 'too few'
+          str1l   dd 6
           str1    db 'enough'
+          str2l   dd 8
           str2    db 'too many'
         ASM
 

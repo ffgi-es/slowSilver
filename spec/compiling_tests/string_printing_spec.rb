@@ -1,6 +1,6 @@
 require_relative 'shared'
 
-describe 'addition compiler tests' do
+describe 'string printing compiler tests' do
   include_context 'compiling test'
 
   [

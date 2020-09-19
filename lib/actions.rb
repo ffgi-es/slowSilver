@@ -36,6 +36,7 @@ class Action
 
   @actions[:print] = proc do
     ''.concat "mov #{Register[:si]}, #{Register[:ax]}".asm
+      .concat "movsx #{Register[:dx]}, DWORD [#{Register[:ax]}-4]".asm
       .concat "mov #{Register[:di]}, 1".asm
       .concat "mov #{Register[:ax]}, 1".asm
       .concat 'syscall'.asm
