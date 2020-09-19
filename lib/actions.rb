@@ -35,12 +35,14 @@ class Action
   end
 
   @actions[:print] = proc do
-    ''.concat "mov #{Register[:si]}, #{Register[:ax]}".asm
-      .concat "movsx #{Register[:dx]}, DWORD [#{Register[:ax]}-4]".asm
-      .concat "mov #{Register[:di]}, 1".asm
-      .concat "mov #{Register[:ax]}, 1".asm
-      .concat 'syscall'.asm
-      .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
+    <<-ASM
+    mov     #{Register[:si]}, #{Register[:ax]}
+    movsx   #{Register[:dx]}, DWORD [#{Register[:ax]}-4]
+    mov     #{Register[:di]}, 1
+    mov     #{Register[:ax]}, 1
+    syscall
+    xor     #{Register[:ax]}, #{Register[:ax]}
+    ASM
   end
 
   @actions[:concat] = proc do

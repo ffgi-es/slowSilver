@@ -30,12 +30,7 @@ describe 'Generator' do
           _main:
               call    init
               mov     rax, str0
-              mov     rsi, rax
-              movsx   rdx, DWORD [rax-4]
-              mov     rdi, 1
-              mov     rax, 1
-              syscall
-              xor     rax, rax
+          #{CodeGen.print 'rax'}
           #{CodeGen.exit 'rax'}
 
           SECTION .data

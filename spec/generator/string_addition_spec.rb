@@ -35,32 +35,8 @@ describe 'Generator' do
               mov     rax, str1
               push    rax
               mov     rax, str0
-              mov     r12, rax
-              pop     r14
-              movsx   rax, DWORD [r12-4]
-              movsx   rcx, DWORD [r14-4]
-              add     rax, rcx
-              add     rax, 4
-              call    alloc
-              movsx   rbx, DWORD [r12-4]
-              movsx   rcx, DWORD [r14-4]
-              add     rbx, rcx
-              mov     [rax], DWORD ebx
-              add     rax, 4
-              mov     rdi, rax
-              mov     rsi, r12
-              movsx   rcx, DWORD [r12-4]
-              cld
-              rep     movsb
-              mov     rsi, r14
-              movsx   rcx, DWORD [r14-4]
-              rep     movsb
-              mov     rsi, rax
-              movsx   rdx, DWORD [rax-4]
-              mov     rdi, 1
-              mov     rax, 1
-              syscall
-              xor     rax, rax
+          #{CodeGen.concat}
+          #{CodeGen.print 'rax'}
           #{CodeGen.exit 'rax'}
 
           SECTION .data

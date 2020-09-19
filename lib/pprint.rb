@@ -73,8 +73,8 @@ class PPrinter
       output << indent("- int: #{integer.value}\n", indent)
     end
 
-    def format_string(output, integer, indent = 6)
-      output << indent("- str: '#{integer.value}'\n", indent)
+    def format_string(output, string, indent = 6)
+      output << indent("- str: '#{string.value}'\n", indent)
     end
 
     def format_variable(output, variable, indent = 6)
