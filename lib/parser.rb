@@ -10,7 +10,8 @@ class Parser
     close_expression: proc { |_, _, _| nil },
     open_expression: proc { |details, _, tokens| details.push(parse_exp(tokens)) },
     function_call: proc { |details, token, _| details.unshift(token.value) },
-    integer_constant: proc { |details, token, _| details.push(parse_int([token])) },
+    integer_constant: proc { |details, token, _| details.push(parse_int(token)) },
+    string_constant: proc { |details, token, _| details.push(parse_string(token)) },
     variable: proc { |details, token, _| details.push(parse_var(token)) }
   }
 
@@ -80,7 +81,7 @@ class Parser
 
     def parse_exp(tokens)
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
-      return parse_int(tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
+      return parse_int(*tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
       return parse_var(*tokens) if tokens.length == 1 && tokens.first.type == :variable
 
       function_call, *arguments = parse_details([], tokens)
@@ -100,8 +101,12 @@ class Parser
       @detail_handler[token.type].call(details, token, tokens)
     end
 
-    def parse_int(tokens)
-      IntegerConstant.new(tokens.shift.value)
+    def parse_int(token)
+      IntegerConstant.new(token.value)
+    end
+
+    def parse_string(token)
+      StringConstant.new(token.value)
     end
 
     def parse_var(token)

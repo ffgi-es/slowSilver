@@ -34,6 +34,42 @@ class Action
       .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
+  @actions[:print] = proc do
+    <<-ASM
+    mov     #{Register[:si]}, #{Register[:ax]}
+    movsx   #{Register[:dx]}, DWORD [#{Register[:ax]}-4]
+    mov     #{Register[:di]}, 1
+    mov     #{Register[:ax]}, 1
+    syscall
+    xor     #{Register[:ax]}, #{Register[:ax]}
+    ASM
+  end
+
+  @actions[:concat] = proc do
+    <<-ASM
+    mov     #{Register[:"12"]}, #{Register[:ax]}
+    pop     #{Register[:"14"]}
+    movsx   #{Register[:ax]}, DWORD [#{Register[:"12"]}-4]
+    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
+    add     #{Register[:ax]}, #{Register[:cx]}
+    add     #{Register[:ax]}, 4
+    call    alloc
+    movsx   #{Register[:bx]}, DWORD [#{Register[:"12"]}-4]
+    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
+    add     #{Register[:bx]}, #{Register[:cx]}
+    mov     [#{Register[:ax]}], DWORD #{Register[:bx].r32}
+    add     #{Register[:ax]}, 4
+    mov     #{Register[:di]}, #{Register[:ax]}
+    mov     #{Register[:si]}, #{Register[:"12"]}
+    movsx   #{Register[:cx]}, DWORD [#{Register[:"12"]}-4]
+    cld
+    rep     movsb
+    mov     #{Register[:si]}, #{Register[:"14"]}
+    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
+    rep     movsb
+    ASM
+  end
+
   class << self
     def [](name)
       @actions[name]

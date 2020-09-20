@@ -6,6 +6,7 @@ require_relative 'ast/expression'
 require_relative 'ast/integer_constant'
 require_relative 'ast/function'
 require_relative 'ast/clause'
+require_relative 'ast/string_constant'
 
 # root of the AST
 class ASTree
@@ -16,6 +17,23 @@ class ASTree
   end
 
   def code
-    "SECTION .text\n" << @program.code
+    <<~ASM
+      extern init
+      extern alloc
+
+      SECTION .text
+    ASM
+      .concat @program.code
+      .concat data_section
+  end
+
+  private
+
+  def data_section
+    DataLabel.reset
+    data = @program.data
+    return '' if data.empty?
+
+    "\nSECTION .data\n" << data
   end
 end

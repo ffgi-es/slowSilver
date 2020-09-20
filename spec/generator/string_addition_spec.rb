@@ -3,7 +3,7 @@ require 'ast'
 require_relative 'code_generation'
 
 describe 'Generator' do
-  describe 'subtraction' do
+  describe 'print string' do
     let('ast') do
       ASTree.new(
         Program.new(
@@ -13,9 +13,11 @@ describe 'Generator' do
               nil,
               Return.new(
                 Expression.new(
-                  :-,
-                  IntegerConstant.new(8),
-                  IntegerConstant.new(5)))))))
+                  :print,
+                  Expression.new(
+                    :concat,
+                    StringConstant.new('This plus'),
+                    StringConstant.new(' that'))))))))
     end
 
     subject { Generator.new(ast) }
@@ -30,12 +32,18 @@ describe 'Generator' do
 
           _main:
               call    init
-              mov     rax, 5
+              mov     rax, str1
               push    rax
-              mov     rax, 8
-              pop     rcx
-              sub     rax, rcx
+              mov     rax, str0
+          #{CodeGen.concat}
+          #{CodeGen.print 'rax'}
           #{CodeGen.exit 'rax'}
+
+          SECTION .data
+          str0l   dd 9
+          str0    db 'This plus'
+          str1l   dd 5
+          str1    db ' that'
         ASM
 
         expect(subject.code).to eq expected_asm

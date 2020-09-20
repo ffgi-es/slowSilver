@@ -1,0 +1,3 @@
+main => INT
+===========
+main => :print 'Hello, World!'.

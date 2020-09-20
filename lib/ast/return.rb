@@ -16,4 +16,8 @@ class Return
 
     @expression.code(parameters)
   end
+
+  def data
+    @expression.data if @expression.respond_to? :data
+  end
 end

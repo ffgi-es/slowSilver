@@ -23,10 +23,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _blam
 
           _blam:
+              call    init
               mov     rax, 3
               push    rax
               mov     rax, 4
@@ -67,10 +70,13 @@ describe 'Generator' do
     describe '#code' do
       it 'should return the expected code' do
         expected_asm = <<~ASM
+          #{CodeGen.externs}
+
           SECTION .text
           global _blam
 
           _blam:
+              call    init
               mov     rax, 3
               push    rax
               mov     rax, 4

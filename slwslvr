@@ -40,9 +40,10 @@ linking_file = filename + '.o'
 File.open(assembly_file, 'w') { |f| f.write(generator.code) }
 
 assembly_compiler = 'nasm -f elf64'
+mem_manager = 'asm/memory-manager.o'
 
 if system("#{assembly_compiler} #{assembly_file}")
-  system(`ld -e #{generator.entry_point} #{linking_file}`)
+  system(`ld -e #{generator.entry_point} #{linking_file} #{mem_manager}`)
   File.delete linking_file if File.exist? linking_file
 end
 

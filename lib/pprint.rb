@@ -51,6 +51,8 @@ class PPrinter
       expression.parameters.each do |param|
         if param.is_a? IntegerConstant
           format_integer(output, param, indent + 4)
+        elsif param.is_a? StringConstant
+          format_string(output, param, indent + 4)
         elsif param.is_a? Variable
           format_variable(output, param, indent + 4)
         else
@@ -69,6 +71,10 @@ class PPrinter
 
     def format_integer(output, integer, indent = 6)
       output << indent("- int: #{integer.value}\n", indent)
+    end
+
+    def format_string(output, string, indent = 6)
+      output << indent("- str: '#{string.value}'\n", indent)
     end
 
     def format_variable(output, variable, indent = 6)

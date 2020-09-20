@@ -12,4 +12,8 @@ class Program
       << @function.code(true) \
       << @functions.map(&:code).join
   end
+
+  def data
+    @function.data << @functions.map(&:data).join
+  end
 end

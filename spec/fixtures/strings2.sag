@@ -1,0 +1,9 @@
+main => INT
+===========
+main => :enough 15.
+
+enough: INT => INT
+---
+enough: X ? X :< 20 => :print 'too few';
+enough: X ? X :< 30 => :print 'enough';
+enough: X => :print 'too many'.

@@ -15,10 +15,19 @@ class Function
       .concat finish_function(entry)
   end
 
+  def data
+    @clauses.map(&:data).join
+  end
+
   private
 
   def start_function(entry)
-    return "\n_#{name}:\n" if entry
+    if entry
+      return "\n" << <<~ASM
+        _#{name}:
+            call    init
+      ASM
+    end
 
     "\n_#{name}:\n"
       .concat set_stack

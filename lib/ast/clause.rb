@@ -24,6 +24,10 @@ class Clause
     @return.code(@parameters.map(&:name))
   end
 
+  def data
+    @return.data
+  end
+
   private
 
   def parameter_check(parameter, function_name, clause_index, parameter_index)

@@ -16,6 +16,8 @@ Metrics/BlockLength:
         - '**/*_spec.rb'
 Metrics/MethodLength:
     Max: 20
+    Exclude:
+        - 'spec/generator/code_generation.rb'
 
 Style/FrozenStringLiteralComment:
     Enabled: false

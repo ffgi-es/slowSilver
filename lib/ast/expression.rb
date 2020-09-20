@@ -16,6 +16,12 @@ class Expression
       .concat @action.call(@function, @parameters)
   end
 
+  def data
+    @parameters.map { |p| p.data if p.respond_to? :data }.join
+  end
+
+  private
+
   def get_parameters(func_params)
     return '' if @parameters.empty?
     return @parameters.first.code(func_params) if @parameters.count == 1

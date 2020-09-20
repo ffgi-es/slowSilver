@@ -550,5 +550,36 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format string constant AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :print,
+                  StringConstant.new('Hello, World')))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: print
+                  - params:
+                    - str: 'Hello, World'
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end
