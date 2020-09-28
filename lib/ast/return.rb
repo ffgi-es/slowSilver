@@ -20,4 +20,8 @@ class Return
   def data
     @expression.data if @expression.respond_to? :data
   end
+
+  def validate
+    @expression.validate
+  end
 end

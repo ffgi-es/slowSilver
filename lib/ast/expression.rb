@@ -1,5 +1,6 @@
 require_relative 'helpers'
 require_relative '../actions'
+require_relative 'function_dictionary'
 
 # an expression with a function call
 class Expression
@@ -18,6 +19,16 @@ class Expression
 
   def data
     @parameters.map { |p| p.data if p.respond_to? :data }.join
+  end
+
+  def validate
+    types = @parameters.map &:type
+    return if FunctionDictionary[@function][types]
+
+    raise CompileError, <<~ERROR
+      #{@function} expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
+      received: #{types.join(', ')}
+    ERROR
   end
 
   private

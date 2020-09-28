@@ -17,4 +17,8 @@ class StringConstant
     "#{@label}l   dd #{@value.length}\n"
       .concat "#{@label}    db '#{@value}'\n"
   end
+
+  def type
+    :STRING
+  end
 end

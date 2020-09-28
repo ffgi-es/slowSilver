@@ -1,12 +1,17 @@
 require_relative 'helpers'
+require_relative 'function_dictionary'
 
 # a function with multiple parameter matched clauses
 class Function
-  attr_reader :name, :clauses
+  attr_reader :name, :clauses, :return_type, :param_types
 
-  def initialize(name, *clauses)
+  def initialize(name, type_signature, *clauses)
     @name = name
+    @return_type = type_signature.values.first
+    @param_types = type_signature.keys.first
     @clauses = clauses
+
+    FunctionDictionary.add(@name.to_sym, type_signature)
   end
 
   def code(entry = false)
@@ -17,6 +22,10 @@ class Function
 
   def data
     @clauses.map(&:data).join
+  end
+
+  def validate
+    @clauses.each(&:validate)
   end
 
   private

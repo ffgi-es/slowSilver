@@ -28,6 +28,10 @@ class Clause
     @return.data
   end
 
+  def validate
+    @return.validate
+  end
+
   private
 
   def parameter_check(parameter, function_name, clause_index, parameter_index)

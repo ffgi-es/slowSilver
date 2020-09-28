@@ -28,13 +28,30 @@ class Parser
     def parse_function(tokens)
       name = tokens.shift.value
 
-      tokens = tokens.drop_while { |t| t.type != :identifier }
+      input_types = []
+
+      add_input_type(input_types, tokens) until tokens.first.type == :return
+
+      tokens.shift
+
+      return_type = tokens.shift.value
+
+      tokens.shift
 
       clauses = tokens
         .slice_after(Token.new(:break))
         .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
 
-      Function.new(name, *clauses)
+      Function.new(name, { input_types => return_type }, *clauses)
+    end
+
+    def add_input_type(input_types, tokens)
+      case tokens.first.type
+      when :type
+        input_types << tokens.shift.value
+      when :separator
+        tokens.shift
+      end
     end
 
     def parse_clause(tokens)

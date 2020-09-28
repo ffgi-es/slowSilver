@@ -8,6 +8,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -19,6 +20,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -34,6 +38,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -48,6 +53,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -67,6 +75,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -84,6 +93,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -107,12 +119,14 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
                 Expression.new(:add)))),
           Function.new(
             'add',
+            { [:INT, :INT] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -127,6 +141,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -136,6 +153,9 @@ describe PPrinter do
                   - params:
           - func:
             - name: 'add'
+            - type:
+              - return: INT
+              - input: INT, INT
             - clause:
               - params:
               - cond:
@@ -155,6 +175,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -163,6 +184,7 @@ describe PPrinter do
                   IntegerConstant.new(4))))),
           Function.new(
             'double',
+            { [:INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               nil,
@@ -178,6 +200,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -188,6 +213,9 @@ describe PPrinter do
                     - int: 4
           - func:
             - name: 'double'
+            - type:
+              - return: INT
+              - input: INT
             - clause:
               - params:
                 - name: X
@@ -208,6 +236,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -217,6 +246,7 @@ describe PPrinter do
                   IntegerConstant.new(5))))),
           Function.new(
             'add',
+            { [:INT, :INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
@@ -233,6 +263,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -244,6 +277,9 @@ describe PPrinter do
                     - int: 5
           - func:
             - name: 'add'
+            - type:
+              - return: INT
+              - input: INT, INT
             - clause:
               - params:
                 - name: X
@@ -265,6 +301,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -275,6 +312,7 @@ describe PPrinter do
                   IntegerConstant.new(6))))),
           Function.new(
             'proc',
+            { [:INT, :INT, :INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
@@ -290,6 +328,7 @@ describe PPrinter do
                     Variable.new(:Z)))))),
           Function.new(
             'add',
+            { [:INT, :INT] => :INT },
             Clause.new(
               Parameter.new(:A),
               Parameter.new(:B),
@@ -306,6 +345,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -318,6 +360,9 @@ describe PPrinter do
                     - int: 6
           - func:
             - name: 'proc'
+            - type:
+              - return: INT
+              - input: INT, INT, INT
             - clause:
               - params:
                 - name: X
@@ -336,6 +381,9 @@ describe PPrinter do
                         - var: Z
           - func:
             - name: 'add'
+            - type:
+              - return: INT
+              - input: INT, INT
             - clause:
               - params:
                 - name: A
@@ -357,6 +405,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -365,6 +414,7 @@ describe PPrinter do
                   IntegerConstant.new(7))))),
           Function.new(
             'fib',
+            { [:INT] => :INT },
             Clause.new(
               IntegerConstant.new(0),
               nil,
@@ -400,6 +450,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -410,6 +463,9 @@ describe PPrinter do
                     - int: 7
           - func:
             - name: 'fib'
+            - type:
+              - return: INT
+              - input: INT
             - clause:
               - params:
                 - int: 0
@@ -456,6 +512,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -464,6 +521,7 @@ describe PPrinter do
                   IntegerConstant.new(7))))),
           Function.new(
             'fib',
+            { [:INT] => :INT },
             Clause.new(
               Parameter.new(:Var),
               nil,
@@ -476,6 +534,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -486,6 +547,9 @@ describe PPrinter do
                     - int: 7
           - func:
             - name: 'fib'
+            - type:
+              - return: INT
+              - input: INT
             - clause:
               - params:
                 - name: Var
@@ -502,6 +566,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -510,6 +575,7 @@ describe PPrinter do
                   IntegerConstant.new(7))))),
           Function.new(
             'fib',
+            { [:INT] => :INT },
             Clause.new(
               Parameter.new(:Var),
               Expression.new(
@@ -525,6 +591,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -535,6 +604,9 @@ describe PPrinter do
                     - int: 7
           - func:
             - name: 'fib'
+            - type:
+              - return: INT
+              - input: INT
             - clause:
               - params:
                 - name: Var
@@ -556,6 +628,7 @@ describe PPrinter do
         Program.new(
           Function.new(
             'main',
+            { [] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -569,6 +642,9 @@ describe PPrinter do
         program:
           - func:
             - name: 'main'
+            - type:
+              - return: INT
+              - input: 
             - clause:
               - params:
               - cond:
@@ -577,6 +653,71 @@ describe PPrinter do
                   - name: print
                   - params:
                     - str: 'Hello, World'
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format string constant AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :INT },
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :test,
+                  IntegerConstant.new(3),
+                  StringConstant.new('hello'))))),
+          Function.new(
+            'test',
+            { [:INT, :INT] => :INT },
+            Clause.new(
+              Parameter.new(:X),
+              Parameter.new(:Y),
+              nil,
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:X),
+                  Variable.new(:Y)))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input: 
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: test
+                  - params:
+                    - int: 3
+                    - str: 'hello'
+          - func:
+            - name: 'test'
+            - type:
+              - return: INT
+              - input: INT, INT
+            - clause:
+              - params:
+                - name: X
+                - name: Y
+              - cond:
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - var: X
+                    - var: Y
       OUTPUT
 
       expect(output).to eq expected_output

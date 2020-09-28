@@ -12,4 +12,8 @@ class IntegerConstant
   def code(_ = nil)
     "mov #{Register[:ax]}, #{value}".asm
   end
+
+  def type
+    :INT
+  end
 end
