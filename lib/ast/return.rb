@@ -22,6 +22,6 @@ class Return
   end
 
   def validate
-    @expression.validate
+    @expression.validate if @expression.is_a? Expression
   end
 end
