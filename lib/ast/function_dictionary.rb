@@ -1,3 +1,4 @@
+# a dictionary to hold function type definitions
 class FunctionDictionary
   @dictionary = Hash.new { Hash.new }
 
@@ -9,5 +10,5 @@ class FunctionDictionary
     @dictionary[name] = type_signature
   end
 
-  @dictionary[:+] = {[:INT, :INT] => :INT}
+  @dictionary[:+] = { %i[INT INT] => :INT }
 end

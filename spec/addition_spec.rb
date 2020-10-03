@@ -1,87 +1,66 @@
-require 'lexer'
-require 'token'
-require 'parser'
-require 'generator'
-require 'pprint'
-require_relative 'generator/code_generation'
+require_relative 'shared'
 
 describe 'addition1.sag' do
-  let(:in_file){ File.expand_path 'fixtures/addition1.sag', File.dirname(__FILE__) }
-  let(:tokens){ Lexer.new(in_file).lex }
-  let(:ast){ Parser.parse(tokens) }
-  let(:generated){ Generator.new(ast) }
+  include_context 'component test', 'fixtures/addition1.sag'
 
-  describe 'lexing' do
-    it 'should return a list of tokens' do
-      expected_tokens = [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:integer_constant, 2),
-        Token.new(:function_call, '+'),
-        Token.new(:integer_constant, 2),
-        Token.new(:end)
-      ]
-      expect(tokens).to eq expected_tokens
-    end
-  end
+  include_examples 'lexing', [
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:integer_constant, 2),
+    Token.new(:function_call, '+'),
+    Token.new(:integer_constant, 2),
+    Token.new(:end)
+  ]
 
-  describe 'parsing' do
-    it 'should return an AST' do
-      expected_ast = ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            { [] => :INT },
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :+,
-                  IntegerConstant.new(2),
-                  IntegerConstant.new(2)))))))
+  include_examples 'parsing', ASTree.new(
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :+,
+              IntegerConstant.new(2),
+              IntegerConstant.new(2)))))))
 
-      expect(PPrinter.format(ast))
-        .to eq PPrinter.format(expected_ast)
-    end
-  end
+  include_examples 'no validation error'
 
-  describe 'validation' do
-    it 'should not raise any errors' do
-      expect { ast.validate }.not_to raise_error
-    end
-  end
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
-  describe 'generation' do
-    describe 'code' do
-      it 'should return the expected code' do
-        expected_asm = <<~ASM
-          #{CodeGen.externs}
+    SECTION .text
+    global _main
 
-          SECTION .text
-          global _main
+    _main:
+        call    init
+        mov     rax, 2
+        push    rax
+        mov     rax, 2
+        pop     rcx
+        add     rax, rcx
+    #{CodeGen.exit 'rax'}
+  ASM
+end
 
-          _main:
-              call    init
-              mov     rax, 2
-              push    rax
-              mov     rax, 2
-              pop     rcx
-              add     rax, rcx
-          #{CodeGen.exit 'rax'}
-        ASM
+describe 'addition2.sag' do
+  include_context 'component test', 'fixtures/addition2.sag'
 
-        expect(generated.code).to eq expected_asm
-      end
-    end
-
-    describe 'entry point' do
-      it 'should return the entry function' do
-        expect(generated.entry_point).to eq '_main'
-      end
-    end
-  end
+  include_examples 'lexing', [
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:function_call, '+'),
+    Token.new(:integer_constant, 2),
+    Token.new(:integer_constant, 3),
+    Token.new(:end)
+  ]
 end

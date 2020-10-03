@@ -22,7 +22,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -55,7 +55,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -95,7 +95,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -126,7 +126,7 @@ describe PPrinter do
                 Expression.new(:add)))),
           Function.new(
             'add',
-            { [:INT, :INT] => :INT },
+            { %i[INT INT] => :INT },
             Clause.new(
               nil,
               Return.new(
@@ -143,7 +143,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -202,7 +202,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -246,7 +246,7 @@ describe PPrinter do
                   IntegerConstant.new(5))))),
           Function.new(
             'add',
-            { [:INT, :INT] => :INT },
+            { %i[INT INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
@@ -265,7 +265,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -312,7 +312,7 @@ describe PPrinter do
                   IntegerConstant.new(6))))),
           Function.new(
             'proc',
-            { [:INT, :INT, :INT] => :INT },
+            { %i[INT INT INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
@@ -328,7 +328,7 @@ describe PPrinter do
                     Variable.new(:Z)))))),
           Function.new(
             'add',
-            { [:INT, :INT] => :INT },
+            { %i[INT INT] => :INT },
             Clause.new(
               Parameter.new(:A),
               Parameter.new(:B),
@@ -347,7 +347,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -452,7 +452,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -536,7 +536,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -593,7 +593,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -644,7 +644,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:
@@ -673,7 +673,7 @@ describe PPrinter do
                   StringConstant.new('hello'))))),
           Function.new(
             'test',
-            { [:INT, :INT] => :INT },
+            { %i[INT INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),
@@ -692,7 +692,7 @@ describe PPrinter do
             - name: 'main'
             - type:
               - return: INT
-              - input: 
+              - input:
             - clause:
               - params:
               - cond:

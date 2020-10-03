@@ -4,9 +4,9 @@ require 'pprint'
 require 'lexer'
 
 describe 'parameter_type_mismatch1.sag' do
-  let(:in_file){ File.expand_path 'fixtures/parameter_type_mismatch1.sag', File.dirname(__FILE__) }
-  let(:tokens){ Lexer.new(in_file).lex }
-  let(:ast){ Parser.parse(tokens) }
+  let(:in_file) { File.expand_path 'fixtures/parameter_type_mismatch1.sag', File.dirname(__FILE__) }
+  let(:tokens) { Lexer.new(in_file).lex }
+  let(:ast) { Parser.parse(tokens) }
 
   describe 'parsing' do
     it 'should return an AST' do
@@ -24,7 +24,7 @@ describe 'parameter_type_mismatch1.sag' do
                   StringConstant.new('hello'))))),
           Function.new(
             'test',
-            { [:INT, :INT] => :INT },
+            { %i[INT INT] => :INT },
             Clause.new(
               Parameter.new(:X),
               Parameter.new(:Y),

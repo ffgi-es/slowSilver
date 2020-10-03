@@ -22,7 +22,7 @@ class Expression
   end
 
   def validate
-    types = @parameters.map &:type
+    types = @parameters.map(&:type)
     return if FunctionDictionary[@function][types]
 
     raise CompileError, <<~ERROR
