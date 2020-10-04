@@ -11,4 +11,5 @@ class FunctionDictionary
   end
 
   @dictionary[:+] = { %i[INT INT] => :INT }
+  @dictionary[:%] = { %i[INT INT] => :INT }
 end
