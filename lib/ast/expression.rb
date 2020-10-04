@@ -31,6 +31,11 @@ class Expression
     ERROR
   end
 
+  def type
+    types = @parameters.map(&:type)
+    FunctionDictionary[@function][types]
+  end
+
   private
 
   def get_parameters(func_params)

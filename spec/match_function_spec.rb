@@ -1,11 +1,9 @@
-require 'parser'
-require 'token'
-require 'pprint'
+require_relative 'shared'
 
-describe 'Parser' do
-  describe '#parse' do
-    it 'should return a tree for function call with parameter matching' do
-      tokens_list = [
+describe 'params_matching1.sag' do
+  include_context 'component test', 'fixtures/params_matching1.sag'
+
+  include_examples 'lexing', [
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:type, :INT),
@@ -15,25 +13,21 @@ describe 'Parser' do
         Token.new(:function_call, 'fib'),
         Token.new(:integer_constant, 7),
         Token.new(:end),
-
         Token.new(:identifier, 'fib'),
         Token.new(:type, :INT),
         Token.new(:return),
         Token.new(:type, :INT),
         Token.new(:function_line),
-
         Token.new(:identifier, 'fib'),
         Token.new(:integer_constant, 0),
         Token.new(:return),
         Token.new(:integer_constant, 0),
         Token.new(:break),
-
         Token.new(:identifier, 'fib'),
         Token.new(:integer_constant, 1),
         Token.new(:return),
         Token.new(:integer_constant, 1),
         Token.new(:break),
-
         Token.new(:identifier, 'fib'),
         Token.new(:variable, 'X'),
         Token.new(:return),
@@ -55,12 +49,13 @@ describe 'Parser' do
         Token.new(:close_expression),
         Token.new(:close_expression),
         Token.new(:end)
-      ]
+  ]
 
-      expected_ast = ASTree.new(
+  include_examples 'parsing', ASTree.new(
         Program.new(
           Function.new(
             'main',
+            {[] => :INT},
             Clause.new(
               nil,
               Return.new(
@@ -69,6 +64,7 @@ describe 'Parser' do
                   IntegerConstant.new(7))))),
           Function.new(
             'fib',
+            {[:INT] => :INT},
             Clause.new(
               IntegerConstant.new(0),
               nil,
@@ -98,14 +94,68 @@ describe 'Parser' do
                       Variable.new(:X),
                       IntegerConstant.new(2)))))))))
 
-      actual_ast = Parser.parse(tokens_list)
+  include_examples 'no validation error'
 
-      expect(PPrinter.format(actual_ast))
-        .to eq PPrinter.format(expected_ast)
-    end
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
-    it 'should return a tree for function call with parameter matching for multiple parameters' do
-      tokens_list = [
+    SECTION .text
+    global _main
+
+    _main:
+        call    init
+        mov     rax, 7
+        push    rax
+        call    _fib
+        add     rsp, 8
+    #{CodeGen.exit 'rax'}
+
+    _fib:
+        push    rbp
+        mov     rbp, rsp
+    _fib0:
+        mov     rax, 0
+        cmp     rax, [rbp+16]
+        jne     _fib1
+        mov     rax, 0
+        jmp     _fibdone
+    _fib1:
+        mov     rax, 1
+        cmp     rax, [rbp+16]
+        jne     _fib2
+        mov     rax, 1
+        jmp     _fibdone
+    _fib2:
+        mov     rax, 2
+        push    rax
+        mov     rax, [rbp+16]
+        pop     rcx
+        sub     rax, rcx
+        push    rax
+        call    _fib
+        add     rsp, 8
+        push    rax
+        mov     rax, 1
+        push    rax
+        mov     rax, [rbp+16]
+        pop     rcx
+        sub     rax, rcx
+        push    rax
+        call    _fib
+        add     rsp, 8
+        pop     rcx
+        add     rax, rcx
+    _fibdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
+  ASM
+end
+
+describe 'params_matching2.sag' do
+  include_context 'component test', 'fixtures/params_matching2.sag'
+
+  include_examples 'lexing', [
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:type, :INT),
@@ -141,7 +191,7 @@ describe 'Parser' do
         Token.new(:integer_constant, 1),
         Token.new(:break),
 
-        Token.new(:identifier, 'fib'),
+        Token.new(:identifier, 'test'),
         Token.new(:variable, 'X'),
         Token.new(:separator),
         Token.new(:variable, 'Y'),
@@ -150,12 +200,13 @@ describe 'Parser' do
         Token.new(:function_call, '*'),
         Token.new(:variable, 'Y'),
         Token.new(:end)
-      ]
+  ]
 
-      expected_ast = ASTree.new(
+  include_examples 'parsing', ASTree.new(
         Program.new(
           Function.new(
             'main',
+            {[] => :INT},
             Clause.new(
               nil,
               Return.new(
@@ -171,6 +222,7 @@ describe 'Parser' do
                     IntegerConstant.new(5)))))),
           Function.new(
             'test',
+            {%i[INT INT] => :INT},
             Clause.new(
               IntegerConstant.new(2),
               IntegerConstant.new(3),
@@ -187,14 +239,62 @@ describe 'Parser' do
                   Variable.new(:X),
                   Variable.new(:Y)))))))
 
-      actual_ast = Parser.parse(tokens_list)
+  include_examples 'no validation error'
 
-      expect(PPrinter.format(actual_ast))
-        .to eq PPrinter.format(expected_ast)
-    end
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
-    it 'should return a tree for function call with parameter matching for mixed parameters' do
-      tokens_list = [
+    SECTION .text
+    global _main
+
+    _main:
+        call    init
+        mov     rax, 5
+        push    rax
+        mov     rax, 4
+        push    rax
+        call    _test
+        add     rsp, 16
+        push    rax
+        mov     rax, 3
+        push    rax
+        mov     rax, 2
+        push    rax
+        call    _test
+        add     rsp, 16
+        pop     rcx
+        add     rax, rcx
+    #{CodeGen.exit 'rax'}
+
+    _test:
+        push    rbp
+        mov     rbp, rsp
+    _test0:
+        mov     rax, 2
+        cmp     rax, [rbp+16]
+        jne     _test1
+        mov     rax, 3
+        cmp     rax, [rbp+24]
+        jne     _test1
+        mov     rax, 1
+        jmp     _testdone
+    _test1:
+        mov     rax, [rbp+24]
+        push    rax
+        mov     rax, [rbp+16]
+        pop     rcx
+        imul    rax, rcx
+    _testdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
+  ASM
+end
+
+describe 'mixed_param_matching.sag' do
+  include_context 'component test', 'fixtures/mixed_param_matching.sag'
+
+  include_examples 'lexing', [
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:type, :INT),
@@ -209,6 +309,7 @@ describe 'Parser' do
         Token.new(:type, :INT),
         Token.new(:return),
         Token.new(:type, :INT),
+
         Token.new(:function_line),
 
         Token.new(:identifier, 'fib'),
@@ -228,6 +329,7 @@ describe 'Parser' do
         Token.new(:type, :INT),
         Token.new(:return),
         Token.new(:type, :INT),
+
         Token.new(:function_line),
 
         Token.new(:identifier, 'fib_rec'),
@@ -260,12 +362,13 @@ describe 'Parser' do
         Token.new(:integer_constant, 1),
         Token.new(:close_expression),
         Token.new(:end)
-      ]
+  ]
 
-      expected_ast = ASTree.new(
+  include_examples 'parsing', ASTree.new(
         Program.new(
           Function.new(
             'main',
+            {[] => :INT},
             Clause.new(
               nil,
               Return.new(
@@ -274,6 +377,7 @@ describe 'Parser' do
                   IntegerConstant.new(11))))),
           Function.new(
             'fib',
+            {[:INT] => :INT},
             Clause.new(
               Parameter.new(:Start),
               nil,
@@ -285,6 +389,7 @@ describe 'Parser' do
                   Variable.new(:Start))))),
           Function.new(
             'fib_rec',
+            {%i[INT INT INT] => :INT},
             Clause.new(
               Parameter.new(:X1),
               Parameter.new(:X2),
@@ -310,10 +415,66 @@ describe 'Parser' do
                     Variable.new(:N),
                     IntegerConstant.new(1))))))))
 
-      actual_ast = Parser.parse(tokens_list)
+  include_examples 'no validation error'
 
-      expect(PPrinter.format(actual_ast))
-        .to eq PPrinter.format(expected_ast)
-    end
-  end
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
+
+    SECTION .text
+    global _main
+
+    _main:
+        call    init
+        mov     rax, 11
+        push    rax
+        call    _fib
+        add     rsp, 8
+    #{CodeGen.exit 'rax'}
+
+    _fib:
+        push    rbp
+        mov     rbp, rsp
+        mov     rax, [rbp+16]
+        push    rax
+        mov     rax, 1
+        push    rax
+        mov     rax, 0
+        push    rax
+        call    _fib_rec
+        add     rsp, 24
+        mov     rsp, rbp
+        pop     rbp
+        ret
+
+    _fib_rec:
+        push    rbp
+        mov     rbp, rsp
+    _fib_rec0:
+        mov     rax, 0
+        cmp     rax, [rbp+32]
+        jne     _fib_rec1
+        mov     rax, [rbp+16]
+        jmp     _fib_recdone
+    _fib_rec1:
+        mov     rax, 1
+        push    rax
+        mov     rax, [rbp+32]
+        pop     rcx
+        sub     rax, rcx
+        push    rax
+        mov     rax, [rbp+24]
+        push    rax
+        mov     rax, [rbp+16]
+        pop     rcx
+        add     rax, rcx
+        push    rax
+        mov     rax, [rbp+24]
+        push    rax
+        call    _fib_rec
+        add     rsp, 24
+    _fib_recdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
+  ASM
 end
