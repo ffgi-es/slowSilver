@@ -15,6 +15,7 @@ class ASTree
 
   def initialize(program)
     @program = program
+    DataLabel.reset
   end
 
   def code
@@ -35,7 +36,6 @@ class ASTree
   private
 
   def data_section
-    DataLabel.reset
     data = @program.data
     return '' if data.empty?
 

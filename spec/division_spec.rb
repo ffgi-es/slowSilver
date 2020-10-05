@@ -3,6 +3,8 @@ require_relative 'shared'
 describe 'division1.sag' do
   include_context 'component test', 'fixtures/division1.sag'
 
+  include_examples 'no validation error'
+
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}
 

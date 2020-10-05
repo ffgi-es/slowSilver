@@ -16,6 +16,8 @@ describe 'greater_than1.sag' do
     Token.new(:end)
   ]
 
+  include_examples 'no validation error'
+
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}
 
@@ -35,6 +37,8 @@ end
 
 describe 'greater_than_equal1.sag' do
   include_context 'component test', 'fixtures/greater_than_equal1.sag'
+
+  include_examples 'no validation error'
 
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}

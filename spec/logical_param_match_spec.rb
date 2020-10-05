@@ -149,3 +149,70 @@ describe 'logical_param_matching2.sag' do
                 IntegerConstant.new(3)),
               IntegerConstant.new(1)))))))
 end
+
+describe 'logical_param_matching9.sag' do
+  include_context 'component test', 'fixtures/logical_param_matching9.sag'
+
+  include_examples 'parsing', ASTree.new(
+        Program.new(
+          Function.new(
+            'blam',
+            {[] => :INT},
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :limit,
+                  IntegerConstant.new(17))))),
+          Function.new(
+            'limit',
+            {[:INT] => :INT},
+            Clause.new(
+              Parameter.new(:X),
+              Expression.new(
+                :>,
+                Variable.new(:X),
+                IntegerConstant.new(5)),
+              Return.new(
+                IntegerConstant.new(0))),
+            Clause.new(
+              Parameter.new(:X),
+              nil,
+              Return.new(
+                Variable.new(:X))))))
+
+  include_examples 'generation', '_blam', <<~ASM
+    #{CodeGen.externs}
+
+    SECTION .text
+    global _blam
+
+    _blam:
+        call    init
+        mov     rax, 17
+        push    rax
+        call    _limit
+        add     rsp, 8
+    #{CodeGen.exit 'rax'}
+
+    _limit:
+        push    rbp
+        mov     rbp, rsp
+    _limit0:
+        mov     rax, 5
+        push    rax
+        mov     rax, [rbp+16]
+        pop     rcx
+    #{CodeGen.compare 'rcx', 'setg'}
+        cmp     rax, 1
+        jne     _limit1
+        mov     rax, 0
+        jmp     _limitdone
+    _limit1:
+        mov     rax, [rbp+16]
+    _limitdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
+  ASM
+end

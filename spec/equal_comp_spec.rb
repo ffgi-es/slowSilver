@@ -16,6 +16,8 @@ describe 'simple_comparison1.sag' do
     Token.new(:end)
   ]
 
+  include_examples 'no validation error'
+
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}
 

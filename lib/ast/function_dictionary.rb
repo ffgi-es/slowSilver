@@ -13,5 +13,12 @@ class FunctionDictionary
   @dictionary[:+] = { %i[INT INT] => :INT }
   @dictionary[:-] = { %i[INT INT] => :INT }
   @dictionary[:%] = { %i[INT INT] => :INT }
+  @dictionary[:/] = { %i[INT INT] => :INT }
   @dictionary[:*] = { %i[INT INT] => :INT }
+  @dictionary[:"="] = { %i[INT INT] => :INT }
+  @dictionary[:<=] = { %i[INT INT] => :INT }
+  @dictionary[:<] = { %i[INT INT] => :INT }
+  @dictionary[:>=] = { %i[INT INT] => :INT }
+  @dictionary[:>] = { %i[INT INT] => :INT }
+  @dictionary[:print] = { %i[STRING] => :INT }
 end
