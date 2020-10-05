@@ -19,6 +19,23 @@ describe 'not1.sag' do
     Token.new(:end)
   ]
 
+  include_examples 'parsing', ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            {[] => :INT},
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :!,
+                  Expression.new(
+                    :"=",
+                    IntegerConstant.new(4),
+                    IntegerConstant.new(8))))))))
+
+  include_examples 'no validation error'
+
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}
 

@@ -20,5 +20,7 @@ class FunctionDictionary
   @dictionary[:<] = { %i[INT INT] => :INT }
   @dictionary[:>=] = { %i[INT INT] => :INT }
   @dictionary[:>] = { %i[INT INT] => :INT }
+  @dictionary[:!] = { %i[INT] => :INT }
   @dictionary[:print] = { %i[STRING] => :INT }
+  @dictionary[:concat] = { %i[STRING STRING] => :STRING }
 end
