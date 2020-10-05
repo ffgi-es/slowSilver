@@ -16,16 +16,16 @@ describe 'strings1.sag' do
   ]
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :print,
-                  StringConstant.new('Hello, World!')))))))
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :print,
+              StringConstant.new('Hello, World!')))))))
 
   include_examples 'no validation error'
 
@@ -51,46 +51,46 @@ describe 'strings2.sag' do
   include_context 'component test', 'fixtures/strings2.sag'
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :enough,
-                  IntegerConstant.new(15))))),
-          Function.new(
-            'enough',
-            {[:INT] => :INT},
-            Clause.new(
-              Parameter.new(:X),
-              Expression.new(
-                :<,
-                Variable.new(:X),
-                IntegerConstant.new(20)),
-              Return.new(
-                Expression.new(
-                  :print,
-                  StringConstant.new('too few')))),
-            Clause.new(
-              Parameter.new(:X),
-              Expression.new(
-                :<,
-                Variable.new(:X),
-                IntegerConstant.new(30)),
-              Return.new(
-                Expression.new(
-                  :print,
-                  StringConstant.new('enough')))),
-            Clause.new(
-              Parameter.new(:X),
-              nil,
-              Return.new(
-                Expression.new(
-                  :print,
-                  StringConstant.new('too many')))))))
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :enough,
+              IntegerConstant.new(15))))),
+      Function.new(
+        'enough',
+        { [:INT] => :INT },
+        Clause.new(
+          Parameter.new(:X),
+          Expression.new(
+            :<,
+            Variable.new(:X),
+            IntegerConstant.new(20)),
+          Return.new(
+            Expression.new(
+              :print,
+              StringConstant.new('too few')))),
+        Clause.new(
+          Parameter.new(:X),
+          Expression.new(
+            :<,
+            Variable.new(:X),
+            IntegerConstant.new(30)),
+          Return.new(
+            Expression.new(
+              :print,
+              StringConstant.new('enough')))),
+        Clause.new(
+          Parameter.new(:X),
+          nil,
+          Return.new(
+            Expression.new(
+              :print,
+              StringConstant.new('too many')))))))
 
   include_examples 'no validation error'
 
@@ -146,7 +146,7 @@ describe 'strings2.sag' do
         mov     rsp, rbp
         pop     rbp
         ret
-    
+
     SECTION .data
     str0l   dd 7
     str0    db 'too few'

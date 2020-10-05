@@ -4,95 +4,95 @@ describe 'params_matching1.sag' do
   include_context 'component test', 'fixtures/params_matching1.sag'
 
   include_examples 'lexing', [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:function_call, 'fib'),
-        Token.new(:integer_constant, 7),
-        Token.new(:end),
-        Token.new(:identifier, 'fib'),
-        Token.new(:type, :INT),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:function_line),
-        Token.new(:identifier, 'fib'),
-        Token.new(:integer_constant, 0),
-        Token.new(:return),
-        Token.new(:integer_constant, 0),
-        Token.new(:break),
-        Token.new(:identifier, 'fib'),
-        Token.new(:integer_constant, 1),
-        Token.new(:return),
-        Token.new(:integer_constant, 1),
-        Token.new(:break),
-        Token.new(:identifier, 'fib'),
-        Token.new(:variable, 'X'),
-        Token.new(:return),
-        Token.new(:function_call, '+'),
-        Token.new(:open_expression),
-        Token.new(:function_call, 'fib'),
-        Token.new(:open_expression),
-        Token.new(:variable, 'X'),
-        Token.new(:function_call, '-'),
-        Token.new(:integer_constant, 1),
-        Token.new(:close_expression),
-        Token.new(:close_expression),
-        Token.new(:open_expression),
-        Token.new(:function_call, 'fib'),
-        Token.new(:open_expression),
-        Token.new(:variable, 'X'),
-        Token.new(:function_call, '-'),
-        Token.new(:integer_constant, 2),
-        Token.new(:close_expression),
-        Token.new(:close_expression),
-        Token.new(:end)
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:function_call, 'fib'),
+    Token.new(:integer_constant, 7),
+    Token.new(:end),
+    Token.new(:identifier, 'fib'),
+    Token.new(:type, :INT),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:function_line),
+    Token.new(:identifier, 'fib'),
+    Token.new(:integer_constant, 0),
+    Token.new(:return),
+    Token.new(:integer_constant, 0),
+    Token.new(:break),
+    Token.new(:identifier, 'fib'),
+    Token.new(:integer_constant, 1),
+    Token.new(:return),
+    Token.new(:integer_constant, 1),
+    Token.new(:break),
+    Token.new(:identifier, 'fib'),
+    Token.new(:variable, 'X'),
+    Token.new(:return),
+    Token.new(:function_call, '+'),
+    Token.new(:open_expression),
+    Token.new(:function_call, 'fib'),
+    Token.new(:open_expression),
+    Token.new(:variable, 'X'),
+    Token.new(:function_call, '-'),
+    Token.new(:integer_constant, 1),
+    Token.new(:close_expression),
+    Token.new(:close_expression),
+    Token.new(:open_expression),
+    Token.new(:function_call, 'fib'),
+    Token.new(:open_expression),
+    Token.new(:variable, 'X'),
+    Token.new(:function_call, '-'),
+    Token.new(:integer_constant, 2),
+    Token.new(:close_expression),
+    Token.new(:close_expression),
+    Token.new(:end)
   ]
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :fib,
+              IntegerConstant.new(7))))),
+      Function.new(
+        'fib',
+        { [:INT] => :INT },
+        Clause.new(
+          IntegerConstant.new(0),
+          nil,
+          Return.new(
+            IntegerConstant.new(0))),
+        Clause.new(
+          IntegerConstant.new(1),
+          nil,
+          Return.new(
+            IntegerConstant.new(1))),
+        Clause.new(
+          Parameter.new(:X),
+          nil,
+          Return.new(
+            Expression.new(
+              :+,
+              Expression.new(
+                :fib,
                 Expression.new(
-                  :fib,
-                  IntegerConstant.new(7))))),
-          Function.new(
-            'fib',
-            {[:INT] => :INT},
-            Clause.new(
-              IntegerConstant.new(0),
-              nil,
-              Return.new(
-                IntegerConstant.new(0))),
-            Clause.new(
-              IntegerConstant.new(1),
-              nil,
-              Return.new(
-                IntegerConstant.new(1))),
-            Clause.new(
-              Parameter.new(:X),
-              nil,
-              Return.new(
+                  :-,
+                  Variable.new(:X),
+                  IntegerConstant.new(1))),
+              Expression.new(
+                :fib,
                 Expression.new(
-                  :+,
-                  Expression.new(
-                    :fib,
-                    Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(1))),
-                  Expression.new(
-                    :fib,
-                    Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(2)))))))))
+                  :-,
+                  Variable.new(:X),
+                  IntegerConstant.new(2)))))))))
 
   include_examples 'no validation error'
 
@@ -156,88 +156,88 @@ describe 'params_matching2.sag' do
   include_context 'component test', 'fixtures/params_matching2.sag'
 
   include_examples 'lexing', [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:function_call, '+'),
-        Token.new(:open_expression),
-        Token.new(:function_call, 'test'),
-        Token.new(:integer_constant, 2),
-        Token.new(:integer_constant, 3),
-        Token.new(:close_expression),
-        Token.new(:open_expression),
-        Token.new(:function_call, 'test'),
-        Token.new(:integer_constant, 4),
-        Token.new(:integer_constant, 5),
-        Token.new(:close_expression),
-        Token.new(:end),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:function_call, '+'),
+    Token.new(:open_expression),
+    Token.new(:function_call, 'test'),
+    Token.new(:integer_constant, 2),
+    Token.new(:integer_constant, 3),
+    Token.new(:close_expression),
+    Token.new(:open_expression),
+    Token.new(:function_call, 'test'),
+    Token.new(:integer_constant, 4),
+    Token.new(:integer_constant, 5),
+    Token.new(:close_expression),
+    Token.new(:end),
 
-        Token.new(:identifier, 'test'),
-        Token.new(:type, :INT),
-        Token.new(:separator),
-        Token.new(:type, :INT),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:function_line),
+    Token.new(:identifier, 'test'),
+    Token.new(:type, :INT),
+    Token.new(:separator),
+    Token.new(:type, :INT),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:function_line),
 
-        Token.new(:identifier, 'test'),
-        Token.new(:integer_constant, 2),
-        Token.new(:separator),
-        Token.new(:integer_constant, 3),
-        Token.new(:return),
-        Token.new(:integer_constant, 1),
-        Token.new(:break),
+    Token.new(:identifier, 'test'),
+    Token.new(:integer_constant, 2),
+    Token.new(:separator),
+    Token.new(:integer_constant, 3),
+    Token.new(:return),
+    Token.new(:integer_constant, 1),
+    Token.new(:break),
 
-        Token.new(:identifier, 'test'),
-        Token.new(:variable, 'X'),
-        Token.new(:separator),
-        Token.new(:variable, 'Y'),
-        Token.new(:return),
-        Token.new(:variable, 'X'),
-        Token.new(:function_call, '*'),
-        Token.new(:variable, 'Y'),
-        Token.new(:end)
+    Token.new(:identifier, 'test'),
+    Token.new(:variable, 'X'),
+    Token.new(:separator),
+    Token.new(:variable, 'Y'),
+    Token.new(:return),
+    Token.new(:variable, 'X'),
+    Token.new(:function_call, '*'),
+    Token.new(:variable, 'Y'),
+    Token.new(:end)
   ]
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :+,
-                  Expression.new(
-                    :test,
-                    IntegerConstant.new(2),
-                    IntegerConstant.new(3)),
-                  Expression.new(
-                    :test,
-                    IntegerConstant.new(4),
-                    IntegerConstant.new(5)))))),
-          Function.new(
-            'test',
-            {%i[INT INT] => :INT},
-            Clause.new(
-              IntegerConstant.new(2),
-              IntegerConstant.new(3),
-              nil,
-              Return.new(
-                IntegerConstant.new(1))),
-            Clause.new(
-              Parameter.new(:X),
-              Parameter.new(:Y),
-              nil,
-              Return.new(
-                Expression.new(
-                  :*,
-                  Variable.new(:X),
-                  Variable.new(:Y)))))))
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :+,
+              Expression.new(
+                :test,
+                IntegerConstant.new(2),
+                IntegerConstant.new(3)),
+              Expression.new(
+                :test,
+                IntegerConstant.new(4),
+                IntegerConstant.new(5)))))),
+      Function.new(
+        'test',
+        { %i[INT INT] => :INT },
+        Clause.new(
+          IntegerConstant.new(2),
+          IntegerConstant.new(3),
+          nil,
+          Return.new(
+            IntegerConstant.new(1))),
+        Clause.new(
+          Parameter.new(:X),
+          Parameter.new(:Y),
+          nil,
+          Return.new(
+            Expression.new(
+              :*,
+              Variable.new(:X),
+              Variable.new(:Y)))))))
 
   include_examples 'no validation error'
 
@@ -295,125 +295,125 @@ describe 'mixed_param_matching.sag' do
   include_context 'component test', 'fixtures/mixed_param_matching.sag'
 
   include_examples 'lexing', [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:function_call, 'fib'),
-        Token.new(:integer_constant, 11),
-        Token.new(:end),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:function_call, 'fib'),
+    Token.new(:integer_constant, 11),
+    Token.new(:end),
 
-        Token.new(:identifier, 'fib'),
-        Token.new(:type, :INT),
-        Token.new(:return),
-        Token.new(:type, :INT),
+    Token.new(:identifier, 'fib'),
+    Token.new(:type, :INT),
+    Token.new(:return),
+    Token.new(:type, :INT),
 
-        Token.new(:function_line),
+    Token.new(:function_line),
 
-        Token.new(:identifier, 'fib'),
-        Token.new(:variable, 'Start'),
-        Token.new(:return),
-        Token.new(:function_call, 'fib_rec'),
-        Token.new(:integer_constant, 0),
-        Token.new(:integer_constant, 1),
-        Token.new(:variable, 'Start'),
-        Token.new(:end),
+    Token.new(:identifier, 'fib'),
+    Token.new(:variable, 'Start'),
+    Token.new(:return),
+    Token.new(:function_call, 'fib_rec'),
+    Token.new(:integer_constant, 0),
+    Token.new(:integer_constant, 1),
+    Token.new(:variable, 'Start'),
+    Token.new(:end),
 
-        Token.new(:identifier, 'fib_rec'),
-        Token.new(:type, :INT),
-        Token.new(:separator),
-        Token.new(:type, :INT),
-        Token.new(:separator),
-        Token.new(:type, :INT),
-        Token.new(:return),
-        Token.new(:type, :INT),
+    Token.new(:identifier, 'fib_rec'),
+    Token.new(:type, :INT),
+    Token.new(:separator),
+    Token.new(:type, :INT),
+    Token.new(:separator),
+    Token.new(:type, :INT),
+    Token.new(:return),
+    Token.new(:type, :INT),
 
-        Token.new(:function_line),
+    Token.new(:function_line),
 
-        Token.new(:identifier, 'fib_rec'),
-        Token.new(:variable, 'X1'),
-        Token.new(:separator),
-        Token.new(:variable, 'X2'),
-        Token.new(:separator),
-        Token.new(:integer_constant, 0),
-        Token.new(:return),
-        Token.new(:variable, 'X1'),
-        Token.new(:break),
+    Token.new(:identifier, 'fib_rec'),
+    Token.new(:variable, 'X1'),
+    Token.new(:separator),
+    Token.new(:variable, 'X2'),
+    Token.new(:separator),
+    Token.new(:integer_constant, 0),
+    Token.new(:return),
+    Token.new(:variable, 'X1'),
+    Token.new(:break),
 
-        Token.new(:identifier, 'fib_rec'),
-        Token.new(:variable, 'X1'),
-        Token.new(:separator),
-        Token.new(:variable, 'X2'),
-        Token.new(:separator),
-        Token.new(:variable, 'N'),
-        Token.new(:return),
-        Token.new(:function_call, 'fib_rec'),
-        Token.new(:variable, 'X2'),
-        Token.new(:open_expression),
-        Token.new(:variable, 'X1'),
-        Token.new(:function_call, '+'),
-        Token.new(:variable, 'X2'),
-        Token.new(:close_expression),
-        Token.new(:open_expression),
-        Token.new(:variable, 'N'),
-        Token.new(:function_call, '-'),
-        Token.new(:integer_constant, 1),
-        Token.new(:close_expression),
-        Token.new(:end)
+    Token.new(:identifier, 'fib_rec'),
+    Token.new(:variable, 'X1'),
+    Token.new(:separator),
+    Token.new(:variable, 'X2'),
+    Token.new(:separator),
+    Token.new(:variable, 'N'),
+    Token.new(:return),
+    Token.new(:function_call, 'fib_rec'),
+    Token.new(:variable, 'X2'),
+    Token.new(:open_expression),
+    Token.new(:variable, 'X1'),
+    Token.new(:function_call, '+'),
+    Token.new(:variable, 'X2'),
+    Token.new(:close_expression),
+    Token.new(:open_expression),
+    Token.new(:variable, 'N'),
+    Token.new(:function_call, '-'),
+    Token.new(:integer_constant, 1),
+    Token.new(:close_expression),
+    Token.new(:end)
   ]
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :fib,
-                  IntegerConstant.new(11))))),
-          Function.new(
-            'fib',
-            {[:INT] => :INT},
-            Clause.new(
-              Parameter.new(:Start),
-              nil,
-              Return.new(
-                Expression.new(
-                  :fib_rec,
-                  IntegerConstant.new(0),
-                  IntegerConstant.new(1),
-                  Variable.new(:Start))))),
-          Function.new(
-            'fib_rec',
-            {%i[INT INT INT] => :INT},
-            Clause.new(
-              Parameter.new(:X1),
-              Parameter.new(:X2),
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :fib,
+              IntegerConstant.new(11))))),
+      Function.new(
+        'fib',
+        { [:INT] => :INT },
+        Clause.new(
+          Parameter.new(:Start),
+          nil,
+          Return.new(
+            Expression.new(
+              :fib_rec,
               IntegerConstant.new(0),
-              nil,
-              Return.new(
-                Variable.new(:X1))),
-            Clause.new(
-              Parameter.new(:X1),
-              Parameter.new(:X2),
-              Parameter.new(:N),
-              nil,
-              Return.new(
-                Expression.new(
-                  :fib_rec,
-                  Variable.new(:X2),
-                  Expression.new(
-                    :+,
-                    Variable.new(:X1),
-                    Variable.new(:X2)),
-                  Expression.new(
-                    :-,
-                    Variable.new(:N),
-                    IntegerConstant.new(1))))))))
+              IntegerConstant.new(1),
+              Variable.new(:Start))))),
+      Function.new(
+        'fib_rec',
+        { %i[INT INT INT] => :INT },
+        Clause.new(
+          Parameter.new(:X1),
+          Parameter.new(:X2),
+          IntegerConstant.new(0),
+          nil,
+          Return.new(
+            Variable.new(:X1))),
+        Clause.new(
+          Parameter.new(:X1),
+          Parameter.new(:X2),
+          Parameter.new(:N),
+          nil,
+          Return.new(
+            Expression.new(
+              :fib_rec,
+              Variable.new(:X2),
+              Expression.new(
+                :+,
+                Variable.new(:X1),
+                Variable.new(:X2)),
+              Expression.new(
+                :-,
+                Variable.new(:N),
+                IntegerConstant.new(1))))))))
 
   include_examples 'no validation error'
 

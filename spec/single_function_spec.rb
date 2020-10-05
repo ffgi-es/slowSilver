@@ -28,14 +28,14 @@ describe 'function1.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
             Expression.new(:add)))),
       Function.new(
         'add',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -98,7 +98,7 @@ describe 'function2.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -107,7 +107,7 @@ describe 'function2.sag' do
               IntegerConstant.new(4))))),
       Function.new(
         'double',
-        {[:INT] => :INT},
+        { [:INT] => :INT },
         Clause.new(
           Parameter.new(:X),
           nil,
@@ -183,7 +183,7 @@ describe 'function3.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -193,7 +193,7 @@ describe 'function3.sag' do
               IntegerConstant.new(8))))),
       Function.new(
         'plus',
-        {%i[INT INT] => :INT},
+        { %i[INT INT] => :INT },
         Clause.new(
           Parameter.new(:A),
           Parameter.new(:B),
@@ -243,7 +243,7 @@ describe 'function4.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -254,7 +254,7 @@ describe 'function4.sag' do
               IntegerConstant.new(2))))),
       Function.new(
         'sum',
-        {%i[INT INT INT] => :INT},
+        { %i[INT INT INT] => :INT },
         Clause.new(
           Parameter.new(:A),
           Parameter.new(:B),
@@ -314,7 +314,7 @@ describe 'nested_functions1.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -325,7 +325,7 @@ describe 'nested_functions1.sag' do
               IntegerConstant.new(6))))),
       Function.new(
         'proc',
-        {%i[INT INT INT] => :INT},
+        { %i[INT INT INT] => :INT },
         Clause.new(
           Parameter.new(:A),
           Parameter.new(:B),
@@ -341,7 +341,7 @@ describe 'nested_functions1.sag' do
                 Variable.new(:C)))))),
       Function.new(
         'add',
-        {%i[INT INT] => :INT},
+        { %i[INT INT] => :INT },
         Clause.new(
           Parameter.new(:A),
           Parameter.new(:B),

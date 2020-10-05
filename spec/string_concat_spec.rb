@@ -4,19 +4,19 @@ describe 'string_addition1.sag' do
   include_context 'component test', 'fixtures/string_addition1.sag'
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :print,
-                  Expression.new(
-                    :concat,
-                    StringConstant.new('This plus'),
-                    StringConstant.new(' that'))))))))
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :print,
+              Expression.new(
+                :concat,
+                StringConstant.new('This plus'),
+                StringConstant.new(' that'))))))))
 
   include_examples 'no validation error'
 

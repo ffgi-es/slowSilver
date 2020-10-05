@@ -18,7 +18,7 @@ describe 'integer_return1.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -57,7 +57,7 @@ describe 'integer_return2.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(
@@ -96,7 +96,7 @@ describe 'integer_return3.sag' do
     Program.new(
       Function.new(
         'main',
-        {[] => :INT},
+        { [] => :INT },
         Clause.new(
           nil,
           Return.new(

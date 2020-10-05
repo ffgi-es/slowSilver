@@ -17,17 +17,17 @@ describe 'multiplication1.sag' do
   ]
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'main',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :*,
-                  IntegerConstant.new(3),
-                  IntegerConstant.new(6)))))))
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :*,
+              IntegerConstant.new(3),
+              IntegerConstant.new(6)))))))
 
   include_examples 'no validation error'
 

@@ -154,32 +154,32 @@ describe 'logical_param_matching9.sag' do
   include_context 'component test', 'fixtures/logical_param_matching9.sag'
 
   include_examples 'parsing', ASTree.new(
-        Program.new(
-          Function.new(
-            'blam',
-            {[] => :INT},
-            Clause.new(
-              nil,
-              Return.new(
-                Expression.new(
-                  :limit,
-                  IntegerConstant.new(17))))),
-          Function.new(
-            'limit',
-            {[:INT] => :INT},
-            Clause.new(
-              Parameter.new(:X),
-              Expression.new(
-                :>,
-                Variable.new(:X),
-                IntegerConstant.new(5)),
-              Return.new(
-                IntegerConstant.new(0))),
-            Clause.new(
-              Parameter.new(:X),
-              nil,
-              Return.new(
-                Variable.new(:X))))))
+    Program.new(
+      Function.new(
+        'blam',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :limit,
+              IntegerConstant.new(17))))),
+      Function.new(
+        'limit',
+        { [:INT] => :INT },
+        Clause.new(
+          Parameter.new(:X),
+          Expression.new(
+            :>,
+            Variable.new(:X),
+            IntegerConstant.new(5)),
+          Return.new(
+            IntegerConstant.new(0))),
+        Clause.new(
+          Parameter.new(:X),
+          nil,
+          Return.new(
+            Variable.new(:X))))))
 
   include_examples 'generation', '_blam', <<~ASM
     #{CodeGen.externs}
