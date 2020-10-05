@@ -1,11 +1,9 @@
-require 'lexer'
-require 'token'
+require_relative 'shared'
 
-describe 'Lexer' do
-  describe '#lex' do
-    it 'should return a list of tokens for nested_expession1.sag' do
-      in_file = File.expand_path '../fixtures/nested_expression1.sag', File.dirname(__FILE__)
-      out_tokens = [
+describe 'nested_expression1.sag' do
+  include_context 'component test', 'fixtures/nested_expression1.sag'
+
+  include_examples 'lexing', [
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:type, :INT),
@@ -20,14 +18,31 @@ describe 'Lexer' do
         Token.new(:function_call, '-'),
         Token.new(:integer_constant, 5),
         Token.new(:end)
-      ]
-      lexer = Lexer.new(in_file)
-      expect(lexer.lex).to eq out_tokens
-    end
+  ]
 
-    it 'should return a list of tokens for multiline1.sag' do
-      in_file = File.expand_path '../fixtures/multiline1.sag', File.dirname(__FILE__)
-      out_tokens = [
+  include_examples 'parsing', ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            {[] => :INT},
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :-,
+                  Expression.new(
+                    :+,
+                    IntegerConstant.new(13),
+                    IntegerConstant.new(2)),
+                  IntegerConstant.new(5)))))))
+
+  include_examples 'no validation error'
+end
+
+describe 'multiline1.sag' do
+  include_context 'component test', 'fixtures/multiline1.sag'
+
+  include_examples 'lexing', [
         Token.new(:identifier, 'main'),
         Token.new(:return),
         Token.new(:type, :INT),
@@ -46,9 +61,5 @@ describe 'Lexer' do
         Token.new(:integer_constant, 14),
         Token.new(:close_expression),
         Token.new(:end)
-      ]
-      lexer = Lexer.new(in_file)
-      expect(lexer.lex).to eq out_tokens
-    end
-  end
+  ]
 end
