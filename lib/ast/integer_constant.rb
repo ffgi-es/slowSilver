@@ -13,7 +13,7 @@ class IntegerConstant
     "mov #{Register[:ax]}, #{value}".asm
   end
 
-  def type
+  def type(_)
     :INT
   end
 end

@@ -18,7 +18,7 @@ class StringConstant
       .concat "#{@label}    db '#{@value}'\n"
   end
 
-  def type
+  def type(_)
     :STRING
   end
 end

@@ -21,7 +21,7 @@ class Return
     @expression.data if @expression.respond_to? :data
   end
 
-  def validate
-    @expression.validate if @expression.is_a? Expression
+  def validate(types)
+    @expression.validate(types) if @expression.is_a? Expression
   end
 end

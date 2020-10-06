@@ -1,0 +1,7 @@
+main => INT
+===========
+main => :test 3 5.
+
+test: INT, INT => INT
+---------------------
+test: X, Y => :+ X (Y :- 'hello').

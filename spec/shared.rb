@@ -37,6 +37,14 @@ shared_examples 'no validation error' do
   end
 end
 
+shared_examples 'validation error' do |error|
+  describe 'validation' do
+    it 'should return an error for mismatching param types' do
+      expect { ast.validate }.to raise_error CompileError, error
+    end
+  end
+end
+
 shared_examples 'generation' do |expected_entry, expected_asm|
   describe 'generation' do
     describe 'code' do

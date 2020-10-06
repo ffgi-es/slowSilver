@@ -25,7 +25,7 @@ class Function
   end
 
   def validate
-    @clauses.each(&:validate)
+    @clauses.each { |c| c.validate(@param_types) }
   end
 
   private

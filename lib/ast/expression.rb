@@ -21,8 +21,10 @@ class Expression
     @parameters.map { |p| p.data if p.respond_to? :data }.join
   end
 
-  def validate
-    types = @parameters.map(&:type)
+  def validate(param_types)
+    @parameters.each { |p| p.validate(param_types) if p.is_a? Expression }
+
+    types = @parameters.map { |p| p.type(param_types) }
     return if FunctionDictionary[@function][types]
 
     raise CompileError, <<~ERROR
@@ -31,8 +33,8 @@ class Expression
     ERROR
   end
 
-  def type
-    types = @parameters.map(&:type)
+  def type(param_types)
+    types = @parameters.map { |p| p.type(param_types) }
     FunctionDictionary[@function][types]
   end
 

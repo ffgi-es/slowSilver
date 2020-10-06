@@ -28,8 +28,11 @@ class Clause
     @return.data
   end
 
-  def validate
-    @return.validate
+  def validate(types)
+    variable_types = @parameters
+      .zip(types)
+      .each_with_object({}) { |(p, t), v_t| v_t[p.name] = t if p.is_a? Parameter }
+    @return.validate(variable_types)
   end
 
   private

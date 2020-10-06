@@ -13,4 +13,8 @@ class Variable
     ind = parameters.index(@name) + 2
     "mov #{Register[:ax]}, [rbp+#{8 * ind}]".asm
   end
+
+  def type(param_types)
+    param_types[@name]
+  end
 end

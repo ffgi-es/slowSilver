@@ -19,5 +19,6 @@ class Program
 
   def validate
     @function.validate
+    @functions.each(&:validate)
   end
 end
