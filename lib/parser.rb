@@ -26,42 +26,30 @@ class Parser
     end
 
     def parse_function(tokens)
+      parts = tokens
+        .slice_after { |t| t.type == :function_line || t.type == :entry_function_line }.to_a
+
+      Function.new(
+        *function_details(parts[0]),
+        *function_clauses(parts[1]))
+    end
+
+    def function_details(tokens)
       name = tokens.shift.value
 
-      input_types = input_types(tokens)
+      parts = tokens.slice_after { |t| t.type == :return }.to_a
 
-      return_type = return_type(tokens)
-
-      clauses = tokens
-        .slice_after(Token.new(:break))
-        .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
-
-      Function.new(name, { input_types => return_type }, *clauses)
+      [name, { input_types(parts[0]) => parts[1].first.value }]
     end
 
     def input_types(tokens)
-      input_types = []
-
-      add_input_type(input_types, tokens) until tokens.first.type == :return
-
-      tokens.shift
-
-      input_types
+      tokens.each_with_object([]) { |t, arr| arr << t.value if t.type == :type }
     end
 
-    def add_input_type(input_types, tokens)
-      case tokens.first.type
-      when :type
-        input_types << tokens.shift.value
-      when :separator
-        tokens.shift
-      end
-    end
-
-    def return_type(tokens)
-      return_type = tokens.shift.value
-      tokens.shift
-      return_type
+    def function_clauses(tokens)
+      tokens
+        .slice_after(Token.new(:break))
+        .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
     end
 
     def parse_clause(tokens)
