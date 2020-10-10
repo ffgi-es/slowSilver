@@ -20,8 +20,8 @@ shared_examples 'lexing' do |expected_tokens|
   end
 end
 
-def tokens_to_s(ts)
-  ts.map(&:to_s).join("\n")
+def tokens_to_s(toks)
+  toks.map(&:to_s).join("\n")
 end
 
 shared_examples 'parsing' do |expected_ast|
