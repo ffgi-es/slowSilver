@@ -28,21 +28,25 @@ class Parser
     def parse_function(tokens)
       name = tokens.shift.value
 
-      input_types = []
+      input_types = input_types(tokens)
 
-      add_input_type(input_types, tokens) until tokens.first.type == :return
-
-      tokens.shift
-
-      return_type = tokens.shift.value
-
-      tokens.shift
+      return_type = return_type(tokens)
 
       clauses = tokens
         .slice_after(Token.new(:break))
         .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
 
       Function.new(name, { input_types => return_type }, *clauses)
+    end
+
+    def input_types(tokens)
+      input_types = []
+
+      add_input_type(input_types, tokens) until tokens.first.type == :return
+
+      tokens.shift
+
+      input_types
     end
 
     def add_input_type(input_types, tokens)
@@ -52,6 +56,12 @@ class Parser
       when :separator
         tokens.shift
       end
+    end
+
+    def return_type(tokens)
+      return_type = tokens.shift.value
+      tokens.shift
+      return_type
     end
 
     def parse_clause(tokens)

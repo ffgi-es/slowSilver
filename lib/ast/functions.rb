@@ -1,0 +1,15 @@
+require_relative "function_dictionary"
+
+FunctionDictionary.add(:+, { %i[INT INT] => :INT })
+FunctionDictionary.add(:-, { %i[INT INT] => :INT })
+FunctionDictionary.add(:%, { %i[INT INT] => :INT })
+FunctionDictionary.add(:/, { %i[INT INT] => :INT })
+FunctionDictionary.add(:*, { %i[INT INT] => :INT })
+FunctionDictionary.add(:"=", { %i[INT INT] => :INT })
+FunctionDictionary.add(:<=, { %i[INT INT] => :INT })
+FunctionDictionary.add(:<, { %i[INT INT] => :INT })
+FunctionDictionary.add(:>=, { %i[INT INT] => :INT })
+FunctionDictionary.add(:>, { %i[INT INT] => :INT })
+FunctionDictionary.add(:!, { %i[INT] => :INT })
+FunctionDictionary.add(:print, { %i[STRING] => :INT })
+FunctionDictionary.add(:concat, { %i[STRING STRING] => :STRING })

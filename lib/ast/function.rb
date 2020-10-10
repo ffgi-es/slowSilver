@@ -1,5 +1,5 @@
 require_relative 'helpers'
-require_relative 'function_dictionary'
+require_relative 'functions'
 
 # a function with multiple parameter matched clauses
 class Function

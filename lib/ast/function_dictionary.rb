@@ -9,18 +9,4 @@ class FunctionDictionary
   def self.add(name, type_signature)
     @dictionary[name] = type_signature
   end
-
-  @dictionary[:+] = { %i[INT INT] => :INT }
-  @dictionary[:-] = { %i[INT INT] => :INT }
-  @dictionary[:%] = { %i[INT INT] => :INT }
-  @dictionary[:/] = { %i[INT INT] => :INT }
-  @dictionary[:*] = { %i[INT INT] => :INT }
-  @dictionary[:"="] = { %i[INT INT] => :INT }
-  @dictionary[:<=] = { %i[INT INT] => :INT }
-  @dictionary[:<] = { %i[INT INT] => :INT }
-  @dictionary[:>=] = { %i[INT INT] => :INT }
-  @dictionary[:>] = { %i[INT INT] => :INT }
-  @dictionary[:!] = { %i[INT] => :INT }
-  @dictionary[:print] = { %i[STRING] => :INT }
-  @dictionary[:concat] = { %i[STRING STRING] => :STRING }
 end
