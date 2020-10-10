@@ -15,9 +15,13 @@ end
 shared_examples 'lexing' do |expected_tokens|
   describe 'lexing' do
     it 'should return a list of tokens' do
-      expect(tokens).to eq expected_tokens
+      expect(tokens_to_s(tokens)).to eq tokens_to_s(expected_tokens)
     end
   end
+end
+
+def tokens_to_s(ts)
+  ts.map(&:to_s).join("\n")
 end
 
 shared_examples 'parsing' do |expected_ast|
