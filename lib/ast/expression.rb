@@ -24,18 +24,13 @@ class Expression
   def validate(param_types)
     @parameters.each { |p| p.validate(param_types) if p.is_a? Expression }
 
-    types = @parameters.map { |p| p.type(param_types) }
-    return if FunctionDictionary[@function][types]
+    return if FunctionDictionary[@function][types(param_types)]
 
-    raise CompileError, <<~ERROR
-      #{@function} expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
-      received: #{types.join(', ')}
-    ERROR
+    throw_compile_error
   end
 
   def type(param_types)
-    types = @parameters.map { |p| p.type(param_types) }
-    FunctionDictionary[@function][types]
+    FunctionDictionary[@function][types(param_types)]
   end
 
   private
@@ -49,5 +44,16 @@ class Expression
       out << "push #{Register[:ax]}".asm
     end
     output << @parameters.first.code(func_params)
+  end
+
+  def throw_compile_error
+    raise CompileError, <<~ERROR
+      #{@function} expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
+      received: #{types.join(', ')}
+    ERROR
+  end
+
+  def types(param_types = {})
+    @types ||= @parameters.map { |p| p.type(param_types) }
   end
 end
