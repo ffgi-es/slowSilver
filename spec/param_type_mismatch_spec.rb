@@ -42,3 +42,12 @@ describe 'parameter_type_mismatch2.sag' do
     received: INT, STRING
   ERROR
 end
+
+describe 'parameter_type_mismatch3.sag' do
+  include_context 'component test', 'fixtures/parameter_type_mismatch3.sag'
+
+  include_examples 'validation error', <<~ERROR
+    function ':>' expects 2 parameters: INT, INT
+    received: INT, STRING
+  ERROR
+end

@@ -1,0 +1,8 @@
+main => INT
+===========
+main => :logic_mismatch 4.
+
+logic_mismatch: INT => INT
+--------------------------
+logic_mismatch: X ? X :> 'string' => 1;
+logic_mismatch: X => 0.
