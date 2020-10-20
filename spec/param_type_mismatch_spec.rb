@@ -29,7 +29,7 @@ describe 'parameter_type_mismatch1.sag' do
               Variable.new(:Y)))))))
 
   include_examples 'validation error', <<~ERROR
-    test expects 2 parameters: INT, INT
+    function ':test' expects 2 parameters: INT, INT
     received: INT, STRING
   ERROR
 end
@@ -38,7 +38,7 @@ describe 'parameter_type_mismatch2.sag' do
   include_context 'component test', 'fixtures/parameter_type_mismatch2.sag'
 
   include_examples 'validation error', <<~ERROR
-    - expects 2 parameters: INT, INT
+    function ':-' expects 2 parameters: INT, INT
     received: INT, STRING
   ERROR
 end

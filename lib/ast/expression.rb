@@ -48,7 +48,7 @@ class Expression
 
   def throw_compile_error
     raise CompileError, <<~ERROR
-      #{@function} expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
+      function ':#{@function}' expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
       received: #{types.join(', ')}
     ERROR
   end

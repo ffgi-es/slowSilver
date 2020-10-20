@@ -7,7 +7,7 @@ describe 'parameter type mismatch compiler tests' do
     [
       'parameter_type_mismatch1.sag',
       <<~ERROR
-        test expects 2 parameters: INT, INT
+        function ':test' expects 2 parameters: INT, INT
         received: INT, STRING
       ERROR
     ]
