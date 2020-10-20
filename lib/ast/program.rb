@@ -16,4 +16,9 @@ class Program
   def data
     @function.data << @functions.map(&:data).join
   end
+
+  def validate
+    @function.validate
+    @functions.each(&:validate)
+  end
 end

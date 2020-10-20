@@ -6,6 +6,6 @@ proc: INT, INT, INT => INT
 ----------------------------
 proc: A, B, C => A :- (:add B C).
 
-add: INT => INT
+add: INT, INT => INT
 ---------------
 add: A, B => A :+ B.

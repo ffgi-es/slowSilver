@@ -1,0 +1,8 @@
+blam => INT
+===========
+blam => :limit 17.
+
+limit: INT => INT
+-----------------
+limit: X ? X :> 5 => 0;
+limit: X => X.

@@ -17,7 +17,19 @@ class PPrinter
     def format_function(output, function, indent)
       output << indent("- func:\n", indent)
       output << indent("- name: '#{function.name}'\n", indent + 2)
+      output << indent("- type:\n", indent + 2)
+      output << indent("- return: #{function.return_type}\n", indent + 4)
+      format_input(output, function.param_types, indent + 4)
       function.clauses.reduce(output) { |out, clause| format_clause(out, clause, indent + 2) }
+    end
+
+    def format_input(output, input, indent)
+      if input.empty?
+        output << indent("- input:\n", indent)
+      else
+        types = input.map(&:to_s).join(', ')
+        output << indent("- input: #{types}\n", indent)
+      end
     end
 
     def format_clause(output, clause, indent)

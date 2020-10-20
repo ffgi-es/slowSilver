@@ -1,5 +1,6 @@
 require_relative 'helpers'
 require_relative '../actions'
+require_relative 'function_dictionary'
 
 # an expression with a function call
 class Expression
@@ -20,6 +21,18 @@ class Expression
     @parameters.map { |p| p.data if p.respond_to? :data }.join
   end
 
+  def validate(param_types)
+    @parameters.each { |p| p.validate(param_types) if p.is_a? Expression }
+
+    return if FunctionDictionary[@function][types(param_types)]
+
+    throw_compile_error
+  end
+
+  def type(param_types)
+    FunctionDictionary[@function][types(param_types)]
+  end
+
   private
 
   def get_parameters(func_params)
@@ -31,5 +44,16 @@ class Expression
       out << "push #{Register[:ax]}".asm
     end
     output << @parameters.first.code(func_params)
+  end
+
+  def throw_compile_error
+    raise CompileError, <<~ERROR
+      function ':#{@function}' expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
+      received: #{types.join(', ')}
+    ERROR
+  end
+
+  def types(param_types = {})
+    @types ||= @parameters.map { |p| p.type(param_types) }
   end
 end

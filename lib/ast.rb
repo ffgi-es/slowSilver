@@ -7,6 +7,7 @@ require_relative 'ast/integer_constant'
 require_relative 'ast/function'
 require_relative 'ast/clause'
 require_relative 'ast/string_constant'
+require_relative 'compile_error'
 
 # root of the AST
 class ASTree
@@ -14,6 +15,7 @@ class ASTree
 
   def initialize(program)
     @program = program
+    DataLabel.reset
   end
 
   def code
@@ -27,10 +29,13 @@ class ASTree
       .concat data_section
   end
 
+  def validate
+    @program.validate
+  end
+
   private
 
   def data_section
-    DataLabel.reset
     data = @program.data
     return '' if data.empty?
 

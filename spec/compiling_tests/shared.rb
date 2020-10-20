@@ -1,4 +1,3 @@
-require 'English'
 require 'open3'
 
 shared_context 'compiling test' do
@@ -26,10 +25,23 @@ shared_examples 'output' do |file, exit_code, output|
   end
 end
 
-def compile_and_run(file, compiler, executeable)
+shared_examples 'error' do |file, error_msg|
+  it "should output '#{error_msg}' for #{file}" do
+    _, err, status = compile file, slwslvr
+
+    expect(status.exitstatus).not_to be 0
+    expect(err).to eq error_msg
+  end
+end
+
+def compile(file, compiler)
   path = File.expand_path("../fixtures/#{file}", File.dirname(__FILE__))
 
-  o, e, s = Open3.capture3("#{compiler} #{path}")
+  Open3.capture3("#{compiler} #{path}")
+end
+
+def compile_and_run(file, compiler, executeable)
+  o, e, s = compile(file, compiler)
 
   puts e if s.exitstatus != 0
   expect(s.exitstatus).to eq 0

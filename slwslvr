@@ -30,6 +30,13 @@ end
 
 puts PPrinter.format ast if print_ast
 
+begin
+  ast.validate
+rescue CompileError => e
+  warn e.message
+  exit 2
+end
+
 generator = Generator.new ast
 
 filename = file.split('/').last.gsub(/.sag$/, '')

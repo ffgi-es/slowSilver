@@ -15,6 +15,9 @@ describe 'compiling and running program' do
       program:
         - func:
           - name: 'main'
+          - type:
+            - return: INT
+            - input:
           - clause:
             - params:
             - cond:

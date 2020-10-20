@@ -26,15 +26,30 @@ class Parser
     end
 
     def parse_function(tokens)
+      parts = tokens
+        .slice_after { |t| t.type == :function_line || t.type == :entry_function_line }.to_a
+
+      Function.new(
+        *function_details(parts[0]),
+        *function_clauses(parts[1]))
+    end
+
+    def function_details(tokens)
       name = tokens.shift.value
 
-      tokens = tokens.drop_while { |t| t.type != :identifier }
+      parts = tokens.slice_after { |t| t.type == :return }.to_a
 
-      clauses = tokens
+      [name, { input_types(parts[0]) => parts[1].first.value }]
+    end
+
+    def input_types(tokens)
+      tokens.each_with_object([]) { |t, arr| arr << t.value if t.type == :type }
+    end
+
+    def function_clauses(tokens)
+      tokens
         .slice_after(Token.new(:break))
         .reduce([]) { |res, clause_tokens| res.push parse_clause(clause_tokens) }
-
-      Function.new(name, *clauses)
     end
 
     def parse_clause(tokens)
