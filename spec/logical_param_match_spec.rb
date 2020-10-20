@@ -54,6 +54,8 @@ describe 'logical_param_matching1.sag' do
     Token.new(:end)
   ]
 
+  include_examples 'no validation error'
+
   include_examples 'parsing', ASTree.new(
     Program.new(
       Function.new(
@@ -180,6 +182,8 @@ describe 'logical_param_matching9.sag' do
           nil,
           Return.new(
             Variable.new(:X))))))
+
+  include_examples 'no validation error'
 
   include_examples 'generation', '_blam', <<~ASM
     #{CodeGen.externs}
