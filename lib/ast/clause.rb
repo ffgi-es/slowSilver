@@ -32,7 +32,7 @@ class Clause
     variable_types = @parameters
       .zip(param_types)
       .each_with_object({}) { |(p, t), v_t| v_t[p.name] = t if p.is_a? Parameter }
-    @condition&.validate(variable_types)
+    @condition&.validate(variable_types, :BOOL)
     @return.validate(variable_types, return_type)
   end
 
