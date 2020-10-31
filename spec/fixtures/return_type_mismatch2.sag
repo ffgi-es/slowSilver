@@ -1,0 +1,9 @@
+main => INT
+===========
+main => :glam 3.
+
+glam: INT => INT
+----------------
+glam: X ? X :- 2
+    => 4;
+glam: X => X :+ 3.

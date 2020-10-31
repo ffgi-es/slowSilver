@@ -21,12 +21,13 @@ class Expression
     @parameters.map { |p| p.data if p.respond_to? :data }.join
   end
 
-  def validate(param_types)
+  def validate(param_types, return_type = nil)
     @parameters.each { |p| p.validate(param_types) if p.is_a? Expression }
 
-    return if FunctionDictionary[@function][types(param_types)]
+    returned_type = FunctionDictionary[@function][types(param_types)]
 
-    throw_compile_error
+    throw_parameter_error unless returned_type
+    throw_return_error return_type if return_type && return_type != returned_type
   end
 
   def type(param_types)
@@ -46,7 +47,13 @@ class Expression
     output << @parameters.first.code(func_params)
   end
 
-  def throw_compile_error
+  def throw_return_error(expected_return_type)
+    raise CompileError, <<~ERROR
+      function ':#{@function}' returns #{FunctionDictionary[@function].values.first}, not #{expected_return_type}
+    ERROR
+  end
+
+  def throw_parameter_error
     raise CompileError, <<~ERROR
       function ':#{@function}' expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
       received: #{types.join(', ')}

@@ -6,7 +6,7 @@ describe 'less_than_equal1.sag' do
   include_examples 'lexing', [
     Token.new(:identifier, 'main'),
     Token.new(:return),
-    Token.new(:type, :INT),
+    Token.new(:type, :BOOL),
     Token.new(:entry_function_line),
     Token.new(:identifier, 'main'),
     Token.new(:return),

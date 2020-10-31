@@ -6,7 +6,7 @@ describe 'not1.sag' do
   include_examples 'lexing', [
     Token.new(:identifier, 'main'),
     Token.new(:return),
-    Token.new(:type, :INT),
+    Token.new(:type, :BOOL),
     Token.new(:entry_function_line),
     Token.new(:identifier, 'main'),
     Token.new(:return),
@@ -23,7 +23,7 @@ describe 'not1.sag' do
     Program.new(
       Function.new(
         'main',
-        { [] => :INT },
+        { [] => :BOOL },
         Clause.new(
           nil,
           Return.new(

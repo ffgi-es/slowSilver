@@ -36,7 +36,8 @@ class Lexer
     variable: proc { |str| str },
     integer_constant: proc { |str| str.to_i },
     function_call: proc { |str| str[1..-1] },
-    string_constant: proc { |str| str.gsub(/(^'|'$)/, '') }
+    string_constant: proc { |str| str.gsub(/(^'|'$)/, '') },
+    boolean_constant: proc { |str| str == 'true' }
   }
 end
 
