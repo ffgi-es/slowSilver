@@ -22,6 +22,16 @@ class Return
   end
 
   def validate(param_types, return_type)
-    @expression.validate(param_types, return_type) if @expression.is_a? Expression
+    return @expression.validate(param_types, return_type) if @expression.is_a? Expression
+
+    throw_return_error(param_types, return_type) if return_type != @expression.type(param_types)
+  end
+
+  private
+
+  def throw_return_error(param_types, return_type)
+    raise CompileError, <<~ERROR
+      '#{@expression.value}' is a #{@expression.type param_types}, not #{return_type}
+    ERROR
   end
 end

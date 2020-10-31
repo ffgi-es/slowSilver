@@ -9,4 +9,8 @@ class BooleanConstant
   def code(_)
     "mov #{Register[:ax]}, #{value ? 1 : 0}".asm
   end
+
+  def type(_)
+    :BOOL
+  end
 end
