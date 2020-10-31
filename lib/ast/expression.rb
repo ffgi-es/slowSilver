@@ -26,7 +26,7 @@ class Expression
 
     returned_type = FunctionDictionary[@function][types(param_types)]
 
-    throw_compile_error unless returned_type
+    throw_parameter_error unless returned_type
     throw_return_error return_type if return_type && return_type != returned_type
   end
 
@@ -53,7 +53,7 @@ class Expression
     ERROR
   end
 
-  def throw_compile_error
+  def throw_parameter_error
     raise CompileError, <<~ERROR
       function ':#{@function}' expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
       received: #{types.join(', ')}
