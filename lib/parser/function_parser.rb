@@ -12,6 +12,8 @@ class FunctionParser
   end
 
   class << self
+    private
+    
     def function_details(tokens)
       name = tokens.shift.value
 
