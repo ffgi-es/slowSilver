@@ -20,7 +20,7 @@ class ExpressionParser
 
   class << self
     private
-    
+
     def parse_simple_exp(token)
       return ConstantParser.parse_int(token) if token.type == :integer_constant
       return ConstantParser.parse_bool(token) if token.type == :boolean_constant

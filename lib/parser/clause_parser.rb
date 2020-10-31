@@ -19,7 +19,7 @@ class ClauseParser
 
   class << self
     private
-  
+
     def end_of_parameters?(type)
       %i[return condition].include? type
     end
