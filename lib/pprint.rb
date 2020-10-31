@@ -61,8 +61,6 @@ class PPrinter
       return format_integer(output, expression, indent + 2) if expression.is_a? IntegerConstant
       return format_boolean(output, expression, indent + 2) if expression.is_a? BooleanConstant
       return format_variable(output, expression, indent + 2) if expression.is_a? Variable
-
-      output
     end
 
     def format_expression(output, expression, indent = 6)
