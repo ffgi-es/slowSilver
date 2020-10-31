@@ -14,6 +14,7 @@ class Token
 
   @token_patterns = {
     type: /^[A-Z]{2,}$/,
+    boolean_constant: /(true|false)/,
     identifier: /^[a-z_]+:?$/,
     variable: /^[A-Z][a-z0-9]*$/,
     entry_function_line: /^={3,}$/,

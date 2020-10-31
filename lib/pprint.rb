@@ -49,12 +49,20 @@ class PPrinter
 
     def format_return(output, ret, indent)
       output << indent("- return:\n", indent)
-      if ret.expression.is_a? IntegerConstant
-        return format_integer(output, ret.expression, indent + 2)
-      end
-      return format_variable(output, ret.expression, indent + 2) if ret.expression.is_a? Variable
 
-      format_expression(output, ret.expression, indent + 2)
+      if ret.expression.is_a? Expression
+        return format_expression(output, ret.expression, indent + 2)
+      end
+
+      format_simple_expression(output, ret.expression, indent)
+    end
+
+    def format_simple_expression(output, expression, indent)
+      return format_integer(output, expression, indent + 2) if expression.is_a? IntegerConstant
+      return format_boolean(output, expression, indent + 2) if expression.is_a? BooleanConstant
+      return format_variable(output, expression, indent + 2) if expression.is_a? Variable
+
+      output
     end
 
     def format_expression(output, expression, indent = 6)
@@ -87,6 +95,10 @@ class PPrinter
 
     def format_string(output, string, indent = 6)
       output << indent("- str: '#{string.value}'\n", indent)
+    end
+
+    def format_boolean(output, bool, indent = 6)
+      output << indent("- bool: #{bool.value}\n", indent)
     end
 
     def format_variable(output, variable, indent = 6)

@@ -96,9 +96,20 @@ class Parser
 
     def parse_exp(tokens)
       raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
-      return parse_int(*tokens) if tokens.length == 1 && tokens.first.type == :integer_constant
-      return parse_var(*tokens) if tokens.length == 1 && tokens.first.type == :variable
+      return parse_simple_exp(*tokens) if tokens.length == 1
 
+      parse_function_call(tokens)
+    end
+
+    def parse_simple_exp(token)
+      return parse_int(token) if token.type == :integer_constant
+      return parse_bool(token) if token.type == :boolean_constant
+      return parse_var(token) if token.type == :variable
+
+      parse_function_call([token])
+    end
+
+    def parse_function_call(tokens)
       function_call, *arguments = parse_details([], tokens)
 
       Expression.new(function_call.to_sym, *arguments)
@@ -122,6 +133,10 @@ class Parser
 
     def parse_string(token)
       StringConstant.new(token.value)
+    end
+
+    def parse_bool(token)
+      BooleanConstant.new(token.value)
     end
 
     def parse_var(token)

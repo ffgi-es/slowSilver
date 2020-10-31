@@ -114,6 +114,36 @@ describe PPrinter do
       expect(output).to eq expected_output
     end
 
+    it 'should format boolean return AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :BOOL },
+            Clause.new(
+              nil,
+              Return.new(
+                BooleanConstant.new(false))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: BOOL
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - bool: false
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
     it 'should format function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(
