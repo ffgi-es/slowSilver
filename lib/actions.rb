@@ -13,19 +13,19 @@ class Action
 
   @actions[:-] = proc { arithmacy 'sub' }
 
-  @actions[:"="] = proc { compare 'sete' }
+  @actions[:"="] = proc { 'compare sete'.asm }
 
-  @actions[:<] = proc { compare 'setl' }
+  @actions[:<] = proc { 'compare setl'.asm }
 
-  @actions[:<=] = proc { compare 'setle' }
+  @actions[:<=] = proc { 'compare setle'.asm }
 
-  @actions[:>] = proc { compare 'setg' }
+  @actions[:>] = proc { 'compare setg'.asm }
 
-  @actions[:>=] = proc { compare 'setge' }
+  @actions[:>=] = proc { 'compare setge'.asm }
 
-  @actions[:!] = proc { compare_with('sete', 0) }
+  @actions[:!] = proc { 'compare sete, 0'.asm }
 
-  @actions[:*] = proc { arithmacy 'imul' }
+  @actions[:*] = proc { 'multiply rax'.asm }
 
   @actions[:/] = proc { division }
 
@@ -34,41 +34,9 @@ class Action
       .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
-  @actions[:print] = proc do
-    <<-ASM
-    mov     #{Register[:si]}, #{Register[:ax]}
-    movsx   #{Register[:dx]}, DWORD [#{Register[:ax]}-4]
-    mov     #{Register[:di]}, 1
-    mov     #{Register[:ax]}, 1
-    syscall
-    xor     #{Register[:ax]}, #{Register[:ax]}
-    ASM
-  end
+  @actions[:print] = proc { "print #{Register[:ax]}".asm }
 
-  @actions[:concat] = proc do
-    <<-ASM
-    mov     #{Register[:"12"]}, #{Register[:ax]}
-    pop     #{Register[:"14"]}
-    movsx   #{Register[:ax]}, DWORD [#{Register[:"12"]}-4]
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    add     #{Register[:ax]}, #{Register[:cx]}
-    add     #{Register[:ax]}, 4
-    call    alloc
-    movsx   #{Register[:bx]}, DWORD [#{Register[:"12"]}-4]
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    add     #{Register[:bx]}, #{Register[:cx]}
-    mov     [#{Register[:ax]}], DWORD #{Register[:bx].r32}
-    add     #{Register[:ax]}, 4
-    mov     #{Register[:di]}, #{Register[:ax]}
-    mov     #{Register[:si]}, #{Register[:"12"]}
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"12"]}-4]
-    cld
-    rep     movsb
-    mov     #{Register[:si]}, #{Register[:"14"]}
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    rep     movsb
-    ASM
-  end
+  @actions[:concat] = proc { "concat #{Register[:ax]}".asm }
 
   class << self
     def [](name)
@@ -76,17 +44,6 @@ class Action
     end
 
     private
-
-    def compare(comparison)
-      "pop #{Register[:cx]}".asm << compare_with(comparison, Register[:cx])
-    end
-
-    def compare_with(comparison, other)
-      ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
-        .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
-        .concat "cmp #{Register[:bx]}, #{other}".asm
-        .concat "#{comparison} #{Register[:ax].r8}".asm
-    end
 
     def arithmacy(operation)
       ''.concat "pop #{Register[:cx]}".asm

@@ -46,7 +46,7 @@ linking_file = filename + '.o'
 
 File.open(assembly_file, 'w') { |f| f.write(generator.code) }
 
-assembly_compiler = 'nasm -f elf64'
+assembly_compiler = 'nasm -f elf64 -p asm/macro.asm'
 mem_manager = 'asm/memory-manager.o'
 
 if system("#{assembly_compiler} #{assembly_file}")

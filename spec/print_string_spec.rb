@@ -115,11 +115,7 @@ describe 'strings2.sag' do
         mov     rax, 20
         push    rax
         mov     rax, [rbp+16]
-        pop     rcx
-        mov     rbx, rax
-        xor     rax, rax
-        cmp     rbx, rcx
-        setl    al
+    #{CodeGen.compare 'setl'}
         cmp     rax, 1
         jne     _enough1
         mov     rax, str0
@@ -129,11 +125,7 @@ describe 'strings2.sag' do
         mov     rax, 30
         push    rax
         mov     rax, [rbp+16]
-        pop     rcx
-        mov     rbx, rax
-        xor     rax, rax
-        cmp     rbx, rcx
-        setl    al
+    #{CodeGen.compare 'setl'}
         cmp     rax, 1
         jne     _enough2
         mov     rax, str1

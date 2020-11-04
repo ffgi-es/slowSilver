@@ -42,8 +42,7 @@ describe 'multiplication1.sag' do
         mov     rax, 6
         push    rax
         mov     rax, 3
-        pop     rcx
-        imul    rax, rcx
+    #{CodeGen.multiply 'rax'}
     #{CodeGen.exit 'rax'}
   ASM
 end

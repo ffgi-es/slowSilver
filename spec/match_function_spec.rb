@@ -282,8 +282,7 @@ describe 'params_matching2.sag' do
         mov     rax, [rbp+24]
         push    rax
         mov     rax, [rbp+16]
-        pop     rcx
-        imul    rax, rcx
+    #{CodeGen.multiply 'rax'}
     _testdone:
         mov     rsp, rbp
         pop     rbp
