@@ -8,12 +8,9 @@ class CodeGen
       .chomp
   end
 
-  def self.compare(against, opcode = 'sete')
+  def self.compare(opcode, against = nil)
     <<-ASM
-    mov     rbx, rax
-    xor     rax, rax
-    cmp     rbx, #{against}
-    #{opcode.ljust(8)}al
+    compare #{opcode}#{against.nil? ? nil : ", #{against}"}
     ASM
       .chomp
   end

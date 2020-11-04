@@ -29,8 +29,7 @@ describe 'simple_comparison1.sag' do
         mov     rax, 3
         push    rax
         mov     rax, 3
-        pop     rcx
-    #{CodeGen.compare 'rcx'}
+    #{CodeGen.compare 'sete'}
     #{CodeGen.exit 'rax'}
   ASM
 end

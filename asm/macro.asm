@@ -34,3 +34,15 @@
         movsx   rcx, DWORD [r14-4]
         rep     movsb
 %endmacro
+
+%macro compare 1
+    pop     rcx
+    compare %1, rcx
+%endmacro
+
+%macro compare 2
+    mov     rbx, rax
+    xor     rax, rax
+    cmp     rbx, %2
+    %1      al
+%endmacro

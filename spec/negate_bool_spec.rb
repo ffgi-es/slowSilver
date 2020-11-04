@@ -47,9 +47,8 @@ describe 'not1.sag' do
         mov     rax, 8
         push    rax
         mov     rax, 4
-        pop     rcx
-    #{CodeGen.compare 'rcx'}
-    #{CodeGen.compare '0'}
+    #{CodeGen.compare 'sete'}
+    #{CodeGen.compare 'sete', '0'}
     #{CodeGen.exit 'rax'}
   ASM
 end

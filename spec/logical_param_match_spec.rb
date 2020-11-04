@@ -206,8 +206,7 @@ describe 'logical_param_matching9.sag' do
         mov     rax, 5
         push    rax
         mov     rax, [rbp+16]
-        pop     rcx
-    #{CodeGen.compare 'rcx', 'setg'}
+    #{CodeGen.compare 'setg'}
         cmp     rax, 1
         jne     _limit1
         mov     rax, 0

@@ -13,17 +13,17 @@ class Action
 
   @actions[:-] = proc { arithmacy 'sub' }
 
-  @actions[:"="] = proc { compare 'sete' }
+  @actions[:"="] = proc { 'compare sete'.asm }
 
-  @actions[:<] = proc { compare 'setl' }
+  @actions[:<] = proc { 'compare setl'.asm }
 
-  @actions[:<=] = proc { compare 'setle' }
+  @actions[:<=] = proc { 'compare setle'.asm }
 
-  @actions[:>] = proc { compare 'setg' }
+  @actions[:>] = proc { 'compare setg'.asm }
 
-  @actions[:>=] = proc { compare 'setge' }
+  @actions[:>=] = proc { 'compare setge'.asm }
 
-  @actions[:!] = proc { compare_with('sete', 0) }
+  @actions[:!] = proc { 'compare sete, 0'.asm }
 
   @actions[:*] = proc { 'multiply rax'.asm }
 
@@ -44,17 +44,6 @@ class Action
     end
 
     private
-
-    def compare(comparison)
-      "pop #{Register[:cx]}".asm << compare_with(comparison, Register[:cx])
-    end
-
-    def compare_with(comparison, other)
-      ''.concat "mov #{Register[:bx]}, #{Register[:ax]}".asm
-        .concat "xor #{Register[:ax]}, #{Register[:ax]}".asm
-        .concat "cmp #{Register[:bx]}, #{other}".asm
-        .concat "#{comparison} #{Register[:ax].r8}".asm
-    end
 
     def arithmacy(operation)
       ''.concat "pop #{Register[:cx]}".asm

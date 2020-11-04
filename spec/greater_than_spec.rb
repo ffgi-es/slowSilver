@@ -29,8 +29,7 @@ describe 'greater_than1.sag' do
         mov     rax, 3
         push    rax
         mov     rax, 4
-        pop     rcx
-    #{CodeGen.compare 'rcx', 'setg'}
+    #{CodeGen.compare 'setg'}
     #{CodeGen.exit 'rax'}
   ASM
 end
@@ -51,8 +50,7 @@ describe 'greater_than_equal1.sag' do
         mov     rax, 3
         push    rax
         mov     rax, 4
-        pop     rcx
-    #{CodeGen.compare 'rcx', 'setge'}
+    #{CodeGen.compare 'setge'}
     #{CodeGen.exit 'rax'}
   ASM
 end
