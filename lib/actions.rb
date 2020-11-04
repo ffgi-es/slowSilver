@@ -25,7 +25,7 @@ class Action
 
   @actions[:!] = proc { compare_with('sete', 0) }
 
-  @actions[:*] = proc { 'multiply rax, rcx'.asm }
+  @actions[:*] = proc { 'multiply rax'.asm }
 
   @actions[:/] = proc { division }
 
@@ -45,30 +45,7 @@ class Action
     ASM
   end
 
-  @actions[:concat] = proc do
-    <<-ASM
-    mov     #{Register[:"12"]}, #{Register[:ax]}
-    pop     #{Register[:"14"]}
-    movsx   #{Register[:ax]}, DWORD [#{Register[:"12"]}-4]
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    add     #{Register[:ax]}, #{Register[:cx]}
-    add     #{Register[:ax]}, 4
-    call    alloc
-    movsx   #{Register[:bx]}, DWORD [#{Register[:"12"]}-4]
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    add     #{Register[:bx]}, #{Register[:cx]}
-    mov     [#{Register[:ax]}], DWORD #{Register[:bx].r32}
-    add     #{Register[:ax]}, 4
-    mov     #{Register[:di]}, #{Register[:ax]}
-    mov     #{Register[:si]}, #{Register[:"12"]}
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"12"]}-4]
-    cld
-    rep     movsb
-    mov     #{Register[:si]}, #{Register[:"14"]}
-    movsx   #{Register[:cx]}, DWORD [#{Register[:"14"]}-4]
-    rep     movsb
-    ASM
-  end
+  @actions[:concat] = proc { "concat #{Register[:ax]}".asm }
 
   class << self
     def [](name)

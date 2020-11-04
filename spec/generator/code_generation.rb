@@ -26,9 +26,9 @@ class CodeGen
       .chomp
   end
 
-  def self.multiply reg
+  def self.multiply(reg)
     <<-ASM
-    multiply #{reg}, rcx
+    multiply #{reg}
     ASM
       .chomp
   end
@@ -47,26 +47,7 @@ class CodeGen
 
   def self.concat
     <<-ASM
-    mov     r12, rax
-    pop     r14
-    movsx   rax, DWORD [r12-4]
-    movsx   rcx, DWORD [r14-4]
-    add     rax, rcx
-    add     rax, 4
-    call    alloc
-    movsx   rbx, DWORD [r12-4]
-    movsx   rcx, DWORD [r14-4]
-    add     rbx, rcx
-    mov     [rax], DWORD ebx
-    add     rax, 4
-    mov     rdi, rax
-    mov     rsi, r12
-    movsx   rcx, DWORD [r12-4]
-    cld
-    rep     movsb
-    mov     rsi, r14
-    movsx   rcx, DWORD [r14-4]
-    rep     movsb
+    concat  rax
     ASM
       .chomp
   end
