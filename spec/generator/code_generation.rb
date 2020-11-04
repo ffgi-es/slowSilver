@@ -9,10 +9,7 @@ class CodeGen
   end
 
   def self.compare(opcode, against = nil)
-    <<-ASM
-    compare #{opcode}#{against.nil? ? nil : ", #{against}"}
-    ASM
-      .chomp
+    "    compare #{opcode}#{against.nil? ? nil : ", #{against}"}"
   end
 
   def self.externs
@@ -24,23 +21,14 @@ class CodeGen
   end
 
   def self.multiply(reg)
-    <<-ASM
-    multiply #{reg}
-    ASM
-      .chomp
+    "    multiply #{reg}"
   end
 
   def self.print(str_ptr)
-    <<-ASM
-    print   #{str_ptr}
-    ASM
-      .chomp
+    "    print   #{str_ptr}"
   end
 
   def self.concat
-    <<-ASM
-    concat  rax
-    ASM
-      .chomp
+    '    concat  rax'
   end
 end
