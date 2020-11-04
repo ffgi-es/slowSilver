@@ -3,6 +3,15 @@
         imul    %1, rcx
 %endmacro
 
+%macro print 1
+        mov     rsi, %1
+        movsx   rdx, DWORD [%1-4]
+        mov     rdi, 1
+        mov     rax, 1
+        syscall
+        xor     rax, rax
+%endmacro
+
 %macro concat 1
         mov     r12, %1
         pop     r14

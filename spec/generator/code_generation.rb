@@ -35,12 +35,7 @@ class CodeGen
 
   def self.print(str_ptr)
     <<-ASM
-    mov     rsi, #{str_ptr}
-    movsx   rdx, DWORD [#{str_ptr}-4]
-    mov     rdi, 1
-    mov     rax, 1
-    syscall
-    xor     rax, rax
+    print   #{str_ptr}
     ASM
       .chomp
   end

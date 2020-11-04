@@ -34,16 +34,7 @@ class Action
       .concat "mov #{Register[:ax]}, #{Register[:dx]}".asm
   end
 
-  @actions[:print] = proc do
-    <<-ASM
-    mov     #{Register[:si]}, #{Register[:ax]}
-    movsx   #{Register[:dx]}, DWORD [#{Register[:ax]}-4]
-    mov     #{Register[:di]}, 1
-    mov     #{Register[:ax]}, 1
-    syscall
-    xor     #{Register[:ax]}, #{Register[:ax]}
-    ASM
-  end
+  @actions[:print] = proc { "print #{Register[:ax]}".asm }
 
   @actions[:concat] = proc { "concat #{Register[:ax]}".asm }
 
