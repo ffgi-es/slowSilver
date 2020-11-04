@@ -26,6 +26,13 @@ class CodeGen
       .chomp
   end
 
+  def self.multiply reg
+    <<-ASM
+    multiply #{reg}, rcx
+    ASM
+      .chomp
+  end
+
   def self.print(str_ptr)
     <<-ASM
     mov     rsi, #{str_ptr}
