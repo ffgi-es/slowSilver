@@ -51,3 +51,19 @@ describe 'parameter_type_mismatch3.sag' do
     received: INT, STRING
   ERROR
 end
+
+describe 'parameter_count_mismatch1.sag' do
+  include_context 'component test', 'fixtures/parameter_count_mismatch1.sag'
+
+  include_examples 'validation error', <<~ERROR
+    function ':two' expects 2 parameters, received 1
+  ERROR
+end
+
+describe 'parameter_count_mismatch2.sag' do
+  include_context 'component test', 'fixtures/parameter_count_mismatch2.sag'
+
+  include_examples 'validation error', <<~ERROR
+    function ':two' expects 2 parameters, received 3
+  ERROR
+end
