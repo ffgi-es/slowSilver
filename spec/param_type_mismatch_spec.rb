@@ -59,3 +59,11 @@ describe 'parameter_count_mismatch1.sag' do
     function ':two' expects 2 parameters, received 1
   ERROR
 end
+
+describe 'parameter_count_mismatch2.sag' do
+  include_context 'component test', 'fixtures/parameter_count_mismatch2.sag'
+
+  include_examples 'validation error', <<~ERROR
+    function ':two' expects 2 parameters, received 3
+  ERROR
+end
