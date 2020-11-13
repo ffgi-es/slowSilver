@@ -51,29 +51,29 @@ class Expression
   def check_param_count(definitions)
     count = definitions.keys.first.length
 
-    throw_param_count_error count if count != @parameters.length
+    raise_param_count_error count if count != @parameters.length
   end
 
   def check_types(definitions, param_types, return_type)
     returned_type = definitions[types(param_types)]
 
-    throw_parameter_error unless returned_type
-    throw_return_error return_type if return_type && return_type != returned_type
+    raise_parameter_error unless returned_type
+    raise_return_error return_type if return_type && return_type != returned_type
   end
 
-  def throw_param_count_error(expected_count)
+  def raise_param_count_error(expected_count)
     raise CompileError, <<~ERROR
       function ':#{@function}' expects #{expected_count} parameters, received #{@parameters.length}
     ERROR
   end
 
-  def throw_return_error(expected_return_type)
+  def raise_return_error(expected_return_type)
     raise CompileError, <<~ERROR
       function ':#{@function}' returns #{FunctionDictionary[@function].values.first}, not #{expected_return_type}
     ERROR
   end
 
-  def throw_parameter_error
+  def raise_parameter_error
     raise CompileError, <<~ERROR
       function ':#{@function}' expects #{types.size} parameters: #{FunctionDictionary[@function].keys.first.join(', ')}
       received: #{types.join(', ')}
