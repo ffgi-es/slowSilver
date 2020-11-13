@@ -24,10 +24,11 @@ class Expression
   def validate(param_types, return_type = nil)
     @parameters.each { |p| p.validate(param_types) if p.is_a? Expression }
 
-    returned_type = FunctionDictionary[@function][types(param_types)]
+    definitions = FunctionDictionary[@function]
 
-    throw_parameter_error unless returned_type
-    throw_return_error return_type if return_type && return_type != returned_type
+    check_param_count definitions
+
+    check_types definitions, param_types, return_type
   end
 
   def type(param_types)
@@ -45,6 +46,25 @@ class Expression
       out << "push #{Register[:ax]}".asm
     end
     output << @parameters.first.code(func_params)
+  end
+
+  def check_param_count(definitions)
+    count = definitions.keys.first.length
+
+    throw_param_count_error count if count != @parameters.length
+  end
+
+  def check_types(definitions, param_types, return_type)
+    returned_type = definitions[types(param_types)]
+
+    throw_parameter_error unless returned_type
+    throw_return_error return_type if return_type && return_type != returned_type
+  end
+
+  def throw_param_count_error(expected_count)
+    raise CompileError, <<~ERROR
+      function ':#{@function}' expects #{expected_count} parameters, received #{@parameters.length}
+    ERROR
   end
 
   def throw_return_error(expected_return_type)

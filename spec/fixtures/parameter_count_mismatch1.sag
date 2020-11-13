@@ -1,0 +1,7 @@
+main => INT
+===
+main => :two 2.
+
+two: INT, INT => INT
+---
+two: X, Y => X :* Y.
