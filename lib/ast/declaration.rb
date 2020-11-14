@@ -10,4 +10,8 @@ class Declaration
   def code(parameters)
     @expression.code(parameters)
   end
+
+  def type(param_types)
+    @expression.type(param_types)
+  end
 end

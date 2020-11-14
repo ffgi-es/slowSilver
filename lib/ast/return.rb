@@ -32,15 +32,21 @@ class Return
   end
 
   def validate(param_types, return_type)
-    return @expression.validate(param_types, return_type) if @expression.is_a? Expression
+    all_types = param_types.merge(declared_types(param_types))
 
-    throw_return_error(param_types, return_type) if return_type != @expression.type(param_types)
+    return @expression.validate(all_types, return_type) if @expression.is_a? Expression
+
+    throw_return_error(param_types, return_type) if return_type != @expression.type(all_types)
   end
 
   private
 
   def declared_indices
     @declarations.each_with_index.reduce({}) { |inds, (d, i)| inds.update(d.name => -i - 1) }
+  end
+
+  def declared_types(param_types)
+    @declarations.each_with_object({}) { |dec, types| types[dec.name] = dec.type(param_types) }
   end
 
   def throw_return_error(param_types, return_type)

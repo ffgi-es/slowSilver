@@ -36,7 +36,7 @@ describe 'local_variables1.sag' do
               Variable.new('A'),
               IntegerConstant.new(5)))))))
 
- # include_examples 'no validation error'
+  include_examples 'no validation error'
 
   include_examples 'generation', '_main', <<~ASM
     #{CodeGen.externs}
