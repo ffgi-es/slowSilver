@@ -65,9 +65,7 @@ class PPrinter
     end
 
     def format_return_expression(output, expr, indent)
-      if expr.is_a? Expression
-        return format_expression(output, expr, indent + 2)
-      end
+      return format_expression(output, expr, indent + 2) if expr.is_a? Expression
 
       format_simple_expression(output, expr, indent)
     end

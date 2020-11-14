@@ -400,18 +400,18 @@ describe PPrinter do
                     :add,
                     Variable.new(:Y),
                     Variable.new(:Z)))))),
-                  Function.new(
-                    'add',
-                    { %i[INT INT] => :INT },
-                    Clause.new(
-                      Parameter.new(:A),
-                      Parameter.new(:B),
-                      nil,
-                      Return.new(
-                        Expression.new(
-                          :+,
-                          Variable.new(:A),
-                          Variable.new(:B)))))))
+          Function.new(
+            'add',
+            { %i[INT INT] => :INT },
+            Clause.new(
+              Parameter.new(:A),
+              Parameter.new(:B),
+              nil,
+              Return.new(
+                Expression.new(
+                  :+,
+                  Variable.new(:A),
+                  Variable.new(:B)))))))
 
       output = PPrinter.format(ast)
 
@@ -499,24 +499,24 @@ describe PPrinter do
               nil,
               Return.new(
                 IntegerConstant.new(1))),
-                Clause.new(
-                  Parameter.new(:X),
-                  nil,
-                  Return.new(
+            Clause.new(
+              Parameter.new(:X),
+              nil,
+              Return.new(
+                Expression.new(
+                  :+,
+                  Expression.new(
+                    :fib,
                     Expression.new(
-                      :+,
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(1))),
-                      Expression.new(
-                        :fib,
-                        Expression.new(
-                          :-,
-                          Variable.new(:X),
-                          IntegerConstant.new(2)))))))))
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(1))),
+                  Expression.new(
+                    :fib,
+                    Expression.new(
+                      :-,
+                      Variable.new(:X),
+                      IntegerConstant.new(2)))))))))
 
       output = PPrinter.format(ast)
 

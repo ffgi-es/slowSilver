@@ -10,7 +10,11 @@ class Variable
   end
 
   def code(parameters)
-    "mov #{Register[:ax]}, [rbp#{parameters[@name].positive? ? '+' : ''}#{8 * parameters[@name]}]".asm
+    "mov #{Register[:ax]}, [rbp"
+      .concat(parameters[@name].positive? ? '+' : '')
+      .concat((8 * parameters[@name]).to_s)
+      .concat(']')
+      .asm
   end
 
   def type(param_types)

@@ -1,5 +1,5 @@
+# Represents a declared local variable
 class Declaration
-
   attr_reader :name, :expression
 
   def initialize(name, expression)

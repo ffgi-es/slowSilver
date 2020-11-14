@@ -1,3 +1,4 @@
+# parse an array of tokens to a variable declaration
 class DeclarationParser
   def self.parse(tokens)
     tokens.pop
