@@ -24,6 +24,7 @@ class ExpressionParser
     def parse_simple_exp(token)
       return ConstantParser.parse_int(token) if token.type == :integer_constant
       return ConstantParser.parse_bool(token) if token.type == :boolean_constant
+      return ConstantParser.parse_string(token) if token.type == :string_constant
       return ConstantParser.parse_var(token) if token.type == :variable
 
       parse_function_call([token])

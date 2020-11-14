@@ -11,6 +11,10 @@ class Declaration
     @expression.code(parameters)
   end
 
+  def data
+    @expression.respond_to?(:data) ? @expression.data : ''
+  end
+
   def type(param_types)
     @expression.type(param_types)
   end

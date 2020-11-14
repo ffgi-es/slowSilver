@@ -1,0 +1,5 @@
+main => INT
+===
+main =>
+    Str <= 'Hello, Variable!',
+    :print Str.

@@ -28,7 +28,8 @@ class Return
   end
 
   def data
-    @expression.data if @expression.respond_to? :data
+    @declarations.reduce('') { |out, dec| out << dec.data }
+      .concat(@expression.respond_to?(:data) ? @expression.data : '')
   end
 
   def validate(param_types, return_type)
