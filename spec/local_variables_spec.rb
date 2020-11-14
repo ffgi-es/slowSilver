@@ -146,3 +146,62 @@ describe 'local_variables3.sag' do
     #{CodeGen.exit 'rax'}
   ASM
 end
+
+describe 'local_variables4.sag' do
+  include_context 'component test', 'fixtures/local_variables4.sag'
+
+  include_examples 'lexing', [
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:type, :INT),
+    Token.new(:entry_function_line),
+    Token.new(:identifier, 'main'),
+    Token.new(:return),
+    Token.new(:variable, 'A'),
+    Token.new(:assign),
+    Token.new(:integer_constant, 3),
+    Token.new(:function_call, '+'),
+    Token.new(:boolean_constant, true),
+    Token.new(:separator),
+    Token.new(:variable, 'B'),
+    Token.new(:assign),
+    Token.new(:variable, 'A'),
+    Token.new(:function_call, '*'),
+    Token.new(:integer_constant, 5),
+    Token.new(:separator),
+    Token.new(:variable, 'A'),
+    Token.new(:function_call, '-'),
+    Token.new(:variable, 'B'),
+    Token.new(:end)
+  ]
+
+  include_examples 'parsing', ASTree.new(
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Declaration.new(
+              'A',
+              Expression.new(
+                :+,
+                IntegerConstant.new(3),
+                BooleanConstant.new(true))),
+            Declaration.new(
+              'B',
+              Expression.new(
+                :*,
+                Variable.new('A'),
+                IntegerConstant.new(5))),
+            Expression.new(
+              :-,
+              Variable.new('A'),
+              Variable.new('B')))))))
+
+  include_examples 'validation error', <<~ERROR
+    function ':+' expects 2 parameters: INT, INT
+    received: INT, BOOL
+  ERROR
+end

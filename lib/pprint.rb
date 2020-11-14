@@ -84,6 +84,8 @@ class PPrinter
           format_integer(output, param, indent + 4)
         elsif param.is_a? StringConstant
           format_string(output, param, indent + 4)
+        elsif param.is_a? BooleanConstant
+          format_boolean(output, param, indent + 4)
         elsif param.is_a? Variable
           format_variable(output, param, indent + 4)
         else

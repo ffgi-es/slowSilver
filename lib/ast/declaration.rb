@@ -11,6 +11,10 @@ class Declaration
     @expression.code(parameters)
   end
 
+  def validate(param_types)
+    @expression.validate(param_types) if @expression.is_a? Expression
+  end
+
   def data
     @expression.respond_to?(:data) ? @expression.data : ''
   end

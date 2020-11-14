@@ -15,6 +15,7 @@ class ExpressionParser
     function_call: proc { |details, token, _| details.unshift(token.value) },
     integer_constant: proc { |details, token, _| details.push(ConstantParser.parse_int(token)) },
     string_constant: proc { |details, token, _| details.push(ConstantParser.parse_string(token)) },
+    boolean_constant: proc { |details, token, _| details.push(ConstantParser.parse_bool(token)) },
     variable: proc { |details, token, _| details.push(ConstantParser.parse_var(token)) }
   }
 

@@ -1,0 +1,6 @@
+main => INT
+===
+main =>
+    A <= 3 :+ true,
+    B <= A :* 5,
+    A :- B.

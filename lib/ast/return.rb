@@ -35,6 +35,8 @@ class Return
   def validate(param_types, return_type)
     all_types = param_types.merge(declared_types(param_types))
 
+    @declarations.each { |dec| dec.validate(all_types) }
+
     return @expression.validate(all_types, return_type) if @expression.is_a? Expression
 
     throw_return_error(param_types, return_type) if return_type != @expression.type(all_types)
