@@ -1,3 +1,4 @@
+require_relative 'declaration_parser'
 require_relative 'expression_parser'
 
 # Create AST return from tokens
@@ -10,6 +11,10 @@ class ReturnParser
 
     tokens.pop
 
-    Return.new(ExpressionParser.parse(tokens))
+    *declarations, expression = tokens.slice_after { |token| token.type == :separator }.to_a
+
+    Return.new(
+      *declarations.map { |dec| DeclarationParser.parse(dec) },
+      ExpressionParser.parse(expression))
   end
 end

@@ -20,6 +20,7 @@ class Token
     entry_function_line: /^={3,}$/,
     function_line: /^-{3,}$/,
     return: /^=>$/,
+    assign: /^<=$/,
     separator: /^,$/,
     end: /^\.$/,
     integer_constant: /^-?[0-9]+$/,

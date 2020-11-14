@@ -144,6 +144,87 @@ describe PPrinter do
       expect(output).to eq expected_output
     end
 
+    it 'should format expression with boolean parameter AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :INT },
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :+,
+                  IntegerConstant.new(3),
+                  BooleanConstant.new(true)))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - int: 3
+                    - bool: true
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format variable assignment AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :INT },
+            Clause.new(
+              nil,
+              Return.new(
+                Declaration.new(
+                  'A',
+                  IntegerConstant.new(3)),
+                Expression.new(
+                  :*,
+                  Variable.new('A'),
+                  IntegerConstant.new(5)))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - declare:
+                  - name: A
+                  - value:
+                    - int: 3
+                - call:
+                  - name: *
+                  - params:
+                    - var: A
+                    - int: 5
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
     it 'should format function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(

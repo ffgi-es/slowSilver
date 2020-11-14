@@ -32,10 +32,9 @@ class Function
 
   def start_function(entry)
     if entry
-      return "\n" << <<~ASM
-        _#{name}:
-            call    init
-      ASM
+      return "\n_#{name}:\n"
+          .concat set_stack
+          .concat 'call init'.asm
     end
 
     "\n_#{name}:\n"
@@ -43,14 +42,15 @@ class Function
   end
 
   def set_stack
-    return '' if @clauses.first.parameters.empty?
+    return '' if stack_setting?
 
     'push rbp'.asm << 'mov rbp, rsp'.asm
   end
 
   def finish_function(entry)
     if entry
-      return 'mov rdi, rax'.asm
+      return reset_stack
+          .concat 'mov rdi, rax'.asm
           .concat 'mov rax, 60'.asm
           .concat 'syscall'.asm
     end
@@ -67,9 +67,13 @@ class Function
   end
 
   def reset_stack
-    return '' if @clauses.first.parameters.empty?
+    return '' if stack_setting?
 
     'mov rsp, rbp'.asm << 'pop rbp'.asm
+  end
+
+  def stack_setting?
+    @clauses.first.parameters.empty? && @clauses.all? { |c| c.return.declarations.empty? }
   end
 
   def clause_code

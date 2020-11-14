@@ -3,7 +3,7 @@ require_relative 'constant_parser'
 # Create AST Expression from tokens
 class ExpressionParser
   def self.parse(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
+    raise ParseError, "Unexpected token: '.'" if tokens.nil?
     return parse_simple_exp(*tokens) if tokens.length == 1
 
     parse_function_call(tokens)
@@ -15,6 +15,7 @@ class ExpressionParser
     function_call: proc { |details, token, _| details.unshift(token.value) },
     integer_constant: proc { |details, token, _| details.push(ConstantParser.parse_int(token)) },
     string_constant: proc { |details, token, _| details.push(ConstantParser.parse_string(token)) },
+    boolean_constant: proc { |details, token, _| details.push(ConstantParser.parse_bool(token)) },
     variable: proc { |details, token, _| details.push(ConstantParser.parse_var(token)) }
   }
 
@@ -24,6 +25,7 @@ class ExpressionParser
     def parse_simple_exp(token)
       return ConstantParser.parse_int(token) if token.type == :integer_constant
       return ConstantParser.parse_bool(token) if token.type == :boolean_constant
+      return ConstantParser.parse_string(token) if token.type == :string_constant
       return ConstantParser.parse_var(token) if token.type == :variable
 
       parse_function_call([token])

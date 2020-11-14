@@ -12,7 +12,7 @@ class Expression
     @action = Action[function]
   end
 
-  def code(func_params = [])
+  def code(func_params = {})
     get_parameters(func_params)
       .concat @action.call(@function, @parameters)
   end
