@@ -10,8 +10,7 @@ class Variable
   end
 
   def code(parameters)
-    ind = parameters.index(@name) + 2
-    "mov #{Register[:ax]}, [rbp+#{8 * ind}]".asm
+    "mov #{Register[:ax]}, [rbp#{parameters[@name].positive? ? '+' : ''}#{8 * parameters[@name]}]".asm
   end
 
   def type(param_types)

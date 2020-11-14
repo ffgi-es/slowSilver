@@ -38,19 +38,22 @@ describe 'local_variables1.sag' do
 
  # include_examples 'no validation error'
 
- # include_examples 'generation', '_main', <<~ASM
- #   #{CodeGen.externs}
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
- #   SECTION .text
- #   global _main
+    SECTION .text
+    global _main
 
- #   _main:
- #       call    init
- #       mov     rax, 2
- #       push    rax
- #       mov     rax, 2
- #       pop     rcx
- #       add     rax, rcx
- #   #{CodeGen.exit 'rax'}
- # ASM
+    _main:
+    #{CodeGen.function_prologue}
+        call    init
+        mov     rax, 3
+        push    rax
+        mov     rax, 5
+        push    rax
+        mov     rax, [rbp-8]
+    #{CodeGen.multiply 'rax'}
+    #{CodeGen.function_epilogue}
+    #{CodeGen.exit 'rax'}
+  ASM
 end

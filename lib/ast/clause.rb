@@ -17,11 +17,11 @@ class Clause
       .each_with_index
       .reduce(start) { |code, (p, i)| code << parameter_check(p, name, index, i) }
       .concat condition_code(name, index)
-      .concat @return.code(@parameters.map(&:name), done)
+      .concat @return.code(parameter_indices, done)
   end
 
   def single_code
-    @return.code(@parameters.map(&:name))
+    @return.code(parameter_indices)
   end
 
   def data
@@ -38,6 +38,10 @@ class Clause
 
   private
 
+  def parameter_indices
+    @parameters.each_with_index.reduce({}) { |inds, (p, i)| inds.update(p.name => i + 2) }
+  end
+
   def parameter_check(parameter, function_name, clause_index, parameter_index)
     return '' unless parameter.is_a? IntegerConstant
 
@@ -49,7 +53,7 @@ class Clause
   def condition_code(name, index)
     return '' if @condition.nil?
 
-    @condition.code(@parameters.map(&:name))
+    @condition.code(parameter_indices)
       .concat 'cmp rax, 1'.asm
       .concat "jne _#{name}#{index + 1}".asm
   end

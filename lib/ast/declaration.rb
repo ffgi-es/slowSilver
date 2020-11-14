@@ -6,4 +6,8 @@ class Declaration
     @name = name
     @expression = expression
   end
+
+  def code(parameters)
+    @expression.code(parameters)
+  end
 end

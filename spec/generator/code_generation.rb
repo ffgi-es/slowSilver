@@ -8,6 +8,22 @@ class CodeGen
       .chomp
   end
 
+  def self.function_prologue
+    <<-ASM
+    push    rbp
+    mov     rbp, rsp
+    ASM
+      .chomp
+  end
+
+  def self.function_epilogue
+    <<-ASM
+    mov     rsp, rbp
+    pop     rbp
+    ASM
+      .chomp
+  end
+
   def self.compare(opcode, against = nil)
     "    compare #{opcode}#{against.nil? ? nil : ", #{against}"}"
   end

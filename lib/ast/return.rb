@@ -9,13 +9,22 @@ class Return
     @expression = expression
   end
 
-  def code(parameters = [], done_name = nil)
+  def code(parameters = {}, done_name = nil)
+    params = parameters.merge(declared_indices)
+
+    output = @declarations.reduce('') do |out, dec|
+      out
+        .concat dec.code(params)
+        .concat "push #{Register[:ax]}".asm
+    end
+
     if done_name
-      return @expression.code(parameters)
+      return output
+          .concat @expression.code(params)
           .concat "jmp #{done_name}".asm
     end
 
-    @expression.code(parameters)
+    output << @expression.code(params)
   end
 
   def data
@@ -29,6 +38,10 @@ class Return
   end
 
   private
+
+  def declared_indices
+    @declarations.each_with_index.reduce({}) { |inds, (d, i)| inds.update(d.name => -i - 1) }
+  end
 
   def throw_return_error(param_types, return_type)
     raise CompileError, <<~ERROR
