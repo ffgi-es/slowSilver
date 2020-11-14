@@ -47,7 +47,9 @@ class Return
   end
 
   def declared_types(param_types)
-    @declarations.each_with_object({}) { |dec, types| types[dec.name] = dec.type(param_types) }
+    @declarations.each_with_object({}) do |dec, types|
+      types[dec.name] = dec.type(param_types.merge(types))
+    end
   end
 
   def throw_return_error(param_types, return_type)

@@ -115,3 +115,34 @@ describe 'local_variables2.sag' do
     str0    db 'Hello, Variable!'
   ASM
 end
+
+describe 'local_variables3.sag' do
+  include_context 'component test', 'fixtures/local_variables3.sag'
+
+  include_examples 'no validation error'
+
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
+
+    SECTION .text
+    global _main
+
+    _main:
+    #{CodeGen.function_prologue}
+        call    init
+        mov     rax, 3
+        push    rax
+        mov     rax, 5
+        push    rax
+        mov     rax, [rbp-8]
+    #{CodeGen.multiply 'rax'}
+        push    rax
+        mov     rax, [rbp-16]
+        push    rax
+        mov     rax, [rbp-8]
+        pop     rcx
+        add     rax, rcx
+    #{CodeGen.function_epilogue}
+    #{CodeGen.exit 'rax'}
+  ASM
+end
