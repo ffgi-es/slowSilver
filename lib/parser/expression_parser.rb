@@ -3,7 +3,7 @@ require_relative 'constant_parser'
 # Create AST Expression from tokens
 class ExpressionParser
   def self.parse(tokens)
-    raise ParseError, "Unexpected token: '.'" if tokens.first.nil?
+    raise ParseError, "Unexpected token: '.'" if tokens.nil?
     return parse_simple_exp(*tokens) if tokens.length == 1
 
     parse_function_call(tokens)
