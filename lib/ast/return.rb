@@ -2,9 +2,10 @@ require_relative 'helpers'
 
 # what a function returns
 class Return
-  attr_reader :expression
+  attr_reader :expression, :declarations
 
-  def initialize(expression)
+  def initialize(*declarations, expression)
+    @declarations = declarations
     @expression = expression
   end
 

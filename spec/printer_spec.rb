@@ -144,6 +144,50 @@ describe PPrinter do
       expect(output).to eq expected_output
     end
 
+    it 'should format variable assignment AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :INT },
+            Clause.new(
+              nil,
+              Return.new(
+                Declaration.new(
+                  'A',
+                  IntegerConstant.new(3)),
+                Expression.new(
+                  :*,
+                  Variable.new('A'),
+                  IntegerConstant.new(5)))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - declare:
+                  - name: A
+                  - value:
+                    - int: 3
+                - call:
+                  - name: *
+                  - params:
+                    - var: A
+                    - int: 5
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
     it 'should format function definition AST to readable form' do
       ast = ASTree.new(
         Program.new(
@@ -356,18 +400,18 @@ describe PPrinter do
                     :add,
                     Variable.new(:Y),
                     Variable.new(:Z)))))),
-          Function.new(
-            'add',
-            { %i[INT INT] => :INT },
-            Clause.new(
-              Parameter.new(:A),
-              Parameter.new(:B),
-              nil,
-              Return.new(
-                Expression.new(
-                  :+,
-                  Variable.new(:A),
-                  Variable.new(:B)))))))
+                  Function.new(
+                    'add',
+                    { %i[INT INT] => :INT },
+                    Clause.new(
+                      Parameter.new(:A),
+                      Parameter.new(:B),
+                      nil,
+                      Return.new(
+                        Expression.new(
+                          :+,
+                          Variable.new(:A),
+                          Variable.new(:B)))))))
 
       output = PPrinter.format(ast)
 
@@ -455,24 +499,24 @@ describe PPrinter do
               nil,
               Return.new(
                 IntegerConstant.new(1))),
-            Clause.new(
-              Parameter.new(:X),
-              nil,
-              Return.new(
-                Expression.new(
-                  :+,
-                  Expression.new(
-                    :fib,
+                Clause.new(
+                  Parameter.new(:X),
+                  nil,
+                  Return.new(
                     Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(1))),
-                  Expression.new(
-                    :fib,
-                    Expression.new(
-                      :-,
-                      Variable.new(:X),
-                      IntegerConstant.new(2)))))))))
+                      :+,
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(1))),
+                      Expression.new(
+                        :fib,
+                        Expression.new(
+                          :-,
+                          Variable.new(:X),
+                          IntegerConstant.new(2)))))))))
 
       output = PPrinter.format(ast)
 

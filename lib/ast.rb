@@ -1,5 +1,6 @@
 require_relative 'ast/program'
 require_relative 'ast/parameter'
+require_relative 'ast/declaration'
 require_relative 'ast/variable'
 require_relative 'ast/return'
 require_relative 'ast/expression'

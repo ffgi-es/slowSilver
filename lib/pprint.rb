@@ -50,11 +50,26 @@ class PPrinter
     def format_return(output, ret, indent)
       output << indent("- return:\n", indent)
 
-      if ret.expression.is_a? Expression
-        return format_expression(output, ret.expression, indent + 2)
+      format_declarations(output, ret.declarations, indent + 2)
+
+      format_return_expression(output, ret.expression, indent)
+    end
+
+    def format_declarations(output, declars, indent)
+      declars.each do |dec|
+        output << indent("- declare:\n", indent)
+        output << indent("- name: #{dec.name}\n", indent + 2)
+        output << indent("- value:\n", indent + 2)
+        format_return_expression(output, dec.expression, indent + 2)
+      end
+    end
+
+    def format_return_expression(output, expr, indent)
+      if expr.is_a? Expression
+        return format_expression(output, expr, indent + 2)
       end
 
-      format_simple_expression(output, ret.expression, indent)
+      format_simple_expression(output, expr, indent)
     end
 
     def format_simple_expression(output, expression, indent)
