@@ -1,0 +1,8 @@
+main => INT
+===========
+main => :sum [].
+
+sum: LIST<INT> => INT
+---------------------
+sum: [] => 0;
+sum: List => 1.

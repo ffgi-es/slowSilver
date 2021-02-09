@@ -13,7 +13,7 @@ class Token
   end
 
   @token_patterns = {
-    type: /^[A-Z]{2,}$/,
+    type: /^[A-Z]{2,}(<[A-Z]{2,}>)?$/,
     boolean_constant: /(true|false)/,
     identifier: /^[a-z_]+:?$/,
     variable: /^[A-Z][a-z0-9]*$/,
@@ -29,7 +29,9 @@ class Token
     open_expression: /^\($/,
     close_expression: /^\)$/,
     condition: /^\?$/,
-    break: /^;$/
+    break: /^;$/,
+    open_list: /^\[$/,
+    close_list: /^\]$/
   }
 
   def to_s
