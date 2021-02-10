@@ -32,22 +32,34 @@ describe 'lists1.sag' do
     Token.new(:end)
   ]
 
-  #include_examples 'parsing', ASTree.new(
-  #  Program.new(
-  #    Function.new(
-  #      'main',
-  #      { [] => :INT },
-  #      Clause.new(
-  #        nil,
-  #        Return.new(
-  #          Expression.new(
-  #            :+,
-  #            IntegerConstant.new(2),
-  #            IntegerConstant.new(2)))))))
+  include_examples 'parsing', ASTree.new(
+    Program.new(
+      Function.new(
+        'main',
+        { [] => :INT },
+        Clause.new(
+          nil,
+          Return.new(
+            Expression.new(
+              :sum,
+              List.empty)))),
+      Function.new(
+        'sum',
+        { [:"LIST<INT>"] => :INT },
+        Clause.new(
+          List.empty,
+          nil,
+          Return.new(
+            IntegerConstant.new(0))),
+        Clause.new(
+          Parameter.new('List'),
+          nil,
+          Return.new(
+            IntegerConstant.new(1))))))
 
-  #include_examples 'no validation error'
+  # include_examples 'no validation error'
 
-  #include_examples 'generation', '_main', <<~ASM
+  # include_examples 'generation', '_main', <<~ASM
   #  #{CodeGen.externs}
 
   #  SECTION .text
@@ -61,5 +73,5 @@ describe 'lists1.sag' do
   #      pop     rcx
   #      add     rax, rcx
   #  #{CodeGen.exit 'rax'}
-  #ASM
+  # ASM
 end

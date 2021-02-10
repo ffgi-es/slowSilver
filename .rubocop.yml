@@ -1,23 +1,26 @@
 AllCops:
-    Exclude:
-        - 'spec/spec_helper.rb'
+  Exclude:
+    - 'spec/spec_helper.rb'
 
 Layout/LineLength:
-    Max: 100
+  Max: 100
 Layout/MultilineMethodCallBraceLayout:
-    EnforcedStyle: same_line
+  EnforcedStyle: same_line
 Layout/MultilineMethodCallIndentation:
-    EnforcedStyle: indented
+  EnforcedStyle: indented
 
 Metrics/AbcSize:
-    Max: 20
+  Max: 20
 Metrics/BlockLength:
-    Exclude:
-        - '**/*_spec.rb'
+  Exclude:
+    - '**/*_spec.rb'
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/pprint.rb'
 Metrics/MethodLength:
-    Max: 20
-    Exclude:
-        - 'spec/generator/code_generation.rb'
+  Max: 20
+  Exclude:
+    - 'spec/generator/code_generation.rb'
 
 Style/FrozenStringLiteralComment:
-    Enabled: false
+  Enabled: false

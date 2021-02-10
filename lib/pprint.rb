@@ -44,7 +44,8 @@ class PPrinter
     def format_parameter(output, parameter, indent)
       return output << indent("- name: #{parameter.name}\n", indent) if parameter.is_a? Parameter
 
-      output << indent("- int: #{parameter.value}\n", indent) if parameter.is_a? IntegerConstant
+      return format_integer(output, parameter, indent) if parameter.is_a? IntegerConstant
+      return format_list(output, parameter, indent) if parameter.is_a? List
     end
 
     def format_return(output, ret, indent)
@@ -80,20 +81,26 @@ class PPrinter
       expression_header(output, expression.function, indent)
 
       expression.parameters.each do |param|
-        if param.is_a? IntegerConstant
-          format_integer(output, param, indent + 4)
-        elsif param.is_a? StringConstant
-          format_string(output, param, indent + 4)
-        elsif param.is_a? BooleanConstant
-          format_boolean(output, param, indent + 4)
-        elsif param.is_a? Variable
-          format_variable(output, param, indent + 4)
-        else
-          format_expression(output, param, indent + 4)
-        end
+        format_expression_parameter(output, param, indent + 4)
       end
 
       output
+    end
+
+    def format_expression_parameter(output, param, indent)
+      if param.is_a? IntegerConstant
+        format_integer(output, param, indent)
+      elsif param.is_a? StringConstant
+        format_string(output, param, indent)
+      elsif param.is_a? BooleanConstant
+        format_boolean(output, param, indent)
+      elsif param.is_a? Variable
+        format_variable(output, param, indent)
+      elsif param.is_a? List
+        format_list(output, param, indent)
+      else
+        format_expression(output, param, indent)
+      end
     end
 
     def expression_header(output, name, indent)
@@ -112,6 +119,10 @@ class PPrinter
 
     def format_boolean(output, bool, indent = 6)
       output << indent("- bool: #{bool.value}\n", indent)
+    end
+
+    def format_list(output, _list, indent = 6)
+      output << indent("- list: empty\n", indent)
     end
 
     def format_variable(output, variable, indent = 6)

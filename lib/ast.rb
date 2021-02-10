@@ -9,6 +9,7 @@ require_relative 'ast/function'
 require_relative 'ast/clause'
 require_relative 'ast/string_constant'
 require_relative 'ast/boolean_constant'
+require_relative 'ast/list'
 require_relative 'compile_error'
 
 # root of the AST

@@ -833,5 +833,70 @@ describe PPrinter do
 
       expect(output).to eq expected_output
     end
+
+    it 'should format empty list AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new(
+            'main',
+            { [] => :INT },
+            Clause.new(
+              nil,
+              Return.new(
+                Expression.new(
+                  :sum,
+                  List.empty)))),
+          Function.new(
+            'sum',
+            { [:"LIST<INT>"] => :INT },
+            Clause.new(
+              List.empty,
+              nil,
+              Return.new(
+                IntegerConstant.new(0))),
+            Clause.new(
+              Parameter.new(:List),
+              nil,
+              Return.new(
+                IntegerConstant.new(1))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: sum
+                  - params:
+                    - list: empty
+          - func:
+            - name: 'sum'
+            - type:
+              - return: INT
+              - input: LIST<INT>
+            - clause:
+              - params:
+                - list: empty
+              - cond:
+              - return:
+                - int: 0
+            - clause:
+              - params:
+                - name: List
+              - cond:
+              - return:
+                - int: 1
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
   end
 end

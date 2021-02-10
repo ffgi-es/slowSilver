@@ -30,8 +30,11 @@ class ClauseParser
         parameters.push IntegerConstant.new(tokens.shift.value)
       when :variable
         parameters.push Parameter.new(tokens.shift.value)
-      when :separator
-        tokens.shift if tokens.first.type == :separator
+      when :open_list
+        parameters.push List.empty
+        tokens.shift
+      when :separator, :close_list
+        tokens.shift
       else
         raise ParseError, "Unexpected token: '.'"
       end
