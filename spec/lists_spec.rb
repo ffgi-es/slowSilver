@@ -57,7 +57,7 @@ describe 'lists1.sag' do
           Return.new(
             IntegerConstant.new(1))))))
 
-  # include_examples 'no validation error'
+  include_examples 'no validation error'
 
   # include_examples 'generation', '_main', <<~ASM
   #  #{CodeGen.externs}
