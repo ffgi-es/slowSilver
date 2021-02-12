@@ -43,7 +43,7 @@ class Clause
   end
 
   def parameter_check(parameter, function_name, clause_index, parameter_index)
-    return '' unless parameter.is_a? IntegerConstant
+    return '' unless parameter.is_a?(IntegerConstant) || parameter.is_a?(List)
 
     parameter.code
       .concat "cmp rax, [rbp+#{16 + (8 * parameter_index)}]".asm
