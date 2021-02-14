@@ -1,6 +1,10 @@
 # a node in a linked list
 class List
-  attr_reader :name
+  attr_reader :value, :name
+
+  def initialize(value = nil, _ref = nil)
+    @value = value
+  end
 
   def self.empty
     List.new

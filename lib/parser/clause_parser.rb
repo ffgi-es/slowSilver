@@ -31,9 +31,9 @@ class ClauseParser
       when :variable
         parameters.push Parameter.new(tokens.shift.value)
       when :open_list
-        parameters.push List.empty
         tokens.shift
-      when :separator, :close_list
+        parameters.push ListParser.parse(tokens)
+      when :separator
         tokens.shift
       else
         raise ParseError, "Unexpected token: '.'"

@@ -121,8 +121,18 @@ class PPrinter
       output << indent("- bool: #{bool.value}\n", indent)
     end
 
-    def format_list(output, _list, indent = 6)
-      output << indent("- list: empty\n", indent)
+    def format_list(output, list, indent = 6)
+      return output << indent("- list: empty\n", indent) if list.value.nil?
+
+      output << indent("- list:\n", indent)
+      output << indent("- value:\n", indent + 2)
+      format_list_value(output, list.value, indent + 4)
+      output << indent("- next: empty\n", indent + 2)
+    end
+
+    def format_list_value(output, value, indent)
+      format_integer(output, value, indent) if value.is_a? IntegerConstant
+      output << indent("- name: #{value.name}\n", indent) if value.is_a? Parameter
     end
 
     def format_variable(output, variable, indent = 6)

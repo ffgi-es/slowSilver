@@ -14,7 +14,6 @@ class ExpressionParser
     open_expression: proc { |details, _, tokens| details.push(parse(tokens)) },
     close_expression: proc { |_, _, _| nil },
     open_list: proc { |details, _, tokens| details.push(ListParser.parse(tokens)) },
-    close_list: proc { |_, _, _| nil },
     function_call: proc { |details, token, _| details.unshift(token.value) },
     integer_constant: proc { |details, token, _| details.push(ConstantParser.parse_int(token)) },
     string_constant: proc { |details, token, _| details.push(ConstantParser.parse_string(token)) },
