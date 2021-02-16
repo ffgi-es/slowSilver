@@ -168,7 +168,7 @@ describe 'lists2.sag' do
           Return.new(
             Variable.new(:X))))))
 
-  # include_examples 'no validation error'
+  include_examples 'no validation error'
 
   # include_examples 'generation', '_main', <<~ASM
   #   #{CodeGen.externs}

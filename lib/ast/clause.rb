@@ -31,7 +31,12 @@ class Clause
   def validate(param_types, return_type)
     variable_types = @parameters
       .zip(param_types)
-      .each_with_object({}) { |(p, t), v_t| v_t[p.name] = t if p.is_a? Parameter }
+      .each_with_object({}) do |(p, t), v_t|
+      v_t[p.name] = t if p.is_a? Parameter
+      if p.is_a? List
+        v_t[p.value.name] = inner_list_type(t) if p.value.is_a? Parameter
+      end
+    end
     @condition&.validate(variable_types, :BOOL)
     @return.validate(variable_types, return_type)
   end
@@ -56,5 +61,9 @@ class Clause
     @condition.code(parameter_indices)
       .concat 'cmp rax, 1'.asm
       .concat "jne _#{name}#{index + 1}".asm
+  end
+
+  def inner_list_type(type)
+    /^LIST<(?<inner_type>.+)>$/.match(type.to_s)['inner_type'].to_sym
   end
 end
