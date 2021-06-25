@@ -1,0 +1,29 @@
+main => INT
+===========
+main => :sum (1 :to 5).
+
+sum: LIST<INT> => INT
+----------------------
+sum: List => :sum_rec 0 List.
+
+sum_rec: INT, LIST<INT> => INT
+-------------------------------
+sum_rec: Res, [X | []]
+    => Res :+ X;
+sum_rec: Res, [X | Tail]
+    => :sum_rec (Res :+ X) Tail.
+
+to: INT, INT => LIST<INT>
+-------------------------
+to: X, Y ? X :< Y => X :to_rec Y [] -1;
+to: X, Y ? X :> Y => X :to_rec Y [] 1;
+to: X, Y => [X].
+
+to_rec: INT, INT, LIST<INT>, INT => LIST<INT>
+----------------------------------------
+to_rec: X, Y, L, Dir
+    ? X := Y 
+    => [X | L];
+
+to_rec: X, Y, L, Dir
+    => X :to_rec (Y :+ Dir) [Y | L] Dir.

@@ -14,7 +14,7 @@ class ClauseParser
 
     condition = ExpressionParser.parse(condition_tokens[1..-1]) if condition_tokens
 
-    Clause.new(*params, condition, ReturnParser.parse(return_tokens))
+    Clause.new(*params, condition, ReturnParser.parse(return_tokens, params))
   end
 
   class << self
@@ -32,7 +32,7 @@ class ClauseParser
         parameters.push Parameter.new(tokens.shift.value)
       when :open_list
         tokens.shift
-        parameters.push ListParser.parse(tokens)
+        parameters.push ListParser.parse_parameter(tokens)
       when :separator
         tokens.shift
       else

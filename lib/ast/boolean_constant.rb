@@ -1,5 +1,7 @@
+require_relative 'constant'
+
 # A boolean constant
-class BooleanConstant
+class BooleanConstant < Constant
   attr_reader :value
 
   def initialize(bool)

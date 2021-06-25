@@ -44,8 +44,15 @@ class PPrinter
     def format_parameter(output, parameter, indent)
       return output << indent("- name: #{parameter.name}\n", indent) if parameter.is_a? Parameter
 
+      return format_list_param(output, parameter, indent) if parameter.is_a? ListParameter
       return format_integer(output, parameter, indent) if parameter.is_a? IntegerConstant
       return format_list(output, parameter, indent) if parameter.is_a? List
+    end
+
+    def format_list_param(output, parameter, indent)
+      output << indent("- list:\n", indent)
+      output << indent("- head: #{parameter.head}\n", indent + 2)
+      output << indent("- next: empty\n", indent + 2)
     end
 
     def format_return(output, ret, indent)
@@ -75,6 +82,7 @@ class PPrinter
       return format_integer(output, expression, indent + 2) if expression.is_a? IntegerConstant
       return format_boolean(output, expression, indent + 2) if expression.is_a? BooleanConstant
       return format_variable(output, expression, indent + 2) if expression.is_a? Variable
+      return format_head_variable(output, expression, indent + 2) if expression.is_a? HeadVariable
     end
 
     def format_expression(output, expression, indent = 6)
@@ -88,18 +96,26 @@ class PPrinter
     end
 
     def format_expression_parameter(output, param, indent)
+      if param.is_a? Constant
+        format_constant_parameter(output, param, indent)
+      elsif param.is_a? Variable
+        format_variable(output, param, indent)
+      elsif param.is_a? HeadVariable
+        format_head_variable(output, param, indent)
+      elsif param.is_a? List
+        format_list(output, param, indent)
+      else
+        format_expression(output, param, indent)
+      end
+    end
+
+    def format_constant_parameter(output, param, indent)
       if param.is_a? IntegerConstant
         format_integer(output, param, indent)
       elsif param.is_a? StringConstant
         format_string(output, param, indent)
       elsif param.is_a? BooleanConstant
         format_boolean(output, param, indent)
-      elsif param.is_a? Variable
-        format_variable(output, param, indent)
-      elsif param.is_a? List
-        format_list(output, param, indent)
-      else
-        format_expression(output, param, indent)
       end
     end
 
@@ -137,6 +153,10 @@ class PPrinter
 
     def format_variable(output, variable, indent = 6)
       output << indent("- var: #{variable.name}\n", indent)
+    end
+
+    def format_head_variable(output, variable, indent)
+      output << indent("- headvar: #{variable.name}\n", indent)
     end
 
     def indent(string, count)

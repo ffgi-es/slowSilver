@@ -33,9 +33,7 @@ class Clause
       .zip(param_types)
       .each_with_object({}) do |(p, t), v_t|
       v_t[p.name] = t if p.is_a? Parameter
-      if p.is_a? List
-        v_t[p.value.name] = inner_list_type(t) if p.value.is_a? Parameter
-      end
+      v_t[p.head] = inner_list_type(t) if p.is_a? ListParameter
     end
     @condition&.validate(variable_types, :BOOL)
     @return.validate(variable_types, return_type)
@@ -44,7 +42,13 @@ class Clause
   private
 
   def parameter_indices
-    @parameters.each_with_index.reduce({}) { |inds, (p, i)| inds.update(p.name => i + 2) }
+    @parameters.each_with_index.each_with_object({}) do |(p, i), inds|
+      if p.is_a? Parameter
+        inds.update(p.name => i + 2)
+      elsif p.is_a? ListParameter
+        inds.update(p.head => i + 2)
+      end
+    end
   end
 
   def parameter_check(parameter, function_name, clause_index, parameter_index)

@@ -1,7 +1,8 @@
 require_relative '../data_label'
+require_relative 'constant'
 
 # a constant string of character
-class StringConstant
+class StringConstant < Constant
   attr_reader :value
 
   def initialize(value)

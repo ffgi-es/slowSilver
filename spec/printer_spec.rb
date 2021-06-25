@@ -927,11 +927,10 @@ describe PPrinter do
               Return.new(
                 IntegerConstant.new(0))),
             Clause.new(
-              List.new(
-                Parameter.new('X')),
+              ListParameter.new(:X),
               nil,
               Return.new(
-                Variable.new('X'))))))
+                HeadVariable.new(:X))))))
 
       output = PPrinter.format(ast)
 
@@ -977,12 +976,11 @@ describe PPrinter do
             - clause:
               - params:
                 - list:
-                  - value:
-                    - name: X
+                  - head: X
                   - next: empty
               - cond:
               - return:
-                - var: X
+                - headvar: X
       OUTPUT
 
       expect(output).to eq expected_output

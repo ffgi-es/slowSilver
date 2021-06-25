@@ -162,42 +162,55 @@ describe 'lists2.sag' do
           Return.new(
             IntegerConstant.new(0))),
         Clause.new(
-          List.new(
-            Parameter.new(:X)),
+          ListParameter.new(:X),
           nil,
           Return.new(
-            Variable.new(:X))))))
+            HeadVariable.new(:X))))))
 
   include_examples 'no validation error'
 
-  # include_examples 'generation', '_main', <<~ASM
-  #   #{CodeGen.externs}
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
-  #   SECTION .text
-  #   global _main
+    SECTION .text
+    global _main
 
-  #   _main:
-  #       call    init
-  #       mov     rax, 0
-  #       push    rax
-  #       call    _sum
-  #       add     rsp, 8
-  #   #{CodeGen.exit 'rax'}
+    _main:
+        call    init
+        mov     rax, list10
+        push    rax
+        call    _sum
+        add     rsp, 8
+        push    rax
+        mov     rax, list00
+        push    rax
+        call    _sum
+        add     rsp, 8
+        pop     rcx
+        add     rax, rcx
+    #{CodeGen.exit 'rax'}
 
-  #   _sum:
-  #       push    rbp
-  #       mov     rbp, rsp
-  #   _sum0:
-  #       mov     rax, 0
-  #       cmp     rax, [rbp+16]
-  #       jne     _sum1
-  #       mov     rax, 0
-  #       jmp     _sumdone
-  #   _sum1:
-  #       mov     rax, 1
-  #   _sumdone:
-  #       mov     rsp, rbp
-  #       pop     rbp
-  #       ret
-  # ASM
+    _sum:
+        push    rbp
+        mov     rbp, rsp
+    _sum0:
+        mov     rax, 0
+        cmp     rax, [rbp+16]
+        jne     _sum1
+        mov     rax, 0
+        jmp     _sumdone
+    _sum1:
+        mov     rax, [rbp+16]
+        mov     rax, [rax]
+    _sumdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
+
+    SECTION .data
+    list00  dq 5
+    list00p dq 0
+    list10  dq 4
+    list10p dq 0
+  ASM
 end

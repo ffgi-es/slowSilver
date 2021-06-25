@@ -13,7 +13,11 @@ class ConstantParser
       BooleanConstant.new(token.value)
     end
 
-    def parse_var(token)
+    def parse_var(token, params = [])
+      if params.any? { |x| x.respond_to?(:head) && x.head == token.value }
+        return HeadVariable.new(token.value)
+      end
+
       Variable.new(token.value)
     end
   end

@@ -1,8 +1,9 @@
 require_relative 'helpers'
 require_relative '../register'
+require_relative 'constant'
 
 # a constant integer value
-class IntegerConstant
+class IntegerConstant < Constant
   attr_reader :value, :name
 
   def initialize(value)
