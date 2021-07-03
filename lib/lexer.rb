@@ -7,12 +7,12 @@ class Lexer
   end
 
   def lex
-    File.foreach(@filename).reduce([]) do |tokens, line|
+    File.foreach(@filename).with_index.reduce([]) do |tokens, (line, line_num)|
       tokens + line
-        .split(/(\s|\.|\(|\)|\[|\]|,|;|')/)
+        .split(/(\s|\.|\(|\)|\[|\]|,|;|'|\|)/)
         .reduce(parts: [], quote: false) { |result, part| combine_quotes(result, part) }[:parts]
         .reject { |s| s =~ /^\s*$/ }
-        .map { |part| self.class.lex_part(part) }
+        .map { |part| self.class.lex_part(part, line_num + 1) }
     end
   end
 
@@ -26,8 +26,9 @@ class Lexer
     result
   end
 
-  def self.lex_part(string)
-    Token.create(string, @lexers) || (raise LexError, "Unknown token '#{string}'")
+  def self.lex_part(string, line_num)
+    Token.create(string, line_num, @lexers) ||
+      (raise LexError, "Unknown token '#{string}' on line #{line_num}")
   end
 
   @lexers = {

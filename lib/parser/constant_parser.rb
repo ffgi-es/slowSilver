@@ -17,6 +17,9 @@ class ConstantParser
       if params.any? { |x| x.respond_to?(:head) && x.head == token.value }
         return HeadVariable.new(token.value)
       end
+      if params.any? { |x| x.respond_to?(:tail) && x.tail == token.value }
+        return TailVariable.new(token.value)
+      end
 
       Variable.new(token.value)
     end

@@ -6,13 +6,13 @@ describe 'Parser' do
   describe '#parse' do
     it 'should throw an error for missing return value' do
       tokens_list = [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:end)
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:return, 0),
+        Token.new(:type, 0, :INT),
+        Token.new(:entry_function_line, 0),
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:return, 0),
+        Token.new(:end, 0)
       ]
 
       expect { Parser.parse tokens_list } .to raise_exception(
@@ -22,13 +22,13 @@ describe 'Parser' do
 
     it 'should throw an error for a missing full stop' do
       tokens_list = [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:integer_constant, 6)
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:return, 0),
+        Token.new(:type, 0, :INT),
+        Token.new(:entry_function_line, 0),
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:return, 0),
+        Token.new(:integer_constant, 0, 6)
       ]
 
       expect { Parser.parse tokens_list } .to raise_exception(
@@ -38,18 +38,18 @@ describe 'Parser' do
 
     it 'should throw an error for a missing =>' do
       tokens_list = [
-        Token.new(:identifier, 'main'),
-        Token.new(:return),
-        Token.new(:type, :INT),
-        Token.new(:entry_function_line),
-        Token.new(:identifier, 'main'),
-        Token.new(:integer_constant, 6),
-        Token.new(:end)
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:return, 0),
+        Token.new(:type, 0, :INT),
+        Token.new(:entry_function_line, 0),
+        Token.new(:identifier, 0, 'main'),
+        Token.new(:integer_constant, 0, 6),
+        Token.new(:end, 0)
       ]
 
       expect { Parser.parse tokens_list } .to raise_exception(
         ParseError,
-        "Unexpected token: '.'")
+        "Unexpected token: 'end' on line 0")
     end
   end
 end

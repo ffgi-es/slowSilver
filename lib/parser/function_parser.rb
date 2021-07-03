@@ -28,7 +28,7 @@ class FunctionParser
 
     def function_clauses(tokens)
       tokens
-        .slice_after(Token.new(:break))
+        .slice_after { |x| x.type == :break }
         .reduce([]) { |res, clause_tokens| res.push ClauseParser.parse(clause_tokens) }
     end
   end

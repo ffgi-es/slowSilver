@@ -4,16 +4,16 @@ describe 'addition1.sag' do
   include_context 'component test', 'fixtures/addition1.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:integer_constant, 2),
-    Token.new(:function_call, '+'),
-    Token.new(:integer_constant, 2),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+    Token.new(:entry_function_line, 2),
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:integer_constant, 3, 2),
+    Token.new(:function_call, 3, '+'),
+    Token.new(:integer_constant, 3, 2),
+    Token.new(:end, 3)
   ]
 
   include_examples 'parsing', ASTree.new(
@@ -52,15 +52,15 @@ describe 'addition2.sag' do
   include_context 'component test', 'fixtures/addition2.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:function_call, '+'),
-    Token.new(:integer_constant, 2),
-    Token.new(:integer_constant, 3),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+    Token.new(:entry_function_line, 2),
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:function_call, 3, '+'),
+    Token.new(:integer_constant, 3, 2),
+    Token.new(:integer_constant, 3, 3),
+    Token.new(:end, 3)
   ]
 end

@@ -4,24 +4,29 @@ describe 'function1.sag' do
   include_context 'component test', 'fixtures/function1.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:function_call, 'add'),
-    Token.new(:end),
-    Token.new(:identifier, 'add'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:function_line),
-    Token.new(:identifier, 'add'),
-    Token.new(:return),
-    Token.new(:integer_constant, 3),
-    Token.new(:function_call, '+'),
-    Token.new(:integer_constant, 4),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:function_call, 3, 'add'),
+    Token.new(:end, 3),
+
+    Token.new(:identifier, 5, 'add'),
+    Token.new(:return, 5),
+    Token.new(:type, 5, :INT),
+
+    Token.new(:function_line, 6),
+
+    Token.new(:identifier, 7, 'add'),
+    Token.new(:return, 7),
+    Token.new(:integer_constant, 7, 3),
+    Token.new(:function_call, 7, '+'),
+    Token.new(:integer_constant, 7, 4),
+    Token.new(:end, 7)
   ]
 
   include_examples 'parsing', ASTree.new(
@@ -71,27 +76,32 @@ describe 'function2.sag' do
   include_context 'component test', 'fixtures/function2.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:function_call, 'double'),
-    Token.new(:integer_constant, 4),
-    Token.new(:end),
-    Token.new(:identifier, 'double'),
-    Token.new(:type, :INT),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:function_line),
-    Token.new(:identifier, 'double'),
-    Token.new(:variable, 'X'),
-    Token.new(:return),
-    Token.new(:variable, 'X'),
-    Token.new(:function_call, '+'),
-    Token.new(:variable, 'X'),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:function_call, 3, 'double'),
+    Token.new(:integer_constant, 3, 4),
+    Token.new(:end, 3),
+
+    Token.new(:identifier, 5, 'double'),
+    Token.new(:type, 5, :INT),
+    Token.new(:return, 5),
+    Token.new(:type, 5, :INT),
+
+    Token.new(:function_line, 6),
+
+    Token.new(:identifier, 7, 'double'),
+    Token.new(:variable, 7, 'X'),
+    Token.new(:return, 7),
+    Token.new(:variable, 7, 'X'),
+    Token.new(:function_call, 7, '+'),
+    Token.new(:variable, 7, 'X'),
+    Token.new(:end, 7)
   ]
 
   include_examples 'parsing', ASTree.new(
@@ -151,32 +161,37 @@ describe 'function3.sag' do
   include_context 'component test', 'fixtures/function3.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:integer_constant, 3),
-    Token.new(:function_call, 'plus'),
-    Token.new(:integer_constant, 8),
-    Token.new(:end),
-    Token.new(:identifier, 'plus'),
-    Token.new(:type, :INT),
-    Token.new(:separator),
-    Token.new(:type, :INT),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:function_line),
-    Token.new(:identifier, 'plus'),
-    Token.new(:variable, 'A'),
-    Token.new(:separator),
-    Token.new(:variable, 'B'),
-    Token.new(:return),
-    Token.new(:variable, 'A'),
-    Token.new(:function_call, '+'),
-    Token.new(:variable, 'B'),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:integer_constant, 3, 3),
+    Token.new(:function_call, 3, 'plus'),
+    Token.new(:integer_constant, 3, 8),
+    Token.new(:end, 3),
+
+    Token.new(:identifier, 5, 'plus'),
+    Token.new(:type, 5, :INT),
+    Token.new(:separator, 5),
+    Token.new(:type, 5, :INT),
+    Token.new(:return, 5),
+    Token.new(:type, 5, :INT),
+
+    Token.new(:function_line, 6),
+
+    Token.new(:identifier, 7, 'plus'),
+    Token.new(:variable, 7, 'A'),
+    Token.new(:separator, 7),
+    Token.new(:variable, 7, 'B'),
+    Token.new(:return, 7),
+    Token.new(:variable, 7, 'A'),
+    Token.new(:function_call, 7, '+'),
+    Token.new(:variable, 7, 'B'),
+    Token.new(:end, 7)
   ]
 
   include_examples 'parsing', ASTree.new(

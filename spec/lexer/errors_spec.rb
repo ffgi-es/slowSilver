@@ -8,7 +8,7 @@ describe 'Lexer' do
       lexer = Lexer.new(in_file)
       expect { lexer.lex } .to raise_exception(
         LexError,
-        "Unknown token '+'")
+        "Unknown token '+' on line 3")
     end
 
     it 'should raise an error for an unrecogniseable token "<>" lexer_fail2.sag' do
@@ -16,7 +16,7 @@ describe 'Lexer' do
       lexer = Lexer.new(in_file)
       expect { lexer.lex } .to raise_exception(
         LexError,
-        "Unknown token '<>'")
+        "Unknown token '<>' on line 3")
     end
   end
 end

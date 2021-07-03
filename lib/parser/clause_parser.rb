@@ -10,7 +10,7 @@ class ClauseParser
 
     add_clause_parameter(params, tokens) until end_of_parameters? tokens.first.type
 
-    (return_tokens, condition_tokens) = tokens.slice_before(Token.new(:return)).to_a.reverse
+    (return_tokens, condition_tokens) = tokens.slice_before { |x| x.type == :return }.to_a.reverse
 
     condition = ExpressionParser.parse(condition_tokens[1..-1]) if condition_tokens
 
@@ -36,7 +36,7 @@ class ClauseParser
       when :separator
         tokens.shift
       else
-        raise ParseError, "Unexpected token: '.'"
+        raise ParseError, "Unexpected token: '#{tokens.first.type}' on line #{tokens.first.line}"
       end
     end
   end

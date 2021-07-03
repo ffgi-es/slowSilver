@@ -2,10 +2,11 @@ require_relative '../data_label'
 
 # a node in a linked list
 class List
-  attr_reader :value, :name
+  attr_reader :value, :next, :name
 
-  def initialize(value = nil, _ref = nil)
+  def initialize(value = nil, ref = nil)
     @value = value
+    @next = ref
     @label = DataLabel.indexed('list').concat('0') if value
   end
 
@@ -31,10 +32,11 @@ end
 
 # a list heading used in clause parameters
 class ListParameter
-  attr_reader :head
+  attr_reader :head, :tail
 
-  def initialize(head)
+  def initialize(head, tail = nil)
     @head = head
+    @tail = tail
   end
 end
 
@@ -53,5 +55,14 @@ class HeadVariable
 
   def type(param_types)
     param_types[@name]
+  end
+end
+
+# a variable that refers to the tail of a list
+class TailVariable
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
   end
 end

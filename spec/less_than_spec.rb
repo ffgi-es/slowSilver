@@ -4,16 +4,18 @@ describe 'less_than_equal1.sag' do
   include_context 'component test', 'fixtures/less_than_equal1.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :BOOL),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:integer_constant, 5),
-    Token.new(:function_call, '<='),
-    Token.new(:integer_constant, 6),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :BOOL),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+    Token.new(:integer_constant, 3, 5),
+    Token.new(:function_call, 3, '<='),
+    Token.new(:integer_constant, 3, 6),
+    Token.new(:end, 3)
   ]
 
   include_examples 'no validation error'

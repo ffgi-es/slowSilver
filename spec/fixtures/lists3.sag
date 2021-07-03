@@ -1,0 +1,9 @@
+main => INT
+===
+main => :sum [5|[9]].
+
+sum: LIST<INT> => INT
+---
+sum: [] => 0;
+sum: [X|[]] => X;
+sum: [X|T] => X :+ (:sum T).

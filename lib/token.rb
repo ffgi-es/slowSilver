@@ -1,15 +1,17 @@
 # a representation a single unit of code syntax
 class Token
-  attr_reader :type, :value
+  attr_reader :type, :value, :line
 
-  def initialize(type, value = nil)
+  def initialize(type, line, value = nil)
     @type = type
     @value = value
+    @line = line
   end
 
   def ==(other)
     @type == other.type &&
-      @value == other.value
+      @value == other.value &&
+      @line == other.line
   end
 
   @token_patterns = {
@@ -31,16 +33,17 @@ class Token
     condition: /^\?$/,
     break: /^;$/,
     open_list: /^\[$/,
-    close_list: /^\]$/
+    close_list: /^\]$/,
+    chain_line: /^\|$/
   }
 
   def to_s
-    "#{type}: #{@value}"
+    "#{type}: #{value} (line #{line})"
   end
 
-  def self.create(string, lexers)
+  def self.create(string, line_number, lexers)
     @token_patterns.reduce(nil) do |_, (type, pattern)|
-      break Token.new(type, lexers[type]&.call(string)) if string =~ pattern
+      break Token.new(type, line_number, lexers[type]&.call(string)) if string =~ pattern
     end
   end
 end

@@ -4,20 +4,24 @@ describe 'local_variables1.sag' do
   include_context 'component test', 'fixtures/local_variables1.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:variable, 'A'),
-    Token.new(:assign),
-    Token.new(:integer_constant, 3),
-    Token.new(:separator),
-    Token.new(:variable, 'A'),
-    Token.new(:function_call, '*'),
-    Token.new(:integer_constant, 5),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+
+    Token.new(:variable, 4, 'A'),
+    Token.new(:assign, 4),
+    Token.new(:integer_constant, 4, 3),
+    Token.new(:separator, 4),
+
+    Token.new(:variable, 5, 'A'),
+    Token.new(:function_call, 5, '*'),
+    Token.new(:integer_constant, 5, 5),
+    Token.new(:end, 5)
   ]
 
   include_examples 'parsing', ASTree.new(
@@ -62,19 +66,23 @@ describe 'local_variables2.sag' do
   include_context 'component test', 'fixtures/local_variables2.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:variable, 'Str'),
-    Token.new(:assign),
-    Token.new(:string_constant, 'Hello, Variable!'),
-    Token.new(:separator),
-    Token.new(:function_call, 'print'),
-    Token.new(:variable, 'Str'),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+
+    Token.new(:variable, 4, 'Str'),
+    Token.new(:assign, 4),
+    Token.new(:string_constant, 4, 'Hello, Variable!'),
+    Token.new(:separator, 4),
+
+    Token.new(:function_call, 5, 'print'),
+    Token.new(:variable, 5, 'Str'),
+    Token.new(:end, 5)
   ]
 
   include_examples 'parsing', ASTree.new(
@@ -151,28 +159,33 @@ describe 'local_variables4.sag' do
   include_context 'component test', 'fixtures/local_variables4.sag'
 
   include_examples 'lexing', [
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:type, :INT),
-    Token.new(:entry_function_line),
-    Token.new(:identifier, 'main'),
-    Token.new(:return),
-    Token.new(:variable, 'A'),
-    Token.new(:assign),
-    Token.new(:integer_constant, 3),
-    Token.new(:function_call, '+'),
-    Token.new(:boolean_constant, true),
-    Token.new(:separator),
-    Token.new(:variable, 'B'),
-    Token.new(:assign),
-    Token.new(:variable, 'A'),
-    Token.new(:function_call, '*'),
-    Token.new(:integer_constant, 5),
-    Token.new(:separator),
-    Token.new(:variable, 'A'),
-    Token.new(:function_call, '-'),
-    Token.new(:variable, 'B'),
-    Token.new(:end)
+    Token.new(:identifier, 1, 'main'),
+    Token.new(:return, 1),
+    Token.new(:type, 1, :INT),
+
+    Token.new(:entry_function_line, 2),
+
+    Token.new(:identifier, 3, 'main'),
+    Token.new(:return, 3),
+
+    Token.new(:variable, 4, 'A'),
+    Token.new(:assign, 4),
+    Token.new(:integer_constant, 4, 3),
+    Token.new(:function_call, 4, '+'),
+    Token.new(:boolean_constant, 4, true),
+    Token.new(:separator, 4),
+
+    Token.new(:variable, 5, 'B'),
+    Token.new(:assign, 5),
+    Token.new(:variable, 5, 'A'),
+    Token.new(:function_call, 5, '*'),
+    Token.new(:integer_constant, 5, 5),
+    Token.new(:separator, 5),
+
+    Token.new(:variable, 6, 'A'),
+    Token.new(:function_call, 6, '-'),
+    Token.new(:variable, 6, 'B'),
+    Token.new(:end, 6)
   ]
 
   include_examples 'parsing', ASTree.new(

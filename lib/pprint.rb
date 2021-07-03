@@ -52,7 +52,13 @@ class PPrinter
     def format_list_param(output, parameter, indent)
       output << indent("- list:\n", indent)
       output << indent("- head: #{parameter.head}\n", indent + 2)
-      output << indent("- next: empty\n", indent + 2)
+      output << if parameter.tail.nil?
+                  indent("- next: nil\n", indent + 2)
+                elsif parameter.tail.is_a? List
+                  indent("- next: empty\n", indent + 2)
+                else
+                  indent("- next: #{parameter.tail}\n", indent + 2)
+                end
     end
 
     def format_return(output, ret, indent)
@@ -102,6 +108,8 @@ class PPrinter
         format_variable(output, param, indent)
       elsif param.is_a? HeadVariable
         format_head_variable(output, param, indent)
+      elsif param.is_a? TailVariable
+        format_tail_variable(output, param, indent)
       elsif param.is_a? List
         format_list(output, param, indent)
       else
@@ -143,7 +151,16 @@ class PPrinter
       output << indent("- list:\n", indent)
       output << indent("- value:\n", indent + 2)
       format_list_value(output, list.value, indent + 4)
-      output << indent("- next: empty\n", indent + 2)
+      format_list_tail(output, list, indent + 2)
+    end
+
+    def format_list_tail(output, list, indent)
+      if list.next
+        output << indent("- next:\n", indent)
+        format_list(output, list.next, indent + 2)
+      else
+        output << indent("- next: empty\n", indent)
+      end
     end
 
     def format_list_value(output, value, indent)
@@ -157,6 +174,10 @@ class PPrinter
 
     def format_head_variable(output, variable, indent)
       output << indent("- headvar: #{variable.name}\n", indent)
+    end
+
+    def format_tail_variable(output, variable, indent)
+      output << indent("- tailvar: #{variable.name}\n", indent)
     end
 
     def indent(string, count)

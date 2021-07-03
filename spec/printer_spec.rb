@@ -977,10 +977,110 @@ describe PPrinter do
               - params:
                 - list:
                   - head: X
+                  - next: nil
+              - cond:
+              - return:
+                - headvar: X
+      OUTPUT
+
+      expect(output).to eq expected_output
+    end
+
+    it 'should format single item list AST to readable form' do
+      ast = ASTree.new(
+        Program.new(
+          Function.new('main', { [] => :INT },
+                       Clause.new(
+                         nil,
+                         Return.new(
+                           Expression.new(
+                             :sum,
+                             List.new(
+                               IntegerConstant.new(5),
+                               List.new(
+                                 IntegerConstant.new(9))))))),
+          Function.new(
+            'sum',
+            { [:"LIST<INT>"] => :INT },
+            Clause.new(
+              List.empty,
+              nil,
+              Return.new(
+                IntegerConstant.new(0))),
+            Clause.new(
+              ListParameter.new(:X, List.empty),
+              nil,
+              Return.new(
+                HeadVariable.new(:X))),
+            Clause.new(
+              ListParameter.new(:X, :T),
+              nil,
+              Return.new(
+                Expression.new(
+                  :+,
+                  HeadVariable.new(:X),
+                  Expression.new(
+                    :sum,
+                    TailVariable.new(:T))))))))
+
+      output = PPrinter.format(ast)
+
+      expected_output = <<~OUTPUT
+        program:
+          - func:
+            - name: 'main'
+            - type:
+              - return: INT
+              - input:
+            - clause:
+              - params:
+              - cond:
+              - return:
+                - call:
+                  - name: sum
+                  - params:
+                    - list:
+                      - value:
+                        - int: 5
+                      - next:
+                        - list:
+                          - value:
+                            - int: 9
+                          - next: empty
+          - func:
+            - name: 'sum'
+            - type:
+              - return: INT
+              - input: LIST<INT>
+            - clause:
+              - params:
+                - list: empty
+              - cond:
+              - return:
+                - int: 0
+            - clause:
+              - params:
+                - list:
+                  - head: X
                   - next: empty
               - cond:
               - return:
                 - headvar: X
+            - clause:
+              - params:
+                - list:
+                  - head: X
+                  - next: T
+              - cond:
+              - return:
+                - call:
+                  - name: +
+                  - params:
+                    - headvar: X
+                    - call:
+                      - name: sum
+                      - params:
+                        - tailvar: T
       OUTPUT
 
       expect(output).to eq expected_output
