@@ -326,50 +326,60 @@ describe 'lists3.sag' do
                 :sum,
                 TailVariable.new(:T))))))))
 
-  # include_examples 'no validation error'
+  include_examples 'no validation error'
 
-  # include_examples 'generation', '_main', <<~ASM
-  #   #{CodeGen.externs}
+  include_examples 'generation', '_main', <<~ASM
+    #{CodeGen.externs}
 
-  #   SECTION .text
-  #   global _main
+    SECTION .text
+    global _main
 
-  #   _main:
-  #       call    init
-  #       mov     rax, list10
-  #       push    rax
-  #       call    _sum
-  #       add     rsp, 8
-  #       push    rax
-  #       mov     rax, list00
-  #       push    rax
-  #       call    _sum
-  #       add     rsp, 8
-  #       pop     rcx
-  #       add     rax, rcx
-  #   #{CodeGen.exit 'rax'}
+    _main:
+        call    init
+        mov     rax, list00
+        push    rax
+        call    _sum
+        add     rsp, 8
+    #{CodeGen.exit 'rax'}
 
-  #   _sum:
-  #       push    rbp
-  #       mov     rbp, rsp
-  #   _sum0:
-  #       mov     rax, 0
-  #       cmp     rax, [rbp+16]
-  #       jne     _sum1
-  #       mov     rax, 0
-  #       jmp     _sumdone
-  #   _sum1:
-  #       mov     rax, [rbp+16]
-  #       mov     rax, [rax]
-  #   _sumdone:
-  #       mov     rsp, rbp
-  #       pop     rbp
-  #       ret
+    _sum:
+        push    rbp
+        mov     rbp, rsp
+    _sum0:
+        mov     rax, 0
+        cmp     rax, [rbp+16]
+        jne     _sum1
+        mov     rax, 0
+        jmp     _sumdone
+    _sum1:
+        mov     rax, 0
+        mov     rcx, [rbp+16]
+        mov     rcx, [rcx+8]
+        cmp     rax, rcx
+        jne     _sum2
+        mov     rax, [rbp+16]
+        mov     rax, [rax]
+        jmp     _sumdone
+    _sum2:
+        mov     rax, [rbp+16]
+        mov     rax, [rax+8]
+        push    rax
+        call    _sum
+        add     rsp, 8
+        push    rax
+        mov     rax, [rbp+16]
+        mov     rax, [rax]
+        pop     rcx
+        add     rax, rcx
+    _sumdone:
+        mov     rsp, rbp
+        pop     rbp
+        ret
 
-  #   SECTION .data
-  #   list00  dq 5
-  #   list00p dq 0
-  #   list10  dq 4
-  #   list10p dq 0
-  # ASM
+    SECTION .data
+    list00  dq 5
+    list00p dq list01
+    list01  dq 9
+    list01p dq 0
+  ASM
 end

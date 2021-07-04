@@ -7,7 +7,12 @@ class List
   def initialize(value = nil, ref = nil)
     @value = value
     @next = ref
-    @label = DataLabel.indexed('list').concat('0') if value
+    if ref.is_a? List
+      @label = ref.give_label
+    elsif value
+      @label = DataLabel.indexed('list')
+    end
+    @index = 0
   end
 
   def self.empty
@@ -19,14 +24,24 @@ class List
   end
 
   def code(_ = nil)
-    "mov #{Register[:ax]}, #{@label || 0}".asm
+    "mov #{Register[:ax]}, #{label || 0}".asm
   end
 
   def data
     return unless @label
 
-    "#{@label}  dq #{value.value}\n"
-      .concat "#{@label}p dq 0\n"
+    "#{@label}#{@index}  dq #{value.value}\n"
+      .concat "#{@label}#{@index}p dq #{@next&.label || 0}\n"
+      .concat @next&.data || ''
+  end
+
+  def label
+    @label ? "#{@label}#{@index}" : nil
+  end
+
+  def give_label
+    @index += 1
+    @next&.give_label || @label
   end
 end
 
@@ -64,5 +79,14 @@ class TailVariable
 
   def initialize(name)
     @name = name
+  end
+
+  def code(parameters)
+    "mov #{Register[:ax]}, [rbp+#{8 * parameters[@name]}]".asm
+      .concat "mov #{Register[:ax]}, [rax+8]".asm
+  end
+
+  def type(param_types)
+    param_types[@name]
   end
 end

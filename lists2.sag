@@ -1,8 +1,0 @@
-main => INT
-===
-main => (:sum []) :+ (:sum [4]).
-
-sum: LIST<INT> => INT
----
-sum: [] => 0;
-sum: [X] => X.
